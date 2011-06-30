@@ -16,9 +16,10 @@ DaMSA AisLib is a Java library for handling AIS messages. This include
 The library contains test code and example applications.
 
 The project is separated into three parts:
-  main     - The main AIS library
-  test     - Various JUnit test code
-  examples - Example applications
+  
+* main     - The main AIS library
+* test     - Various JUnit test code
+* examples - Example applications
 
 
 ### Building ###
