@@ -81,10 +81,8 @@ Windows respectively.
 
 ### Contributing ###
 
-TODO more on how to contribute etc
-
 You're encouraged to contribute to AisLib. Fork the code from 
-[github.com/TODO](https://github.com/TODO) and submit pull requests.
+[https://github.com/DaMSA/AisLib](https://github.com/DaMSA/AisLib) and submit pull requests.
 
 ### Versioning/naming ###
 
