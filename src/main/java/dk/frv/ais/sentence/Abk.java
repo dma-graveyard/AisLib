@@ -52,7 +52,7 @@ public class Abk extends ParametricSentence {
 		}
 	}
 
-	private int destination = 0;
+	private int destination;
 	private Character channel;
 	private int msgId;
 	private int sequence;
@@ -60,6 +60,7 @@ public class Abk extends ParametricSentence {
 
 	public Abk() {
 		super();
+		this.destination = 0;
 		this.formatter = "ABK";
 	}
 

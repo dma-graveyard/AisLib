@@ -22,7 +22,7 @@ import dk.frv.ais.binary.SixbitException;
 public class Capability extends AisApplicationMessage {
 	
 	private int reqDac; // 10 bits
-	private int spare = 0; // 70 bits
+	private int spare; // 70 bits
 	
 	public Capability() {
 		super(1, 3);

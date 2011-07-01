@@ -26,7 +26,7 @@ public class AsmAcknowledge extends AisApplicationMessage {
 	 * 
 	 * Recommended to be spare
 	 */
-	private int receivedDac = 0; // 10 bits
+	private int receivedDac; // 10 bits
 	/**
 	 * FI code of received FM
 	 */
@@ -37,7 +37,7 @@ public class AsmAcknowledge extends AisApplicationMessage {
      * 0 = default (no sequence number)
      * 1-2 047 = sequence number of received FM
 	 */
-	private int textSequenceNum = 0; // 11 bits
+	private int textSequenceNum; // 11 bits
 	/**
 	 * 0 = received but AI not available
 	 * 1 = AI available

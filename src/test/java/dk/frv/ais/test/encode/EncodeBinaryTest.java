@@ -5,9 +5,13 @@ import org.junit.Test;
 
 import dk.frv.ais.binary.SixbitEncoder;
 import dk.frv.ais.binary.SixbitException;
+import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.AisMessage6;
+import dk.frv.ais.message.AisMessageException;
+import dk.frv.ais.message.binary.AsmAcknowledge;
 import dk.frv.ais.message.binary.Capability;
 import dk.frv.ais.sentence.Abm;
+import dk.frv.ais.sentence.SentenceException;
 import dk.frv.ais.sentence.Vdm;
 
 public class EncodeBinaryTest {
@@ -57,6 +61,35 @@ public class EncodeBinaryTest {
 		encoded = abm.getEncoded();
 		System.out.println("ABM encoded: " + encoded);
 		
+	}
+	
+	@Test
+	public void encodeAsmAcknowledge() throws SixbitException, SentenceException, AisMessageException {
+		AsmAcknowledge acknowledge = new AsmAcknowledge();
+		acknowledge.setReceivedFi(28);
+		acknowledge.setReceivedDac(2);
+		acknowledge.setAiAvailable(1);
+		acknowledge.setAiResponse(1);
+		acknowledge.setTextSequenceNum(800);
+		
+		
+		AisMessage6 msg6 = new AisMessage6();
+		msg6.setDestination(992199013);
+		msg6.setAppMessage(acknowledge);
+		msg6.setRetransmit(0);
+		
+		String[] sentences = Vdm.createSentences(msg6, 0);
+		Assert.assertEquals(1, sentences.length);
+		Vdm vdm = new Vdm();
+		int res = vdm.parse(sentences[0]);
+		Assert.assertEquals(0, res);
+		msg6 = (AisMessage6)AisMessage.getInstance(vdm);
+		acknowledge = (AsmAcknowledge)msg6.getApplicationMessage();
+		Assert.assertEquals(28, acknowledge.getReceivedFi());
+		Assert.assertEquals(2, acknowledge.getReceivedDac());
+		Assert.assertEquals(1, acknowledge.getAiAvailable());
+		Assert.assertEquals(1, acknowledge.getAiResponse());
+		Assert.assertEquals(800, acknowledge.getTextSequenceNum());		
 	}
 	
 
