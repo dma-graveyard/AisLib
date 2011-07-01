@@ -42,6 +42,7 @@ public class EncodeRouteInformationTest {
 		route.setStartHour(16);
 		route.setStartMin(50);
 		route.setDuration(35);
+		route.setMsgLinkId(10);
 		// Add waypoints
 		List<AisPosition> waypoints = new ArrayList<AisPosition>();
 		waypoints.add(new AisPosition(new GeoLocation(55.845283333333334 , 12.704933333333333)));
