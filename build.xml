@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="aislib" default="all">
 
-	<property name="version" value="1.2-alpha" />
+	<property name="version" value="1.2-simulation" />
 
 	<property file=".ant.properties"/>
 	<property file="${user.home}/.ant.properties"/>
