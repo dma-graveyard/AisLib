@@ -1,4 +1,5 @@
-build/
-dist/
 javadoc/
-/examples/
+build/
+/aislib*.jar
+/utils/filter
+/utils/lib

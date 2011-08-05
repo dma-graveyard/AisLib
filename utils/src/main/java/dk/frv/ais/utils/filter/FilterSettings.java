@@ -13,7 +13,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package dk.frv.ais.examples.filter;
+package dk.frv.ais.utils.filter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

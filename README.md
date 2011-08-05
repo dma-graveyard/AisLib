@@ -17,9 +17,9 @@ The library contains test code and example applications.
 
 The project is separated into three parts:
   
-* main     - The main AIS library
+* core     - The main AIS library
 * test     - Various JUnit test code
-* examples - Example applications
+* utils    - Various AIS utilities using AisLib
 
 
 ### Building ###
@@ -38,7 +38,7 @@ Change build.xml to allow specific test targets.
 
 	ant test
 
-Make a distributable JAR file
+Make a distributable JAR file in project root
 
 	ant dist
  
@@ -47,36 +47,25 @@ To make Javadoc
 	ant javadoc
  
 
-### Examples ###
+### Utils ###
 
-The examples source are placed under src/examples/java
+The utilities source is located in utils/src
 
-To build all example applications use 
+To build all utilities use 
 
 	ant 
   
 or
 
-	ant examples
-  
-The example applications are installed in examples/. Installation of the
-example applications are controlled in build-examples.xml.
+	ant utils
 
-The dumper application can be started by first building and then going to
-the examples/dumper and use either dumper.sh or dumper.bat on Linux and
-Windows respectively.
+Each utility are placed under utils/. E.g. the filter application in
+utils/filter. It can be started by first building and then using either
+filter.sh or filter.bat on Linux and Windows respectively.
 
 	ant
-	cd examples/dumper
-	sh dumper.sh -t localhost:4001
-  
-The filter application can be started by first building and then going to
-the examples/filter and use either filter.sh or filter.bat on Linux and
-Windows respectively.
-
-	ant
-	cd examples/dumper
-	sh dumper.sh -t localhost:4001
+	cd utils/filter
+	filter.bat -t localhost:4001 -d
   
 
 ### Contributing ###
@@ -86,7 +75,7 @@ You're encouraged to contribute to AisLib. Fork the code from
 
 ### Versioning/naming ###
 
-The version number/name is controlled in the build.xml file. Please use a 
+The version number/name is controlled in the core/build.xml file. Please use a 
 name relating to the branch name. New official versions will only be made from
 master branch. 
 

@@ -13,7 +13,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
-package dk.frv.ais.examples.sender;
+package dk.frv.ais.utils.sender;
 
 import org.apache.log4j.Logger;
 

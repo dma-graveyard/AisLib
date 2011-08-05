@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="aislib-core" default="jar-main">
+
+	<property name="version" value="1.2-simulation" />
+
+	<property name="extlib" value="${basedir}/../extlib" />
+
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="javadoc.dir" value="${basedir}/javadoc" />
+
+	<path id="compile.class.path">
+		<fileset dir="${extlib}" >
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${javadoc.dir}" />
+	</target>
+	
+	<target name="javadoc">
+		<mkdir dir="${javadoc.dir}" />
+		<javadoc sourcepath="${src.main.java.dir}"
+	            destdir="${javadoc.dir}"
+				classpathref="compile.class.path">
+			<doctitle><![CDATA[<h1>DaMSA aislib</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &copy; 2011 Danish Maritime Safety Administration</i>]]></bottom>
+		</javadoc>
+	</target>
+
+	<!-- MAIN BEGIN -->
+	<property name="src.main.dir" value="${src.dir}/main" />
+	<property name="src.main.java.dir" value="${src.main.dir}/java" />
+	<property name="src.main.resources.dir" value="${src.main.dir}/resources" />
+
+	<property name="build.classes-main.dir" value="${build.dir}/classes-main" />
+
+	<property name="build.final.name" value="aislib-${version}.jar" />
+
+	<target name="init-main">
+		<mkdir dir="${build.classes-main.dir}" />
+		<copy todir="${build.classes-main.dir}"
+			file="${src.main.java.dir}/dk/frv/ais/country/country.properties"
+			overwrite="true" />		
+	</target>
+
+	<target name="compile-main" depends="init-main">
+		<javac destdir="${build.classes-main.dir}" encoding="UTF-8" includeantruntime="false">
+			<compilerarg value="-Xlint" />
+			<classpath refid="compile.class.path" />
+			<src path="${src.main.java.dir}" />
+		</javac>
+	</target>	
+
+	<target name="jar-main" depends="compile-main">
+		<jar file="${build.dir}/${build.final.name}">
+			<fileset dir="${build.classes-main.dir}" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<section name="dk/frv/aisspy/">
+					<attribute name="Specification-Title" value="DaMSA aislib" />
+					<attribute name="Specification-Version" value="${version}" />
+					<attribute name="Specification-Vendor" value="Danish Maritime Safety Administration" />
+					<attribute name="Package-Title" value="dk.frv.ais" />
+					<attribute name="Package-Version" value="${version}" />
+					<attribute name="Package-Vendor" value="dk.frv.aisspy" />
+					<attribute name="Package-Vendor-Id" value="DaMSA" />
+				</section>
+			</manifest>
+		</jar>
+	</target>
+	<!-- MAIN END -->
+	
+	<!-- TEST BEGIN -->
+	<property name="src.test.dir" value="${src.dir}/test" />
+	<property name="src.test.java.dir" value="${src.test.dir}/java" />
+	<property name="src.test.resources.dir" value="${src.test.dir}/resources" />
+	
+	<property name="build.classes-test.dir" value="${build.dir}/classes-test" />
+	
+	<target name="init-test">
+		<mkdir dir="${build.classes-test.dir}" />
+		<copy todir="${build.classes-test.dir}">
+			<fileset dir="${src.test.resources.dir}" />
+		</copy>
+		<gunzip src="${build.classes-test.dir}/stream_example.txt.gz" dest="${build.classes-test.dir}"/>
+	</target>
+		
+	<target name="compile-test" depends="compile-main,init-test">
+		<javac destdir="${build.classes-test.dir}" debug="on" encoding="UTF-8" includeantruntime="false">
+			<classpath refid="compile.class.path" />
+			<classpath path="${build.classes-main.dir}" />
+			<src path="${src.test.java.dir}" />
+		</javac>
+	</target>
+	
+	<target name="test" depends="compile-test" description="run all tests">
+		<junit fork="true">
+		    <classpath path="${build.classes-main.dir}" />
+		    <classpath path="${build.classes-test.dir}" />
+		    <classpath refid="compile.class.path" />
+		    <formatter type="plain" usefile="false" />
+		    <batchtest haltonerror="true" haltonfailure="true">
+		        <fileset dir="${src.test.java.dir}">
+		            <include name="**/*Test.java" />
+		        </fileset>
+		    </batchtest>
+		</junit>
+	</target>
+	
+	<target name="test-sentence" depends="compile-test" description="run sentence tests">
+		<junit fork="true">
+		    <classpath path="${build.classes-main.dir}" />
+		    <classpath path="${build.classes-test.dir}" />
+		    <classpath refid="compile.class.path" />
+		    <formatter type="plain" usefile="false" />
+		    <batchtest haltonerror="true" haltonfailure="true">
+		        <fileset dir="${src.test.java.dir}">
+		            <include name="**/sentence/*Test.java" />
+		        </fileset>
+		    </batchtest>
+		</junit>
+	</target>
+	
+	<target name="test-encode" depends="compile-test" description="run enocde tests">
+		<junit fork="true">
+		    <classpath path="${build.classes-main.dir}" />
+		    <classpath path="${build.classes-test.dir}" />
+		    <classpath refid="compile.class.path" />
+		    <formatter type="plain" usefile="false" />
+		    <batchtest haltonerror="true" haltonfailure="true">
+		        <fileset dir="${src.test.java.dir}">
+		            <include name="**/encode/*Test.java" />
+		        </fileset>
+		    </batchtest>
+		</junit>
+	</target>
+	
+	<!-- TEST END -->
+	
+	<target name="compile" depends="compile-main,compile-test" />
+
+    <target name="dist" depends="jar-main">
+		<copy file="${build.dir}/${build.final.name}" todir="${basedir}/.." overwrite="true" />
+	</target>	
+
+</project>
