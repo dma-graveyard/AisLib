@@ -4,6 +4,11 @@
 	<target name="clean">
 			<ant dir="${basedir}/core" target="clean" />
 			<ant dir="${basedir}/utils" target="clean" />
+			<delete>
+				<fileset dir="${basedir}" >
+					<include name="aislib*.jar"/>
+				</fileset>
+			</delete>
 	</target>
 	
 	<target name="javadoc">
