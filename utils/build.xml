@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="aislib-examples" default="utils">
+<project name="aislib-utils" default="utils">
 
 	<property name="extlib" value="${basedir}/../extlib" />
 	<property name="lib.dir" value="${basedir}/lib" />
