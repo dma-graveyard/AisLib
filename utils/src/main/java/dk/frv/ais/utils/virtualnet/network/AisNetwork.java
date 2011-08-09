@@ -36,7 +36,7 @@ public class AisNetwork {
 	 * Method to use for broadcasting VDM messages on the virtual network
 	 * @param vdms
 	 */
-	synchronized void broadcast(AisMessage aisMessage) {
+	synchronized public void broadcast(AisMessage aisMessage) {
 		// Send to all listeners
 		for (IAisHandler listener : listeners) {
 			listener.receive(aisMessage);
@@ -47,7 +47,7 @@ public class AisNetwork {
 	 * Add listener to network
 	 * @param listener
 	 */
-	synchronized void addListener(IAisHandler listener) {
+	synchronized public void addListener(IAisHandler listener) {
 		listeners.add(listener);
 	}
 

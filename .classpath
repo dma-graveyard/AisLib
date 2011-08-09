@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="extlib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="extlib/commons-lang-2.5.jar"/>
 	<classpathentry kind="lib" path="extlib/junit-4.8.jar"/>
+	<classpathentry kind="lib" path="extlib/comm.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

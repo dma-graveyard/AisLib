@@ -79,6 +79,22 @@ public class AisTcpReader extends AisReader {
 		this();
 		setHostPort(hostPort);
 	}
+
+	/**
+	 * Set hostname
+	 * @param hostname
+	 */
+	public void setHostname(String hostname) {
+		this.hostname = hostname;
+	}
+	
+	/**
+	 * Set port
+	 * @param port
+	 */
+	public void setPort(int port) {
+		this.port = port;
+	}
 	
 	/**
 	 * Set host and port from string: host:port
@@ -195,5 +211,21 @@ public class AisTcpReader extends AisReader {
 	public void setTimeout(int timeout) {
 		this.timeout = timeout;
 	}
-
+	
+	/**
+	 * Get hostname
+	 * @return
+	 */
+	public String getHostname() {
+		return hostname;
+	}
+	
+	/**
+	 * Get port
+	 * @return
+	 */
+	public int getPort() {
+		return port;
+	}
+	
 }

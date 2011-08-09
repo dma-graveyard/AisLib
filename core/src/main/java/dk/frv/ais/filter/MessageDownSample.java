@@ -106,7 +106,7 @@ public class MessageDownSample extends GenericFilter {
 		}
 		
 		// Elapsed in seconds
-		long elapsed = (now - lastReceived) / 1000;
+		double elapsed = (now - lastReceived) / 1000.0;
 		
 		// Sample message
 		if (elapsed < samplingRate) {
@@ -121,10 +121,18 @@ public class MessageDownSample extends GenericFilter {
 
 	}
 	
+	/**
+	 * Get sampling rate in seconds
+	 * @return
+	 */
 	public synchronized long getSamplingRate() {
 		return samplingRate;
 	}
 	
+	/**
+	 * Set sampling rate in seconds
+	 * @param samplingRate
+	 */
 	public synchronized void setSamplingRate(long samplingRate) {
 		this.samplingRate = samplingRate;
 	}

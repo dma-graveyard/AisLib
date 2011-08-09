@@ -16,9 +16,15 @@
 package dk.frv.ais.utils.virtualnet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+
+import dk.frv.ais.utils.virtualnet.network.AisNetwork;
+import dk.frv.ais.utils.virtualnet.source.SourceReader;
+import dk.frv.ais.utils.virtualnet.transponder.Transponder;
 
 /**
  * Application to set up a virtual AIS network with sources
@@ -29,7 +35,10 @@ public class VirtualNet {
 	
 	private static Logger LOG;
 	
-	private static Settings settings = new Settings();
+	private static Settings settings = new Settings();	
+	private static AisNetwork aisNetwork = new AisNetwork();
+	private static SourceReader sourceReader = new SourceReader();
+	private static List<Transponder> transponders = new ArrayList<Transponder>();
 
 	/**
 	 * @param args
@@ -52,11 +61,40 @@ public class VirtualNet {
 			System.exit(-1);
 		}
 		
+		// Start reading from sources
+		sourceReader.setAisNetwork(aisNetwork);
+		sourceReader.start();
+		
+		// Start transponders
+		for (Transponder transponder : transponders) {
+			transponder.start();
+		}
+		
 		// Maintanaince loop
 		while (true) {
 			Thread.sleep(10000);
 		}
 
+	}
+	
+	public static Settings getSettings() {
+		return settings;
+	}
+	
+	public static void setSourceReader(SourceReader sourceReader) {
+		VirtualNet.sourceReader = sourceReader;
+	}
+	
+	public static AisNetwork getAisNetwork() {
+		return aisNetwork;
+	}
+	
+	public static SourceReader getSourceReader() {
+		return sourceReader;
+	}
+	
+	public static List<Transponder> getTransponders() {
+		return transponders;
 	}
 
 }

@@ -29,12 +29,13 @@
 		<delete dir="${build.dir}" />
 		<delete dir="${lib.dir}" />
 		<delete dir="${javadoc.dir}" />
+		<delete dir="${basedir}/filter" />
+		<delete dir="${basedir}/virtualnet" />
 	</target>
 
 	<target name="init">
 		<ant dir="${basedir}/../core" target="jar-main" inheritall="false"/>
 		<mkdir dir="${build.classes.dir}" />
-		<mkdir dir="${basedir}/filter" />
 		<mkdir dir="${basedir}/lib" />
 		<copy todir="${lib.dir}">
 			<fileset dir="${basedir}/../core/build">
@@ -70,10 +71,10 @@
 	</target>
 	
 	<target name="utils" depends="jar">
-		<copy todir="${basedir}">
+		<copy todir="${basedir}" overwrite="true">
 			<fileset dir="${src.main.resources.dir}" />			
 		</copy>
-		<copy file="${build.dir}/${build.final.name}" todir="${lib.dir}" overwrite="true" />
+		<copy file="${build.dir}/${build.final.name}" todir="${lib.dir}" overwrite="true"/>
 	</target>
 	
 	<target name="javadoc" depends="init">
@@ -86,6 +87,15 @@
 		<bottom>
 			<![CDATA[<i>Copyright &copy; 2011 Danish Maritime Safety Administration</i>]]></bottom>
 		</javadoc>
+	</target>
+	
+	<target name="virtualnet" depends="utils">
+		<java classname="dk.frv.ais.utils.virtualnet.VirtualNet" fork="true" dir="${basedir}/virtualnet">
+			<classpath>
+				<pathelement path="${basedir}/virtualnet"/>
+			</classpath>
+			<classpath refid="compile.class.path" />
+		</java>
 	</target>
 
 </project>

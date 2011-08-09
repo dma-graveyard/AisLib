@@ -145,15 +145,26 @@ public abstract class Sentence {
 	 * @throws SentenceException
 	 */
 	private void calculateChecksum() throws SentenceException {
-		this.checksum = 0;
-		for (int i = 1; i < msg.length(); i++) {
-			char c = msg.charAt(i);
+		this.checksum = getChecksum(msg);
+	}
+	
+	/**
+	 * Calculate checksum of sentence
+	 * @param sentence
+	 * @return
+	 * @throws SentenceException
+	 */
+	public static int getChecksum(String sentence) throws SentenceException {
+		int checksum = 0;
+		for (int i = 1; i < sentence.length(); i++) {
+			char c = sentence.charAt(i);
 			if ((c == '!') || (c == '$'))
 				throw new SentenceException("Start Character Found before Checksum");
 			if (c == '*')
 				break;
-			this.checksum ^= c;
+			checksum ^= c;
 		}
+		return checksum;
 	}
 
 	/**
@@ -233,6 +244,24 @@ public abstract class Sentence {
 	 */
 	public void setTalker(String talker) {
 		this.talker = talker;
+	}
+	
+	/**
+	 * Convert any sentence to new sentence with !<talker><formatter>,....,
+	 * @param sentence
+	 * @param talker
+	 * @param formatter
+	 * @return
+	 * @throws SentenceException 
+	 */
+	public static String convert(String sentence, String talker, String formatter) throws SentenceException {
+		String newSentence = sentence.trim();
+		newSentence = newSentence.substring(6, newSentence.length() - 3);
+		newSentence = "!" + talker + formatter + newSentence;		
+		String checksum = Integer.toString(getChecksum(newSentence), 16).toUpperCase();
+		if (checksum.length() < 2) checksum = "0" + checksum;
+		newSentence += "*" + checksum;
+		return newSentence;
 	}
 	
 }
