@@ -15,6 +15,11 @@
 */
 package dk.frv.ais.sentence;
 
+import dk.frv.ais.binary.SixbitException;
+import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage12;
+import dk.frv.ais.message.AisMessage6;
+
 /**
  * Addressed Binary and safety related Message as defined by IEC 61162
  * Sentence to encapsulate AIS message 6 and 12 for sending  
@@ -41,10 +46,13 @@ public class Abm extends SendSentence {
 	}
 
 	/**
-	 * Parse method. Will always return 0 as sentence will always be in a single line.
+	 * Implemented parse method.
+	 * See {@link EncapsulatedSentence}
+	 * @throws SentenceException
+	 * @throws SixbitException 
 	 */
 	@Override
-	public int parse(String line) throws SentenceException {
+	public int parse(String line) throws SentenceException, SixbitException {
 		// Do common parsing
 		super.baseParse(line);
 
@@ -67,12 +75,21 @@ public class Abm extends SendSentence {
 			this.channel = 0;
 		}
 		
+		// Message id
 		this.msgId = Integer.parseInt(fields[6]);
 		
-		// Six bit field
-		// TODO
+		// Padding bits
+		int padBits = Sentence.parseInt(fields[8]);
 		
-		return 0;
+		// Six bit field
+		this.sixbitString += fields[7];
+		binArray.appendSixbit(fields[7], padBits);
+		
+		if (completePacket) {
+			return 0;
+		}
+
+		return 1;
 	}
 
 	public int getDestination() {
@@ -81,6 +98,35 @@ public class Abm extends SendSentence {
 
 	public void setDestination(int destination) {
 		this.destination = destination;
+	}
+		
+	/**
+	 * Get AIS message 6 or 12 for this ABM  
+	 * @return
+	 */
+	public AisMessage getAisMessage() {
+		// TODO maybe make special encoders in msg6 and msg12 instead
+		// They just need to take bin/text part from here instead
+		// and pad bits
+		// Problem that we need to parse application specific message
+		// to be able to make it into a VDM
+		
+		
+		AisMessage aisMessage = null;
+		if (msgId == 12) {
+			// Decode text part and 
+			AisMessage12 msg12 = new AisMessage12();
+			msg12.setDestination(getDestination());
+			msg12.setMessage("");
+			// Correct ?
+			msg12.setSeqNum(getSequence());
+			aisMessage = msg12;
+		} else if (msgId == 6) {
+			AisMessage6 msg6 = new AisMessage6();
+			// TODO
+		}
+	
+		return aisMessage;
 	}
 
 }

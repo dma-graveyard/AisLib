@@ -15,6 +15,8 @@
 */
 package dk.frv.ais.sentence;
 
+import dk.frv.ais.binary.SixbitException;
+
 /**
  * Broadcast Binary and safety related Message as defined by IEC 61162
  * Sentence to encapsulate AIS message 8 and 14 for sending  
@@ -37,12 +39,37 @@ public class Bbm extends SendSentence {
 	}
 
 	/**
-	 * Parse method. Will always return 0 as sentence will always be in a single line.
+	 * Implemented parse method.
+	 * See {@link EncapsulatedSentence}
 	 */
 	@Override
-	public int parse(String line) {
-		// TODO
-		return 0;
+	public int parse(String line) throws SentenceException, SixbitException {
+		
+		// Do common parsing
+		super.baseParse(line);
+		
+		// Check VDM / VDO
+		if (!this.formatter.equals("BBM")) {
+			throw new SentenceException("Not BBM sentence");
+		}
+		
+		// Check that there at least 8 fields
+		if (fields.length < 9) {
+			throw new SentenceException("Sentence does not have at least 8 fields");
+		}
+		
+		// Padding bits
+		int padBits = Sentence.parseInt(fields[7]);
+
+		// Six bit field
+		this.sixbitString += fields[6];
+		binArray.appendSixbit(fields[6], padBits);
+
+		if (completePacket) {
+			return 0;
+		}
+
+		return 1;
 	}
 	
 }
