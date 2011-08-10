@@ -77,7 +77,6 @@ public abstract class EncapsulatedSentence extends Sentence {
 		if (multipartTotal == 0 || this.total == multipartNum) {
 			this.total    = 0;
 		    this.num      = 0;
-		    this.sequence = 0;
 			completePacket = true;
 		}
 

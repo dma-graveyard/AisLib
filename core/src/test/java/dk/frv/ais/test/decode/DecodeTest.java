@@ -135,7 +135,7 @@ public class DecodeTest {
 				}
 
 			} catch (Exception e) {
-				LOG.error("VDM/VDO failed: " + e.getClass() + " line: " + line + " tag: " + sourceTag);
+				LOG.error("VDM/VDO failed: " + e.getClass() + " line: " + line + " tag: " + sourceTag + ": " + e.getMessage());
 				Assert.assertTrue(false);
 			}
 
@@ -147,13 +147,12 @@ public class DecodeTest {
 	}
 	
 	@Test
-	public void decodeAbmTest() throws SentenceException {
+	public void decodeAbmTest() throws SentenceException, SixbitException {
 		String sentence = "!AIABM,1,1,0,219997000,0,12,<>j?1GhlLplPD5CDP6B?=P6BF,0*5F";
 		Abm abm = new Abm();
 		int result = abm.parse(sentence);
 		Assert.assertEquals("ABM parse failed", 0, result);
 		Assert.assertEquals("Message ID wrong", 12, abm.getMsgId());
-
 	}
 	
 	@Test

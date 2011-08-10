@@ -192,12 +192,12 @@ public abstract class Sentence {
 
 	public static int parseInt(String str) throws SentenceException {
 		if (str == null || str.length() == 0) {
-			throw new SentenceException("Invalid integer field");
+			throw new SentenceException("Invalid integer field: " + str);
 		}
 		try {
 			return Integer.parseInt(str);
 		} catch (NumberFormatException e) {
-			throw new SentenceException("Invalid integer field");
+			throw new SentenceException("Invalid integer field: " + str);
 		}
 	}
 	
