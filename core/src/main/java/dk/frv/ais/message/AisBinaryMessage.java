@@ -136,6 +136,18 @@ public abstract class AisBinaryMessage extends AisMessage {
 		this.appMessage = appMessage;
 	}
 	
+	/**
+	 * Set values from ABM/BBM binary part
+	 * @param binArray
+	 * @throws SixbitException
+	 */
+	public void setBinary(BinArray binArray) throws SixbitException {
+		this.dac = (int) binArray.getVal(10);
+		this.fi = (int) binArray.getVal(6);
+		this.data = binArray;
+		appMessage = AisApplicationMessage.getInstance(this);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

@@ -58,7 +58,7 @@ public class AisMessage8 extends AisBinaryMessage {
 		encoder.append(appMessage.getEncoded());
 		return encoder;
 	}
-
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

@@ -66,13 +66,9 @@ public class AisMessage6 extends AisBinaryMessage {
 		encoder.addVal(dac, 10);
 		encoder.addVal(fi, 6);
 		encoder.append(appMessage.getEncoded());
-		
-		// TODO check that number if bits is no more than 1008
-		// the data part can be no more than 936
-		
 		return encoder;
 	}
-	
+
 	public int getSeqNum() {
 		return seqNum;
 	}

@@ -32,7 +32,7 @@ public class SourceReader implements IAisHandler {
 	
 	private List<AisReader> readers = new ArrayList<AisReader>();
 	private AisNetwork aisNetwork;
-	private MessageDownSample downSampleFilter = new MessageDownSample(5);
+	private MessageDownSample downSampleFilter = new MessageDownSample(1);
 	
 	public SourceReader() {
 		downSampleFilter.registerReceiver(this);
@@ -40,10 +40,6 @@ public class SourceReader implements IAisHandler {
 	
 	@Override
 	public void receive(AisMessage aisMessage) {
-		//System.out.println(aisMessage.getVdm().getOrgLinesJoined());
-//		if (aisMessage.getUserId() == 219015063 || aisMessage.getUserId() == 219012679 || aisMessage.getUserId() == 636015240)
-//			System.out.println((new Date()) + ": " + aisMessage.getUserId() + " msgId: " + aisMessage.getMsgId());
-		
 		aisNetwork.broadcast(aisMessage);
 	}
 	

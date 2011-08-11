@@ -33,6 +33,10 @@ public class Abm extends SendSentence {
 		formatter = "ABM";
 		channel = '0';
 	}
+	
+	public static boolean isAbm(String line) {
+		return (line.indexOf("!AIABM") >= 0 || line.indexOf("!BSABM") >= 0);
+	}
 
 	/**
 	 * Get encoded sentence
@@ -82,7 +86,7 @@ public class Abm extends SendSentence {
 		int padBits = Sentence.parseInt(fields[8]);
 		
 		// Six bit field
-		this.sixbitString += fields[7];
+		this.sixbitString = fields[7];
 		binArray.appendSixbit(fields[7], padBits);
 		
 		if (completePacket) {
@@ -99,34 +103,51 @@ public class Abm extends SendSentence {
 	public void setDestination(int destination) {
 		this.destination = destination;
 	}
-		
-	/**
-	 * Get AIS message 6 or 12 for this ABM  
-	 * @return
-	 */
-	public AisMessage getAisMessage() {
-		// TODO maybe make special encoders in msg6 and msg12 instead
-		// They just need to take bin/text part from here instead
-		// and pad bits
-		// Problem that we need to parse application specific message
-		// to be able to make it into a VDM
-		
-		
-		AisMessage aisMessage = null;
-		if (msgId == 12) {
-			// Decode text part and 
+	
+	public AisMessage getAisMessage(long mmsi, int repeat, int retransmit) throws SentenceException, SixbitException {
+		AisMessage aisMessage;
+		if (msgId == 12) { 
 			AisMessage12 msg12 = new AisMessage12();
 			msg12.setDestination(getDestination());
-			msg12.setMessage("");
-			// Correct ?
+			msg12.setUserId(mmsi);
 			msg12.setSeqNum(getSequence());
+			msg12.setRepeat(repeat);
+			msg12.setRetransmit(retransmit);	
+			msg12.setMessage(binArray);
 			aisMessage = msg12;
 		} else if (msgId == 6) {
 			AisMessage6 msg6 = new AisMessage6();
-			// TODO
+			msg6.setSeqNum(getSequence());
+			msg6.setDestination(getDestination());
+			msg6.setUserId(mmsi);
+			msg6.setBinary(binArray);
+			aisMessage = msg6;
+		} else {
+			throw new SentenceException("ABM can only contain AIS message 6 or 12");
 		}
-	
+		
 		return aisMessage;
+	}
+		
+	/**
+	 * Make a single VDM from this ABM
+	 * @param mmsi
+	 * @param repeat
+	 * @param retransmit
+	 * @return
+	 * @throws SixbitException
+	 * @throws SentenceException 
+	 */
+	public Vdm makeVdm(long mmsi, int repeat, int retransmit) throws SixbitException, SentenceException {
+		AisMessage aisMessage = getAisMessage(mmsi, repeat, retransmit);
+		
+		Vdm vdm = new Vdm();
+		vdm.setMsgId(getMsgId());
+		vdm.setMessageData(aisMessage);
+		vdm.setSequence(getSequence());
+		vdm.setChannel(getChannel());
+		
+		return vdm;
 	}
 
 }

@@ -27,6 +27,10 @@ public class AisMessage14 extends AisMessage {
 
 	private int spare; // 2 bit: Spare
 	private String message; // Max 968 bit - 161 characters
+	
+	public AisMessage14() {
+		super(14);
+	}
 
 	public AisMessage14(Vdm vdm) throws AisMessageException, SixbitException {
 		super(vdm);
@@ -46,10 +50,20 @@ public class AisMessage14 extends AisMessage {
 	@Override
 	public SixbitEncoder getEncoded() {
 		SixbitEncoder encoder = super.encode();
-		// TODO
+		encoder.addVal(spare, 2);
+		encoder.addString(message);
 		return encoder;
 	}
-
+	
+	/**
+	 * Set message from a binary array
+	 * @param binArray
+	 * @throws SixbitException
+	 */
+	public void setMessage(BinArray binArray) throws SixbitException {
+		message = binArray.getString(binArray.length() / 6);
+	}
+	
 	public int getSpare() {
 		return spare;
 	}

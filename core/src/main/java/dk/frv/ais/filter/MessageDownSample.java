@@ -106,7 +106,7 @@ public class MessageDownSample extends GenericFilter {
 		}
 		
 		// Elapsed in seconds
-		double elapsed = (now - lastReceived) / 1000.0;
+		double elapsed = (double)(now - lastReceived) / 1000.0;
 		
 		// Sample message
 		if (elapsed < samplingRate) {

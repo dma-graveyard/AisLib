@@ -24,10 +24,17 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
+import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage6;
+import dk.frv.ais.message.AisMessage7;
+import dk.frv.ais.sentence.Abk;
+import dk.frv.ais.sentence.Abm;
+import dk.frv.ais.sentence.Bbm;
 import dk.frv.ais.sentence.Sentence;
 import dk.frv.ais.sentence.SentenceException;
+import dk.frv.ais.sentence.Vdm;
 import dk.frv.ais.utils.virtualnet.network.AisNetwork;
 
 /**
@@ -43,6 +50,9 @@ public class Transponder extends Thread implements IAisHandler {
 	private Socket clientSocket = null;
 	private ServerSocket serverSocket = null;
 	private OutputStream out = null;
+	private Abm abm = new Abm();
+	private Bbm bbm = new Bbm();
+	private Abk abk = new Abk();
 
 	public Transponder(AisNetwork aisNetwork) {
 		this.aisNetwork = aisNetwork;
@@ -78,32 +88,114 @@ public class Transponder extends Thread implements IAisHandler {
 		}
 
 	}
-	
-	private void readFromAI() throws IOException {		
+
+	private void readFromAI() throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		String line;
 		while ((line = reader.readLine()) != null) {
 			LOG.info("Read from client: " + line);
-			// TODO handle read from AI
-			
-			// Parse ABM or BBM  (as VDM read and parse)
-			
-			// Make VDM
-			
-			// Send VDM to AisNetwork
-			
-			// Send ABK back to client socket
-			
+
+			// Ignore everything else than sentences
+			if (!Sentence.hasSentence(line)) {
+				continue;
+			}
+
+			try {
+
+				if (Abm.isAbm(line)) {
+					int result = abm.parse(line);
+					if (result == 0) {
+						handleAbm();
+					} else {
+						continue;
+					}
+				}
+
+				if (Bbm.isBbm(line)) {
+					int result = bbm.parse(line);
+					if (result == 0) {
+						handleBbm();						
+					} else {
+						continue;
+					}
+				}
+
+				abm = new Abm();
+				bbm = new Bbm();
+
+			} catch (Exception e) {
+				LOG.info("ABM or BBM failed: " + e.getMessage() + " line: " + line);
+			}
+
 		}
-		
+
 		clientSocket.close();
-		
+
+	}
+
+	private void handleBbm() {
+		LOG.info("Reveived complete BBM");
+		abk = new Abk();
+		abk.setChannel(bbm.getChannel());
+		abk.setMsgId(bbm.getMsgId());
+		abk.setSequence(bbm.getSequence());
+
+		// Get AisMessage from Bbm
+		try {
+			Vdm vdm = bbm.makeVdm(mmsi, 0);
+			aisNetwork.broadcast(vdm);
+			abk.setResult(Abk.Result.BROADCAST_SENT);
+		} catch (Exception e) {
+			LOG.info("Error decoding BBM: " + e.getMessage());
+			// Something must be wrong with Bbm
+			abk.setResult(Abk.Result.COULD_NOT_BROADCAST);
+		}
+
+		sendAbk();
+	}
+
+	private void handleAbm() {
+		LOG.info("Reveived complete ABM");
+		abk = new Abk();
+		abk.setChannel(abm.getChannel());
+		abk.setMsgId(abm.getMsgId());
+		abk.setSequence(abm.getSequence());
+		abk.setDestination(abm.getDestination());
+
+		// Get AisMessage from Abm
+		try {
+			Vdm vdm = abm.makeVdm(mmsi, 0, 0);
+			aisNetwork.broadcast(vdm);
+			abk.setResult(Abk.Result.ADDRESSED_SUCCESS);
+		} catch (Exception e) {
+			LOG.info("Error decoding ABM: " + e.getMessage());
+			// Something must be wrong with Abm
+			abk.setResult(Abk.Result.COULD_NOT_BROADCAST);
+		}
+
+		sendAbk();
+	}
+
+	private void sendAbk() {
+		String encoded = abk.getEncoded() + "\r\n";
+		LOG.info("Sending ABK: " + encoded);
+		if (out != null) {
+			try {
+				out.write(encoded.getBytes());
+			} catch (IOException e1) {
+				try {
+					clientSocket.close();
+					out = null;
+				} catch (IOException e2) {
+				}
+			}
+		}
 	}
 
 	@Override
 	public void receive(AisMessage aisMessage) {
 		// Maybe own
-		boolean own = (aisMessage.getUserId() == mmsi); 
+		boolean own = (aisMessage.getUserId() == mmsi);
 
 		// Convert to VDO or VDM
 		StringBuilder buf = new StringBuilder();
@@ -116,6 +208,14 @@ public class Transponder extends Thread implements IAisHandler {
 			}
 		}
 		
+		// Maybe the transponder needs to send a binary acknowledge
+		if (aisMessage.getMsgId() == 6) {
+			AisMessage6 msg6 = (AisMessage6)aisMessage;
+			if (msg6.getDestination() == mmsi) {
+				sendBinAck(msg6);
+			}
+		}
+
 		// Send to writer thread
 		if (out != null) {
 			try {
@@ -125,10 +225,27 @@ public class Transponder extends Thread implements IAisHandler {
 				try {
 					clientSocket.close();
 					out = null;
-				} catch (IOException e1) { }
+				} catch (IOException e1) {
+				}
 			}
 		}
 
+	}
+
+	private void sendBinAck(AisMessage6 msg6) {
+		AisMessage7 msg7 = new AisMessage7();
+		msg7.setUserId(mmsi);
+		msg7.setDest1(msg6.getUserId());
+		msg7.setSeq1(msg6.getSeqNum());
+		LOG.info("Sending binary acknowledge: " + msg7);
+		Vdm vdm = new Vdm();
+		try {
+			vdm.setMessageData(msg7);
+			vdm.setSequence(msg6.getSeqNum());
+			aisNetwork.broadcast(vdm);
+		} catch (Exception e) {
+			LOG.info("Failed to make binary ack: " + e.getMessage());
+		}
 	}
 
 	public long getMmsi() {

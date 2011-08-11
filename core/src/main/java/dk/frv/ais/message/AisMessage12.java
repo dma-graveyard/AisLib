@@ -63,7 +63,16 @@ public class AisMessage12 extends AisMessage {
 		encoder.addString(message);
 		return encoder;
 	}
-
+	
+	/**
+	 * Set message from a binary array
+	 * @param binArray
+	 * @throws SixbitException
+	 */
+	public void setMessage(BinArray binArray) throws SixbitException {
+		message = binArray.getString(binArray.length() / 6);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

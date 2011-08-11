@@ -168,5 +168,47 @@ public class Vdm extends EncapsulatedSentence {
 
 		return sentences;
 	}
+	
+	/**
+	 *  Split single VDM into possible multiple VDM's to adherne to the
+	 *  80 character max 
+	 * @return
+	 */
+	public Vdm[] createSentences() {
+		// Make sure there is a sequence number
+		if (sequence == null) {
+			sequence = 0;
+		}
+		
+		int sentenceCount = (sixbitString.length() / DATA_SENTENCE_MAX_LENGTH) + 1;
+		Vdm[] sentences = new Vdm[sentenceCount];
+		// Split the string
+		for (int i = 0; i < sentenceCount; i++) {
+			int start = i * DATA_SENTENCE_MAX_LENGTH;
+			int end;
+			int partPadBits = 0;
+			if (i < sentenceCount - 1) {
+				end = start + DATA_SENTENCE_MAX_LENGTH;
+			} else {
+				end = sixbitString.length();
+				partPadBits = padBits;
+			}
+			String partEncoded = sixbitString.substring(start, end);
+
+			Vdm vdm = new Vdm();
+			vdm.setMsgId(msgId);
+			vdm.setTalker("AI");
+			vdm.setTotal(sentenceCount);
+			vdm.setNum(i + 1);
+			vdm.setSequence(sequence);
+			vdm.setSixbitString(partEncoded);
+			vdm.setPadBits(partPadBits);
+			vdm.setChannel(channel);
+
+			sentences[i] = vdm;
+		}
+		
+		return sentences;		
+	}
 
 }

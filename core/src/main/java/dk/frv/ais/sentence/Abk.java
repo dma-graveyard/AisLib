@@ -115,8 +115,14 @@ public class Abk extends ParametricSentence {
 	 */
 	@Override
 	public String getEncoded() {
-		// TODO
-		return null;
+		super.encode();
+		encodedFields.set(0, "$AIABK");
+		encodedFields.add(destination == 0 ? "" : Integer.toString(destination));
+		encodedFields.add((channel == null) ? "" : Character.toString(channel));
+		encodedFields.add(Integer.toString(msgId));
+		encodedFields.add(Integer.toString(sequence));
+		encodedFields.add(Integer.toString(result.getRes()));
+		return finalEncode();
 	}
 
 	/**

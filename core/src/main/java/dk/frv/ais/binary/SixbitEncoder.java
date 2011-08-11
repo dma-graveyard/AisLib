@@ -84,6 +84,14 @@ public class SixbitEncoder {
 	}
 	
 	/**
+	 * Append a binary array
+	 * @param ba
+	 */
+	public void append(BinArray ba) {
+		binArray.append(ba);
+	}
+	
+	/**
 	 * Get encoded six bit string
 	 * @return string
 	 * @throws SixbitException
@@ -119,6 +127,14 @@ public class SixbitEncoder {
 	 */
 	public int getLength() {
 		return binArray.getLength();
+	}
+	
+	/**
+	 * Get the underlying binary array
+	 * @return
+	 */
+	public BinArray getBinArray() {
+		return binArray;
 	}
 
 	@Override

@@ -95,7 +95,7 @@ public abstract class AisApplicationMessage {
 			return new RouteSuggestionReply(binaryMessage.getData());
 		}
 		
-		return null;
+		return new UnknownAsm(binaryMessage.getDac(), binaryMessage.getFi());
 	}
 	
 	public int getDac() {

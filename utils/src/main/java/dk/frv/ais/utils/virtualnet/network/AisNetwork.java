@@ -18,8 +18,12 @@ package dk.frv.ais.utils.virtualnet.network;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessageException;
+import dk.frv.ais.sentence.SentenceException;
+import dk.frv.ais.sentence.Vdm;
 
 /**
  * Class that represents the virtual AIS network
@@ -41,6 +45,16 @@ public class AisNetwork {
 		for (IAisHandler listener : listeners) {
 			listener.receive(aisMessage);
 		}
+	}
+	
+	public void broadcast(Vdm vdm) throws SentenceException, SixbitException, AisMessageException {
+		// Make AisMessage from Vdm sentences
+		Vdm[] vdms = vdm.createSentences();
+		vdm = new Vdm();
+		for (Vdm partVdm : vdms) {
+			vdm.parse(partVdm.getEncoded());
+		}
+		broadcast(AisMessage.getInstance(vdm));		
 	}
 	
 	/**

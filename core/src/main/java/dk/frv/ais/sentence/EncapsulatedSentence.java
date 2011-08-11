@@ -159,6 +159,16 @@ public abstract class EncapsulatedSentence extends Sentence {
 	public void setBinArray(BinArray binArray) {
 		this.binArray = binArray;
 	}
+	
+	/**
+	 * Set binary part and pad bits from encoder
+	 * @param encoder
+	 * @throws SixbitException
+	 */
+	public void setEncodedMessage(SixbitEncoder encoder) throws SixbitException {
+		sixbitString = encoder.encode();
+		padBits = encoder.getPadBits();
+	}
 
 	/**
 	 * Set the binary encapsulated data from AIS message
