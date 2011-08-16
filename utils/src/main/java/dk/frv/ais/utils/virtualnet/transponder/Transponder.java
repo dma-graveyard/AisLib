@@ -24,7 +24,6 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
-import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.AisMessage6;
