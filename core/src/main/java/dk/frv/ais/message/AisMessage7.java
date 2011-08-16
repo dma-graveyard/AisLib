@@ -49,7 +49,7 @@ public class AisMessage7 extends AisMessage {
 
 	public void parse() throws AisMessageException, SixbitException {
 		BinArray sixbit = vdm.getBinArray();
-		if (sixbit.getLength() < 88 || sixbit.getLength() > 1008) {
+		if (sixbit.getLength() < 72 || sixbit.getLength() > 168) {
 			throw new AisMessageException("Message " + msgId + " wrong length: " + sixbit.getLength());
 		}
 		super.parse(sixbit);
