@@ -14,6 +14,8 @@ import org.junit.Test;
 
 import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage6;
+import dk.frv.ais.message.binary.RouteSuggestionReply;
 import dk.frv.ais.proprietary.GatehouseFactory;
 import dk.frv.ais.proprietary.IProprietaryFactory;
 import dk.frv.ais.proprietary.IProprietarySourceTag;
@@ -153,6 +155,17 @@ public class DecodeTest {
 		int result = abm.parse(sentence);
 		Assert.assertEquals("ABM parse failed", 0, result);
 		Assert.assertEquals("Message ID wrong", 12, abm.getMsgId());
+	}
+	
+	@Test
+	public void decodeRouteReplyAbm() throws SentenceException, SixbitException {
+		String sentence = "!AIABM,1,1,1,990219000,0,6,0200<b1,0*16";
+		Abm abm = new Abm();
+		int result = abm.parse(sentence);
+		Assert.assertEquals("ABM parse failed", 0, result);
+		AisMessage6 msg6 = (AisMessage6)abm.getAisMessage(377085000, 0, 0);
+		RouteSuggestionReply routeSuggestionReply = (RouteSuggestionReply)msg6.getApplicationMessage();
+		Assert.assertEquals("ABM parse failed", 1, routeSuggestionReply.getResponse());
 	}
 	
 	@Test
