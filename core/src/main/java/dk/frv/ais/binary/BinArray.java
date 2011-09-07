@@ -144,6 +144,14 @@ public class BinArray extends BitSet {
 	public int getReadPtr() {
 		return readPtr;
 	}
+	
+	/**
+	 * Returns true if there are more bits to read
+	 * @return
+	 */
+	public boolean hasMoreBits() {
+		return readPtr < length - 1;
+	}
 
 	/**
 	 * Convert sixbit ascii char to integer value
