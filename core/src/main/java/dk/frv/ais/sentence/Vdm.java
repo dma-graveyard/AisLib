@@ -15,7 +15,6 @@
 */
 package dk.frv.ais.sentence;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import dk.frv.ais.binary.SixbitEncoder;
