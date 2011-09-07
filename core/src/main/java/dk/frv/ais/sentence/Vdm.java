@@ -15,6 +15,9 @@
 */
 package dk.frv.ais.sentence;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import dk.frv.ais.binary.SixbitEncoder;
 import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.message.AisMessage;
@@ -31,6 +34,11 @@ public class Vdm extends EncapsulatedSentence {
 	 */
 	private static final int DATA_SENTENCE_MAX_LENGTH = 61;
 
+	/**
+	 * Pattern for recognizing VDM/VDO sentences
+	 */
+	private static final Pattern vdmPattern = Pattern.compile("^.*!..VD(M|O).*$", Pattern.DOTALL);
+	
 	/**
 	 * Determines is this is VDM or VDO
 	 */
@@ -98,8 +106,7 @@ public class Vdm extends EncapsulatedSentence {
 	 * @return
 	 */
 	public static boolean isVdm(String line) {
-		return (line.indexOf("!AIVDM") >= 0 || line.indexOf("!AIVDO") >= 0 || line.indexOf("!BSVDM") >= 0 || line
-				.indexOf("!BSVDO") >= 0);
+		return vdmPattern.matcher(line).matches();
 	}
 
 	/**
