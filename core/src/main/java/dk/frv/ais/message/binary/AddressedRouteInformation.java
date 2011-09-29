@@ -21,11 +21,11 @@ import dk.frv.ais.binary.SixbitException;
 public class AddressedRouteInformation extends RouteInformation {
 	
 	public AddressedRouteInformation() {
-		super(28);
+		super(1, 28);
 	}
 	
 	public AddressedRouteInformation(BinArray binArray) throws SixbitException {
-		super(28, binArray);
+		super(1, 28, binArray);
 	}
 
 	@Override

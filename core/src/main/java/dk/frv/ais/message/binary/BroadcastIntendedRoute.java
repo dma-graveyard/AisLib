@@ -18,20 +18,20 @@ package dk.frv.ais.message.binary;
 import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitException;
 
-public class BroadcastRouteInformation extends RouteInformation {
+public class BroadcastIntendedRoute extends RouteInformation {
 	
-	public BroadcastRouteInformation() {
-		super(1, 27);
+	public BroadcastIntendedRoute() {
+		super(219, 27);
 	}
 	
-	public BroadcastRouteInformation(BinArray binArray) throws SixbitException {
-		super(1, 27, binArray);
+	public BroadcastIntendedRoute(BinArray binArray) throws SixbitException {
+		super(219, 27, binArray);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BroadcastRouteInformation [");
+		builder.append("BroadcastIntendedRoute [");
 		builder.append(super.toString());
 		builder.append("]");
 		return builder.toString();

@@ -54,13 +54,13 @@ public abstract class RouteInformation extends AisApplicationMessage {
 	private int waypointCount; // 5 bits: 0 - 16
 	private List<AisPosition> waypoints; // 55 bits each longitude 28 bit, latitude 27 bit 
 	
-	public RouteInformation(int fi) {
-		super(1, fi);
+	public RouteInformation(int dac, int fi) {
+		super(dac, fi);
 		this.waypoints = new ArrayList<AisPosition>();
 	}
 	
-	public RouteInformation(int fi, BinArray binArray) throws SixbitException {		
-		super(1, fi, binArray);
+	public RouteInformation(int dac, int fi, BinArray binArray) throws SixbitException {		
+		super(dac, fi, binArray);
 	}
 
 	@Override
