@@ -20,12 +20,15 @@ import dk.frv.ais.binary.SixbitException;
 
 public class BroadcastIntendedRoute extends RouteInformation {
 	
+	public static final int DAC = 219;
+	public static final int FI = 33;
+	
 	public BroadcastIntendedRoute() {
-		super(219, 27);
+		super(DAC, FI);
 	}
 	
 	public BroadcastIntendedRoute(BinArray binArray) throws SixbitException {
-		super(219, 27, binArray);
+		super(DAC, FI, binArray);
 	}
 
 	@Override

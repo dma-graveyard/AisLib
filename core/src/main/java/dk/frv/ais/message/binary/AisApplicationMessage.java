@@ -94,7 +94,7 @@ public abstract class AisApplicationMessage {
 		if (binaryMessage.getDac() == 0 && binaryMessage.getFi() == 32) {
 			return new RouteSuggestionReply(binaryMessage.getData());
 		}
-		if (binaryMessage.getDac() == 219 && binaryMessage.getFi() == 27) {
+		if (binaryMessage.getDac() == BroadcastIntendedRoute.DAC && binaryMessage.getFi() == BroadcastIntendedRoute.FI) {
 			return new BroadcastIntendedRoute(binaryMessage.getData());
 		}
 		
