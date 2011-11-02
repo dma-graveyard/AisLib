@@ -154,7 +154,7 @@ private CargoType cargoType;
 		   //only capitalize the first letter - need to remove underscore - maybe
 		   ShipTypeCargo shipTypeCargo = this;
 
-		   return shipTypeCargo.prettyType() + " cargo of: " + shipTypeCargo.prettyCargo();
+		   return shipTypeCargo.prettyType() + " cargo of " + shipTypeCargo.prettyCargo();
 
 		 }
 	
