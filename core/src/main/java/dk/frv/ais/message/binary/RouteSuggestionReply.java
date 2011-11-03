@@ -19,6 +19,9 @@ import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitEncoder;
 import dk.frv.ais.binary.SixbitException;
 
+/**
+ * Route suggestion reply message 
+ */
 public class RouteSuggestionReply extends AisApplicationMessage {
 	
 	private int msgLinkId; // 10 bits: Source specific running number linking birary messages

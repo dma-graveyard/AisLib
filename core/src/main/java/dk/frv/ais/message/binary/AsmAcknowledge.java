@@ -19,6 +19,9 @@ import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitEncoder;
 import dk.frv.ais.binary.SixbitException;
 
+/**
+ * Application acknowledge ASM
+ */
 public class AsmAcknowledge extends AisApplicationMessage {
 
 	/**

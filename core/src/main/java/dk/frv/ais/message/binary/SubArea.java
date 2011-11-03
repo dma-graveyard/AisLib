@@ -15,6 +15,9 @@
 */
 package dk.frv.ais.message.binary;
 
+/**
+ * Subarea class for area notice 
+ */
 public class SubArea {
 
 	private int rawsSAreaShape; // 3 bits

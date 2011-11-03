@@ -23,18 +23,14 @@ import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.message.AisPosition;
 
 /**
- * Abstract base class for route information ASM DAC=1, FI=27,28
+ * ASM for suggesting a route to a vessel
  */
-public abstract class RouteInformation extends RouteMessage {
+public class RouteSuggestion extends RouteExchange {
 	
 	public enum RouteType {
-		NOT_AVAIABLE(0),
 		MANDATORY(1),
 		RECOMMENDED(2),
-		ALTERNATIVE(3),
-		RECOMMENDED_THROUGH_ICE(4),
-		SHIP_ROUTE(5),
-		CANCELLATION(31);
+		ALTERNATIVE(3);
 		
 		private int type;
 		private RouteType(int type) {
@@ -45,24 +41,24 @@ public abstract class RouteInformation extends RouteMessage {
 	    }
 	}
 	
+	public static final int DAC = 219;
+	public static final int FI = 2;
+	
 	private int msgLinkId; // 10 bits: Source specific running number linking binary messages
-	private int senderClassification; // 3 bits: 0=ship, 1=authority
 	private int routeType; // 5 bits
 	
-	public RouteInformation(int dac, int fi) {
-		super(dac, fi);
-		this.waypoints = new ArrayList<AisPosition>();
-	}
-	
-	public RouteInformation(int dac, int fi, BinArray binArray) throws SixbitException {		
-		super(dac, fi, binArray);
+	public RouteSuggestion() {
+		super(DAC, FI);
 	}
 
+	public RouteSuggestion(BinArray binArray) throws SixbitException {
+		super(DAC, FI, binArray);		
+	}
+	
 	@Override
 	public SixbitEncoder getEncoded() {
 		SixbitEncoder encoder = new SixbitEncoder();
 		encoder.addVal(msgLinkId, 10);
-		encoder.addVal(senderClassification, 3);
 		encoder.addVal(routeType, 5);
 		super.encode(encoder);
 		return encoder;
@@ -72,25 +68,16 @@ public abstract class RouteInformation extends RouteMessage {
 	public void parse(BinArray binArray) throws SixbitException {
 		this.waypoints = new ArrayList<AisPosition>();
 		this.msgLinkId = (int)binArray.getVal(10);
-		this.senderClassification = (int)binArray.getVal(3);
 		this.routeType = (int)binArray.getVal(5);
 		super.parse(binArray);
 	}
-
+	
 	public int getMsgLinkId() {
 		return msgLinkId;
 	}
 
 	public void setMsgLinkId(int msgLinkId) {
 		this.msgLinkId = msgLinkId;
-	}
-
-	public int getSenderClassification() {
-		return senderClassification;
-	}
-
-	public void setSenderClassification(int senderClassification) {
-		this.senderClassification = senderClassification;
 	}
 
 	public int getRouteType() {
@@ -100,18 +87,17 @@ public abstract class RouteInformation extends RouteMessage {
 	public void setRouteType(int routeType) {
 		this.routeType = routeType;
 	}
-
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
+		builder.append("RouteSuggestion [");
 		builder.append(super.toString());
 		builder.append(", msgLinkId=");
 		builder.append(msgLinkId);
 		builder.append(", routeType=");
 		builder.append(routeType);
-		builder.append(", senderClassification=");
-		builder.append(senderClassification);
 		return builder.toString();
 	}
-	
+
 }

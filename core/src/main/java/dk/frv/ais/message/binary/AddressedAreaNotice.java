@@ -18,6 +18,9 @@ package dk.frv.ais.message.binary;
 import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitException;
 
+/**
+ * Addressed area notice ASM
+ */
 public class AddressedAreaNotice extends AreaNotice {
 	
 	public AddressedAreaNotice() {

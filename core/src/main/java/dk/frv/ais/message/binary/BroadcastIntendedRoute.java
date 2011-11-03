@@ -18,10 +18,13 @@ package dk.frv.ais.message.binary;
 import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitException;
 
-public class BroadcastIntendedRoute extends RouteInformation {
+/**
+ * ASM for broadcasting a vessels intended route 
+ */
+public class BroadcastIntendedRoute extends RouteExchange {
 	
 	public static final int DAC = 219;
-	public static final int FI = 33;
+	public static final int FI = 1;
 	
 	public BroadcastIntendedRoute() {
 		super(DAC, FI);
@@ -30,7 +33,7 @@ public class BroadcastIntendedRoute extends RouteInformation {
 	public BroadcastIntendedRoute(BinArray binArray) throws SixbitException {
 		super(DAC, FI, binArray);
 	}
-
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -39,5 +42,6 @@ public class BroadcastIntendedRoute extends RouteInformation {
 		builder.append("]");
 		return builder.toString();
 	}
+
 
 }

@@ -19,6 +19,9 @@ import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitEncoder;
 import dk.frv.ais.binary.SixbitException;
 
+/**
+ * Capability ASM
+ */
 public class Capability extends AisApplicationMessage {
 	
 	private int reqDac; // 10 bits

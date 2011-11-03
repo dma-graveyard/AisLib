@@ -22,6 +22,9 @@ import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitEncoder;
 import dk.frv.ais.binary.SixbitException;
 
+/**
+ * Abstract base class for area notice ASM's 
+ */
 public abstract class AreaNotice extends AisApplicationMessage {
 
 	public enum SubAreaType {

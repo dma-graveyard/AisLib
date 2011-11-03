@@ -19,26 +19,16 @@ import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitException;
 
 /**
- * Broadcast area notice ASM
+ * Abstract base class for route information ASM DAC=219, FI=1,2
  */
-public class BroadcastAreaNotice extends AreaNotice {
-	
-	public BroadcastAreaNotice() {
-		super(22);
+public abstract class RouteExchange extends RouteMessage {
+
+	public RouteExchange(int dac, int fi) {
+		super(dac, fi);
+	}
+
+	public RouteExchange(int dac, int fi, BinArray binArray) throws SixbitException {
+		super(dac, fi, binArray);
 	}
 	
-	public BroadcastAreaNotice(BinArray binArray) throws SixbitException {
-		super(22, binArray);
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("BroadcastAreaNotice [");
-		builder.append(super.toString());
-		builder.append("]");
-		return builder.toString();
-	}
-
-
 }
