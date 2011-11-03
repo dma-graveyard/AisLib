@@ -1,9 +1,9 @@
-1.1 (2011-08-05) - Project reorganisation
+2011-11-xx Version 1.3
 
-  * Major project structure reorganisation, no code change
+  * Implemented intended route ASM (DAC=219, FI=1)
+  * Implemented route suggestion ASM (DAC=219, FI=2)
+  * Implemented route suggestion response ASM (DAC=219, FI=3)
+  * Representation of ship type in class ShipTypeCargo
 
-1.1 (2011-06-29) - First version on GitHub
 
-  * Added copyright and license
-  * Code maturation
-   
+ 
