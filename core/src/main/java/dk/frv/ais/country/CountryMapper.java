@@ -44,6 +44,13 @@ public class CountryMapper {
 	private CountryMapper() {
 		Properties props = new Properties();
 		URL url = ClassLoader.getSystemResource("country.properties");
+		if (url == null) {
+			url = Thread.currentThread().getContextClassLoader().getResource("country.properties");
+		}
+		if (url == null) {
+			LOG.error("Could not locate country.properties on classpath");
+			return;
+		}
 		try {
 			props.load(url.openStream());
 		} catch (IOException e) {
