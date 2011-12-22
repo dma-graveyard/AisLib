@@ -9,10 +9,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
 import dk.frv.ais.binary.SixbitException;
+import dk.frv.ais.geo.GeoLocation;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.AisMessage1;
 import dk.frv.ais.message.AisMessage12;
@@ -124,6 +126,34 @@ public class EncodeTest {
 				throw e;
 			}
 		}
+	}
+	
+	@Test
+	public void posEncode() throws SixbitException {
+		// Make and AisMessage1
+		AisMessage1 msg1 = new AisMessage1();
+		msg1.setRepeat(0);
+		msg1.setUserId(265410000);
+		msg1.setNavStatus(0);
+		msg1.setRot(0);
+		msg1.setSog(201);
+		msg1.setPosAcc(1);
+		AisPosition pos = new AisPosition(new GeoLocation(55.0,11.0));
+		msg1.setPos(pos);
+		msg1.setCog(732);
+		msg1.setTrueHeading(76);
+		msg1.setUtcSec(42);
+		msg1.setSpecialManIndicator(0);
+		msg1.setSpare(0);
+		msg1.setRaim(0);
+		msg1.setSyncState(0);
+		msg1.setSlotTimeout(0);
+		msg1.setSubMessage(2230);
+		
+		// Make VDM sentences
+		String[] sentences = Vdm.createSentences(msg1, 1);
+		System.out.println("POS VDM:\n" + StringUtils.join(sentences, "\n"));
+
 	}
 
 	@Test
