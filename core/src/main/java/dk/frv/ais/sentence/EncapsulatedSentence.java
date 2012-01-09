@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.sentence;
 
 import dk.frv.ais.binary.BinArray;
@@ -25,7 +25,7 @@ import dk.frv.ais.message.AisMessage;
  */
 public abstract class EncapsulatedSentence extends Sentence {
 
-	protected int msgId;	
+	protected int msgId;
 	protected int total = 0;
 	protected Integer sequence = null;
 	protected int num = 0;
@@ -75,8 +75,8 @@ public abstract class EncapsulatedSentence extends Sentence {
 			this.sequence = multipartSeq;
 		}
 		if (multipartTotal == 0 || this.total == multipartNum) {
-			this.total    = 0;
-		    this.num      = 0;
+			this.total = 0;
+			this.num = 0;
 			completePacket = true;
 		}
 
@@ -114,6 +114,7 @@ public abstract class EncapsulatedSentence extends Sentence {
 
 	/**
 	 * Get total number of actual sentences
+	 * 
 	 * @return number of sentences
 	 */
 	public int getTotal() {
@@ -126,6 +127,7 @@ public abstract class EncapsulatedSentence extends Sentence {
 
 	/**
 	 * Get sentence number
+	 * 
 	 * @return
 	 */
 	public int getNum() {
@@ -146,6 +148,7 @@ public abstract class EncapsulatedSentence extends Sentence {
 
 	/**
 	 * Get binary encapsulated data
+	 * 
 	 * @return
 	 */
 	public BinArray getBinArray() {
@@ -154,14 +157,16 @@ public abstract class EncapsulatedSentence extends Sentence {
 
 	/**
 	 * Set binary encapsulated data
+	 * 
 	 * @param binArray
 	 */
 	public void setBinArray(BinArray binArray) {
 		this.binArray = binArray;
 	}
-	
+
 	/**
 	 * Set binary part and pad bits from encoder
+	 * 
 	 * @param encoder
 	 * @throws SixbitException
 	 */
@@ -172,6 +177,7 @@ public abstract class EncapsulatedSentence extends Sentence {
 
 	/**
 	 * Set the binary encapsulated data from AIS message
+	 * 
 	 * @param aisMessage
 	 * @throws SixbitException
 	 */
@@ -181,7 +187,7 @@ public abstract class EncapsulatedSentence extends Sentence {
 		sixbitString = encoder.encode();
 		padBits = encoder.getPadBits();
 	}
-	
+
 	public int getPadBits() {
 		return padBits;
 	}
@@ -192,21 +198,22 @@ public abstract class EncapsulatedSentence extends Sentence {
 	public boolean isCompletePacket() {
 		return completePacket;
 	}
-	
+
 	/**
-	 * Set the six bit string of the sentence 
+	 * Set the six bit string of the sentence
+	 * 
 	 * @param sixbitString
 	 */
 	public void setSixbitString(String sixbitString) {
 		this.sixbitString = sixbitString;
 	}
-	
+
 	public void setPadBits(int padBits) {
 		this.padBits = padBits;
 	}
-	
+
 	public String getSixbitString() {
 		return sixbitString;
 	}
-	
+
 }

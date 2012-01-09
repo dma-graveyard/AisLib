@@ -22,7 +22,7 @@ import dk.frv.ais.sentence.Vdm;
  * 
  */
 public class EncodeAreaNoticeTest {
-	//private ArrayList<SubArea> subareas = null;
+	// private ArrayList<SubArea> subareas = null;
 
 	@Test
 	public void areaNoticeEncode() throws SentenceException, SixbitException, AisMessageException {

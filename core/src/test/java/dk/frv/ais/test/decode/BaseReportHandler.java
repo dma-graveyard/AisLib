@@ -32,7 +32,7 @@ public class BaseReportHandler implements IAisHandler {
 			baseStationOrigins.add(sourceTag.getBaseMmsi());
 			LOG.debug("Observed base station origins: " + baseStationOrigins.size());
 		}
-		
+
 		// Only handle base station reports
 		if (aisMessage.getMsgId() != 4)
 			return;
@@ -42,11 +42,11 @@ public class BaseReportHandler implements IAisHandler {
 		baseStations.add(msg4.getUserId());
 		LOG.debug("Observed base stations: " + baseStations.size());
 	}
-	
+
 	public Set<Long> getBaseStations() {
 		return baseStations;
 	}
-	
+
 	public Set<Long> getBaseStationOrigins() {
 		return baseStationOrigins;
 	}

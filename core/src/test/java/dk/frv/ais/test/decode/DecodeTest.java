@@ -26,31 +26,31 @@ import dk.frv.ais.sentence.SentenceException;
 import dk.frv.ais.sentence.Vdm;
 
 public class DecodeTest {
-	
+
 	private static final Logger LOG = Logger.getLogger(DecodeTest.class);
-	
+
 	/**
 	 * Test the AisStreamReader class
 	 * 
 	 * Notice that inputStream could be any InputStream. TCP, file, pipe etc.
 	 * For fail tolerant TCP reading use AisTcpReader
-	 *  
-	 * @throws IOException 
-	 * @throws InterruptedException 
-	 *  
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * 
 	 */
-	//@Test
+	// @Test
 	public void aisStreamReaderTest() throws IOException, InterruptedException {
 		// Make handler instances
 		BaseReportHandler baseHandler = new BaseReportHandler();
 		PositionHandler posHandler = new PositionHandler();
-		
+
 		// Open input stream
 		URL url = ClassLoader.getSystemResource("stream_example.txt");
 		Assert.assertNotNull(url);
 		InputStream inputStream = url.openStream();
 		Assert.assertNotNull(inputStream);
-		
+
 		// Make AIS reader instance
 		AisStreamReader aisReader = new AisStreamReader(inputStream);
 		// Register handlers
@@ -58,54 +58,53 @@ public class DecodeTest {
 		aisReader.registerHandler(posHandler);
 		// Register proprietary handler
 		aisReader.addProprietaryFactory(new GatehouseFactory());
-		
+
 		// Start thread
 		aisReader.start();
-		
+
 		// Wait for thread to finish
 		aisReader.join();
-		
+
 		// There should be 70 base stations in file
 		Assert.assertEquals("Expected 70 base stations", 70, baseHandler.getBaseStations().size());
-		
+
 		Assert.assertEquals("Expected 54 base station origins", 54, baseHandler.getBaseStationOrigins().size());
-		
+
 	}
-	
+
 	/**
-	 * Decode all messages in a file
-	 * Tries to handle proprietary messages
+	 * Decode all messages in a file Tries to handle proprietary messages
 	 * 
-	 * Demonstrates and tests the process of decoding lines into Vdm
-	 * messages, and the decoding into AIS messages
+	 * Demonstrates and tests the process of decoding lines into Vdm messages,
+	 * and the decoding into AIS messages
 	 * 
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@Test
 	public void readLoopTest() throws IOException {
-		// Make a list of proprietary handlers 
+		// Make a list of proprietary handlers
 		List<IProprietaryFactory> proprietaryFactories = new ArrayList<IProprietaryFactory>();
 		proprietaryFactories.add(new GatehouseFactory());
-		
+
 		// Open file
 		URL url = ClassLoader.getSystemResource("stream_example.txt");
 		Assert.assertNotNull(url);
 		BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 		Assert.assertNotNull(in);
 		String line;
-		
+
 		// Prepare message classes
 		AisMessage message;
 		Vdm vdm = new Vdm();
 		IProprietarySourceTag sourceTag = null;
-		
+
 		while ((line = in.readLine()) != null) {
 
 			// Ignore everything else than sentences
 			if (!line.startsWith("$") && !line.startsWith("!")) {
 				continue;
 			}
-			
+
 			// Check if proprietary line
 			if (line.indexOf("$P") >= 0) {
 				// Go through factories to find one that fits
@@ -116,18 +115,18 @@ public class DecodeTest {
 				}
 				continue;
 			}
-			
+
 			// Handle VDM/VDO line
 			try {
 				int result = vdm.parse(line);
 				// LOG.info("result = " + result);
 				if (result == 0) {
 					message = AisMessage.getInstance(vdm);
-					Assert.assertNotNull(message);					
+					Assert.assertNotNull(message);
 					message.setSourceTag(sourceTag);
-					
+
 					// Message ready for handling
-					
+
 				} else if (result == 1) {
 					// Wait for more data
 					continue;
@@ -141,13 +140,13 @@ public class DecodeTest {
 				Assert.assertTrue(false);
 			}
 
-			// Create new VDM 
+			// Create new VDM
 			vdm = new Vdm();
 		}
-		
+
 		in.close();
 	}
-	
+
 	@Test
 	public void decodeAbmTest() throws SentenceException, SixbitException {
 		String sentence = "!AIABM,1,1,0,219997000,0,12,<>j?1GhlLplPD5CDP6B?=P6BF,0*5F";
@@ -156,18 +155,18 @@ public class DecodeTest {
 		Assert.assertEquals("ABM parse failed", 0, result);
 		Assert.assertEquals("Message ID wrong", 12, abm.getMsgId());
 	}
-	
+
 	@Test
 	public void decodeRouteReplyAbm() throws SentenceException, SixbitException {
 		String sentence = "!AIABM,1,1,1,990219000,0,6,0200<b1,0*16";
 		Abm abm = new Abm();
 		int result = abm.parse(sentence);
 		Assert.assertEquals("ABM parse failed", 0, result);
-		AisMessage6 msg6 = (AisMessage6)abm.getAisMessage(377085000, 0, 0);
-		RouteSuggestionReply routeSuggestionReply = (RouteSuggestionReply)msg6.getApplicationMessage();
+		AisMessage6 msg6 = (AisMessage6) abm.getAisMessage(377085000, 0, 0);
+		RouteSuggestionReply routeSuggestionReply = (RouteSuggestionReply) msg6.getApplicationMessage();
 		Assert.assertEquals("ABM parse failed", 1, routeSuggestionReply.getResponse());
 	}
-	
+
 	@Test
 	public void decodeAbkTest() throws SentenceException, SixbitException {
 		String line = "$AIABK,219012679,B,12,1,0*1D";
@@ -178,7 +177,7 @@ public class DecodeTest {
 		Assert.assertEquals(abk.getMsgId(), 12);
 		Assert.assertEquals(abk.getSequence(), 1);
 		Assert.assertEquals(abk.getResult().getRes(), 0);
-		
+
 		line = "$AIABK,,,8,3,3*54";
 		abk = new Abk();
 		abk.parse(line);

@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message;
 
 import java.util.Calendar;
@@ -33,73 +33,57 @@ import dk.frv.ais.sentence.Vdm;
 public class AisMessage5 extends AisStaticCommon {
 
 	/**
-	 * AIS version indicator:
-	 * 0 = station compliant with Recommendation ITU-R M.1371-1
-	 * 1 = station compliant with Recommendation ITU-R M.1371-3
-	 * 2-3 = station compliant with future editions
+	 * AIS version indicator: 0 = station compliant with Recommendation ITU-R
+	 * M.1371-1 1 = station compliant with Recommendation ITU-R M.1371-3 2-3 =
+	 * station compliant with future editions
 	 */
 	int version; // 2 bits
-	
+
 	/**
-	 * IMO number:
-	 * 1-999999999; 0 = not available = default � Not applicable to SAR aircraft
+	 * IMO number: 1-999999999; 0 = not available = default � Not applicable to
+	 * SAR aircraft
 	 */
 	long imo; // 30 bits
-		
+
 	/**
-	 * Type of electronic position fixing device:
-	 * 0 = undefined (default)
-	 * 1 = GPS
-	 * 2 = GLONASS
-	 * 3 = combined GPS/GLONASS
-	 * 4 = Loran-C
-	 * 5 = Chayka
-	 * 6 = integrated navigation system
-	 * 7 = surveyed
-	 * 8 = Galileo,
-	 * 9-14 = not used
-	 * 15 = internal GNSS
+	 * Type of electronic position fixing device: 0 = undefined (default) 1 =
+	 * GPS 2 = GLONASS 3 = combined GPS/GLONASS 4 = Loran-C 5 = Chayka 6 =
+	 * integrated navigation system 7 = surveyed 8 = Galileo, 9-14 = not used 15
+	 * = internal GNSS
 	 */
 	int posType; // 4 bits
-	
+
 	/**
-	 * ETA:
-	 * Estimated time of arrival; MMDDHHMM UTC
-	 * Bits 19-16: month; 1-12; 0 = not available = default
-	 * Bits 15-11: day; 1-31; 0 = not available = default
-	 * Bits 10-6: hour; 0-23; 24 = not available = default
-	 * Bits 5-0: minute; 0-59; 60 = not available = default
-	 * For SAR aircraft, the use of this field may be decided by the
-	 * responsible administration
+	 * ETA: Estimated time of arrival; MMDDHHMM UTC Bits 19-16: month; 1-12; 0 =
+	 * not available = default Bits 15-11: day; 1-31; 0 = not available =
+	 * default Bits 10-6: hour; 0-23; 24 = not available = default Bits 5-0:
+	 * minute; 0-59; 60 = not available = default For SAR aircraft, the use of
+	 * this field may be decided by the responsible administration
 	 */
 	long eta; // 20 bits
-	
+
 	/**
-	 * Maximum present static draught:
-	 * In 1/10 m, 255 = draught 25.5 m or greater, 
-	 * 0 = not available = default in accordance with IMO Resolution A.851
-	 * Not applicable to SAR aircraft, should be set to 0
+	 * Maximum present static draught: In 1/10 m, 255 = draught 25.5 m or
+	 * greater, 0 = not available = default in accordance with IMO Resolution
+	 * A.851 Not applicable to SAR aircraft, should be set to 0
 	 */
-	int draught; // 8 bits 
-	
+	int draught; // 8 bits
+
 	/**
-	 * Ship Destination:
-	 * Maximum 20 characters using 6-bit ASCII;
-	 * @@@@@@@@@@@@@@@@@@@@ = not available
-	 * For SAR aircraft, the use of this field may be decided by the
-	 * responsible administration
+	 * Ship Destination: Maximum 20 characters using 6-bit ASCII;
+	 * 
+	 * @@@@@@@@@@@@@@@@@@@@ = not available For SAR aircraft, the use of this
+	 *                      field may be decided by the responsible
+	 *                      administration
 	 */
 	String dest; // 6x20 (120) bits
-	
+
 	/**
-	 * DTE:
-	 * Data terminal equipment (DTE) ready 
-	 * 0 = available
-	 * 1 = not available = default 
-	 * see � 3.3.1
+	 * DTE: Data terminal equipment (DTE) ready 0 = available 1 = not available
+	 * = default see � 3.3.1
 	 */
 	int dte; // 1 bit : DTE flag
-	
+
 	/**
 	 * Spare. Not used. Should be set to zero. Reserved for future use
 	 */
@@ -182,16 +166,17 @@ public class AisMessage5 extends AisStaticCommon {
 	public long getEta() {
 		return eta;
 	}
-	
+
 	/**
 	 * Get ETA as date object
+	 * 
 	 * @return date
 	 */
 	public Date getEtaDate() {
-		int min = (int)(eta & 0x3F);
-		int hour = (int)(eta & 0x7C0) >> 6;
-		int day = (int)(eta & 0xF800) >> 11;
-		int mon = (int)(eta & 0xF0000) >> 16;
+		int min = (int) (eta & 0x3F);
+		int hour = (int) (eta & 0x7C0) >> 6;
+		int day = (int) (eta & 0xF800) >> 11;
+		int mon = (int) (eta & 0xF0000) >> 16;
 		if (min == 60 || hour == 24 || day == 0 || mon == 0) {
 			return null;
 		}

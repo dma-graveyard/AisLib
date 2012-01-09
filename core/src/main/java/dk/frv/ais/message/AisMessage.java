@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message;
 
 import org.apache.log4j.Logger;
@@ -23,21 +23,23 @@ import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.proprietary.IProprietarySourceTag;
 import dk.frv.ais.sentence.Vdm;
 
-/** 
+/**
  * Abstract base class for all AIS messages
  */
 public abstract class AisMessage {
 
 	private static final Logger LOG = Logger.getLogger(AisMessage.class);
-	
+
 	protected int msgId; // 6 bit: message id
 	protected int repeat; // 2 bit: How many times message has been repeated
 	protected long userId; // 30 bit: MMSI number
 	protected Vdm vdm; // The VDM encapsulating the AIS message
-	protected IProprietarySourceTag sourceTag; // A possible proprietary source tag for the message
-	
+	protected IProprietarySourceTag sourceTag; // A possible proprietary source
+												// tag for the message
+
 	/**
 	 * Constructor given message id
+	 * 
 	 * @param msgId
 	 */
 	public AisMessage(int msgId) {
@@ -46,7 +48,8 @@ public abstract class AisMessage {
 	}
 
 	/**
-	 * Constructor given VDM with AIS message 
+	 * Constructor given VDM with AIS message
+	 * 
 	 * @param vdm
 	 */
 	public AisMessage(Vdm vdm) {
@@ -56,17 +59,19 @@ public abstract class AisMessage {
 
 	/**
 	 * Base parse method to be called by all extending classes
+	 * 
 	 * @param binArray
 	 * @throws AisMessageException
 	 * @throws SixbitException
 	 */
-	protected void parse(BinArray binArray) throws AisMessageException, SixbitException{		
+	protected void parse(BinArray binArray) throws AisMessageException, SixbitException {
 		this.repeat = (int) binArray.getVal(2);
 		this.userId = binArray.getVal(30);
 	}
 
 	/**
 	 * Base encode method to be called by all extending classes
+	 * 
 	 * @return SixbitEncoder
 	 */
 	protected SixbitEncoder encode() {
@@ -76,17 +81,18 @@ public abstract class AisMessage {
 		encoder.addVal(userId, 30);
 		return encoder;
 	}
-	
+
 	/**
-	 * Abstract method to be implemented by all extending classes 
+	 * Abstract method to be implemented by all extending classes
+	 * 
 	 * @return SixbitEncoder
 	 */
 	public abstract SixbitEncoder getEncoded();
-	
+
 	public int getMsgId() {
 		return msgId;
 	}
-	
+
 	public void setMsgId(int msgId) {
 		this.msgId = msgId;
 	}
@@ -94,7 +100,7 @@ public abstract class AisMessage {
 	public int getRepeat() {
 		return repeat;
 	}
-	
+
 	public void setRepeat(int repeat) {
 		this.repeat = repeat;
 	}
@@ -102,7 +108,7 @@ public abstract class AisMessage {
 	public long getUserId() {
 		return userId;
 	}
-	
+
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
@@ -114,9 +120,10 @@ public abstract class AisMessage {
 	public void setSourceTag(IProprietarySourceTag sourceTag) {
 		this.sourceTag = sourceTag;
 	}
-	
+
 	/**
 	 * Get VDM this message was encapsulated in
+	 * 
 	 * @return Vdm
 	 */
 	public Vdm getVdm() {
@@ -124,15 +131,12 @@ public abstract class AisMessage {
 	}
 
 	/**
-	 * Given VDM return the encapsulated AIS message. To determine which message is returned use 
-	 * instanceof operator or getMsgId() before casting.
+	 * Given VDM return the encapsulated AIS message. To determine which message
+	 * is returned use instanceof operator or getMsgId() before casting.
 	 * 
-	 * Example:
-	 * AisMessage aisMessage = AisMessage.getInstance(vmd);
-	 * if (aisMessage instanceof AisPositionMessage) {
-	 *   AisPositionMessage posMessage = (AisPositionMessage)aisMessage;
-	 * }
-	 * ...
+	 * Example: AisMessage aisMessage = AisMessage.getInstance(vmd); if
+	 * (aisMessage instanceof AisPositionMessage) { AisPositionMessage
+	 * posMessage = (AisPositionMessage)aisMessage; } ...
 	 * 
 	 * @param vdm
 	 * @return AisMessage
@@ -223,7 +227,7 @@ public abstract class AisMessage {
 			// TODO implement real message class
 			message = new AisMessageDummy(vdm);
 			break;
-		case 24:			
+		case 24:
 			message = new AisMessage24(vdm);
 			break;
 		default:
@@ -233,14 +237,16 @@ public abstract class AisMessage {
 
 		return message;
 	}
-	
+
 	/**
 	 * Utility to trim text from AIS message
+	 * 
 	 * @param text
 	 * @return
 	 */
 	public static String trimText(String text) {
-		if (text == null) return null;
+		if (text == null)
+			return null;
 		// Remove @
 		int firstAt = text.indexOf("@");
 		if (firstAt >= 0) {
@@ -249,7 +255,7 @@ public abstract class AisMessage {
 		// Trim leading and trailing spaces
 		return text.trim();
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

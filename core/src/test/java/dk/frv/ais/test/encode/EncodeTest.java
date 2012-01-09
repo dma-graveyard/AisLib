@@ -104,9 +104,9 @@ public class EncodeTest {
 				if (res != 0) {
 					continue;
 				}
-				
+
 				AisMessage msg = AisMessage.getInstance(vdm);
-				Assert.assertNotNull(msg);				
+				Assert.assertNotNull(msg);
 
 				if (!(msg instanceof AisPositionMessage) || !(msg instanceof AisMessage4) || !(msg instanceof AisStaticCommon)) {
 					vdm = new Vdm();
@@ -116,7 +116,7 @@ public class EncodeTest {
 				String expected = vdm.getSixbitString();
 				String encoded = msg.getEncoded().encode();
 				Assert.assertTrue(expected.equals(encoded));
-				
+
 				vdm = new Vdm();
 
 			} catch (SixbitException e) {

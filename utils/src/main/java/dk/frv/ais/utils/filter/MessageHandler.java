@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.utils.filter;
 
 import java.io.PrintStream;
@@ -29,142 +29,142 @@ import dk.frv.ais.message.binary.AisApplicationMessage;
 import dk.frv.ais.proprietary.IProprietarySourceTag;
 
 public class MessageHandler implements IAisHandler {
-	
-	private volatile boolean stop = false; 
+
+	private volatile boolean stop = false;
 
 	private PrintStream out;
-    private FilterSettings filter;
-    private boolean dumpParsed = false;
-    private long start = 0;
-    private long end = 0;
-    private long msgCount = 0;
-    private long bytes = 0;
+	private FilterSettings filter;
+	private boolean dumpParsed = false;
+	private long start = 0;
+	private long end = 0;
+	private long msgCount = 0;
+	private long bytes = 0;
 
-    public MessageHandler(FilterSettings filter, PrintStream out) {
-        this.filter = filter;
-        this.out = out;
-    }
+	public MessageHandler(FilterSettings filter, PrintStream out) {
+		this.filter = filter;
+		this.out = out;
+	}
 
 	@Override
-    public void receive(AisMessage aisMessage) {
-    	
-    	end = System.currentTimeMillis();
-    	if (start == 0) {
-    		start = end;
-    	}
-    	
-        Long baseMMSI = -1L;
-        String country = "";
-        String region = "";
+	public void receive(AisMessage aisMessage) {
 
-        // Get source tag properties
-        IProprietarySourceTag tag = aisMessage.getSourceTag();
-        if (tag != null) {
-            baseMMSI = tag.getBaseMmsi();
-            if (tag.getCountry() != null) {
-                country = tag.getCountry().getTwoLetter();
-            }
-            if (tag.getRegion() != null) {
-                region = tag.getRegion();
-            }
-        }
-        
-        // Maybe check for start date
-        if (filter.getStartDate() != null && tag.getTimestamp() != null) {
-        	if (tag.getTimestamp().before(filter.getStartDate())) {
-        		return;
-        	}
-        }
-        
-        // Maybe check for end date
-        if (filter.getEndDate() != null && tag.getTimestamp() != null) {        	
-        	if (tag.getTimestamp().after(filter.getEndDate())) {
-        		System.exit(0);
-        	}
-        }
+		end = System.currentTimeMillis();
+		if (start == 0) {
+			start = end;
+		}
 
-        // Maybe check for base station MMSI
-        if (filter.getBaseStations().size() > 0) {
-            if (!filter.getBaseStations().contains(baseMMSI)) {
-                return;
-            }
-        }
+		Long baseMMSI = -1L;
+		String country = "";
+		String region = "";
 
-        // Maybe check for country
-        if (filter.getCountries().size() > 0) {
-            if (!filter.getCountries().contains(country)) {
-                return;
-            }
-        }
+		// Get source tag properties
+		IProprietarySourceTag tag = aisMessage.getSourceTag();
+		if (tag != null) {
+			baseMMSI = tag.getBaseMmsi();
+			if (tag.getCountry() != null) {
+				country = tag.getCountry().getTwoLetter();
+			}
+			if (tag.getRegion() != null) {
+				region = tag.getRegion();
+			}
+		}
 
-        // Maybe check for region
-        if (filter.getRegions().size() > 0) {
-            if (!filter.getRegions().contains(region)) {
-                return;
-            }
-        }
-        
-        if (stop) {
-        	return;
-        }
-        
-        // Count message
-    	msgCount++;
+		// Maybe check for start date
+		if (filter.getStartDate() != null && tag.getTimestamp() != null) {
+			if (tag.getTimestamp().before(filter.getStartDate())) {
+				return;
+			}
+		}
 
-        // Print tag line
-        if (tag != null) {
-        	bytes += tag.getSentence().length() + 2;
-            out.println(tag.getSentence());            
-            // Maybe print parsed
-            if (dumpParsed) {
-                out.println("+-- " + tag.toString());
-            }
-        }
-        // Print original line
-        String orgLines = aisMessage.getVdm().getOrgLinesJoined();
-        bytes += orgLines.length() + 2;
-        out.println(orgLines);
-        
-        // Maybe print parsed
-        if (dumpParsed) {
-            out.println("+-- " + aisMessage.toString());
-            // Check for binary message
-            if (aisMessage.getMsgId() == 6 || aisMessage.getMsgId() == 8) {
-                AisBinaryMessage binaryMessage = (AisBinaryMessage) aisMessage;
-                try {
-                    AisApplicationMessage appMessage = binaryMessage.getApplicationMessage();
-                    out.println("+-- " + appMessage);
-                } catch (SixbitException e) {
-                }
+		// Maybe check for end date
+		if (filter.getEndDate() != null && tag.getTimestamp() != null) {
+			if (tag.getTimestamp().after(filter.getEndDate())) {
+				System.exit(0);
+			}
+		}
 
-            }
-        }
+		// Maybe check for base station MMSI
+		if (filter.getBaseStations().size() > 0) {
+			if (!filter.getBaseStations().contains(baseMMSI)) {
+				return;
+			}
+		}
 
-    }
+		// Maybe check for country
+		if (filter.getCountries().size() > 0) {
+			if (!filter.getCountries().contains(country)) {
+				return;
+			}
+		}
 
-    public void setDumpParsed(boolean dumpParsed) {
-        this.dumpParsed = dumpParsed;
-    }
-    
-    public void setStop(boolean stop) {
+		// Maybe check for region
+		if (filter.getRegions().size() > 0) {
+			if (!filter.getRegions().contains(region)) {
+				return;
+			}
+		}
+
+		if (stop) {
+			return;
+		}
+
+		// Count message
+		msgCount++;
+
+		// Print tag line
+		if (tag != null) {
+			bytes += tag.getSentence().length() + 2;
+			out.println(tag.getSentence());
+			// Maybe print parsed
+			if (dumpParsed) {
+				out.println("+-- " + tag.toString());
+			}
+		}
+		// Print original line
+		String orgLines = aisMessage.getVdm().getOrgLinesJoined();
+		bytes += orgLines.length() + 2;
+		out.println(orgLines);
+
+		// Maybe print parsed
+		if (dumpParsed) {
+			out.println("+-- " + aisMessage.toString());
+			// Check for binary message
+			if (aisMessage.getMsgId() == 6 || aisMessage.getMsgId() == 8) {
+				AisBinaryMessage binaryMessage = (AisBinaryMessage) aisMessage;
+				try {
+					AisApplicationMessage appMessage = binaryMessage.getApplicationMessage();
+					out.println("+-- " + appMessage);
+				} catch (SixbitException e) {
+				}
+
+			}
+		}
+
+	}
+
+	public void setDumpParsed(boolean dumpParsed) {
+		this.dumpParsed = dumpParsed;
+	}
+
+	public void setStop(boolean stop) {
 		this.stop = stop;
 	}
-    
-    public void printStats() {
-    	long elapsed = end - start;
-    	double elapsedSecs = (double)elapsed / 1000.0;
-    	double msgPerMin = (double)msgCount / ( elapsedSecs / 60.0);
-    	long kbytes = bytes / 1000;
-    	
-    	DateFormat df = new SimpleDateFormat("HH:mm:ss");
-    	df.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-    	System.out.println("\n");
-    	System.out.println("Elapsed  : " + df.format(new Date(elapsed)));
-    	System.out.println("Messages : " + msgCount);    	
-    	System.out.println("Msg/min  : " + String.format("%.2f", msgPerMin));
-    	System.out.println("KBytes   : " + kbytes);
-    	System.out.println("KB/s     : " + String.format("%.2f", (double)kbytes / elapsedSecs));
-    	System.out.println("Kbps     : " + String.format("%.2f", ((double)kbytes * 8.0) / elapsedSecs));
-    }
+
+	public void printStats() {
+		long elapsed = end - start;
+		double elapsedSecs = (double) elapsed / 1000.0;
+		double msgPerMin = (double) msgCount / (elapsedSecs / 60.0);
+		long kbytes = bytes / 1000;
+
+		DateFormat df = new SimpleDateFormat("HH:mm:ss");
+		df.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+		System.out.println("\n");
+		System.out.println("Elapsed  : " + df.format(new Date(elapsed)));
+		System.out.println("Messages : " + msgCount);
+		System.out.println("Msg/min  : " + String.format("%.2f", msgPerMin));
+		System.out.println("KBytes   : " + kbytes);
+		System.out.println("KB/s     : " + String.format("%.2f", (double) kbytes / elapsedSecs));
+		System.out.println("Kbps     : " + String.format("%.2f", ((double) kbytes * 8.0) / elapsedSecs));
+	}
 
 }

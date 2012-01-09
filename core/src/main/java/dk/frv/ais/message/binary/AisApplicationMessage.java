@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message.binary;
 
 import dk.frv.ais.binary.BinArray;
@@ -24,49 +24,53 @@ import dk.frv.ais.message.AisBinaryMessage;
  * Abstract base class for application specific messages
  */
 public abstract class AisApplicationMessage {
-	
+
 	protected int dac; // 10 bits: Designated area code (DAC)
 	protected int fi; // 6 bits: Function identifier
-	
+
 	public AisApplicationMessage(int dac, int fi) {
 		this.dac = dac;
 		this.fi = fi;
 	}
-	
+
 	/**
 	 * Constructor that also parses six bit string
+	 * 
 	 * @param binArray
 	 * @throws BitExhaustionException
-	 * @throws SixbitException 
+	 * @throws SixbitException
 	 */
 	public AisApplicationMessage(int dac, int fi, BinArray binArray) throws SixbitException {
 		this.dac = dac;
 		this.fi = fi;
 		parse(binArray);
 	}
-	
+
 	/**
 	 * Method to parse given six bit string
-	 *  
+	 * 
 	 * @param binArray
 	 * @throws BitExhaustionException
 	 */
 	public abstract void parse(BinArray binArray) throws SixbitException;
-	
+
 	/**
 	 * Method that returns six bit encoding of message
+	 * 
 	 * @return
 	 */
 	public abstract SixbitEncoder getEncoded();
-	
+
 	/**
-	 * Method to get application specific message from an {@link AisBinaryMessage}. When
-	 * implementing new application specific messages they should be added here.
+	 * Method to get application specific message from an
+	 * {@link AisBinaryMessage}. When implementing new application specific
+	 * messages they should be added here.
 	 * 
-	 * @param binary message
+	 * @param binary
+	 *            message
 	 * @return application specific message or null if not implemented
-	 * @throws SixbitException 
-	 * @throws BitExhaustionException 
+	 * @throws SixbitException
+	 * @throws BitExhaustionException
 	 */
 	public static AisApplicationMessage getInstance(AisBinaryMessage binaryMessage) throws SixbitException {
 		if (binaryMessage.getFi() == 3) {
@@ -90,7 +94,7 @@ public abstract class AisApplicationMessage {
 		}
 		if (binaryMessage.getDac() == 1 && binaryMessage.getFi() == 28) {
 			return new AddressedRouteInformation(binaryMessage.getData());
-		}		
+		}
 		if (binaryMessage.getDac() == 0 && binaryMessage.getFi() == 32) {
 			return new RouteSuggestionReply(binaryMessage.getData());
 		}
@@ -100,18 +104,18 @@ public abstract class AisApplicationMessage {
 		if (binaryMessage.getDac() == RouteSuggestion.DAC && binaryMessage.getFi() == RouteSuggestion.FI) {
 			return new RouteSuggestion(binaryMessage.getData());
 		}
-		
+
 		return new UnknownAsm(binaryMessage.getDac(), binaryMessage.getFi());
 	}
-	
+
 	public int getDac() {
 		return dac;
 	}
-	
+
 	public int getFi() {
 		return fi;
 	}
-	
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("dac=");
@@ -120,6 +124,5 @@ public abstract class AisApplicationMessage {
 		builder.append(fi);
 		return builder.toString();
 	}
-
 
 }

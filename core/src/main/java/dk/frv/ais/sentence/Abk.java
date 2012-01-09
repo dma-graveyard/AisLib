@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.sentence;
 
 import dk.frv.ais.binary.SixbitException;
@@ -28,12 +28,15 @@ public class Abk extends ParametricSentence {
 	public enum Result {
 		ADDRESSED_SUCCESS(0), ADDRESSED_NO_ACKNOWLEDGE(1), COULD_NOT_BROADCAST(2), BROADCAST_SENT(3), LATE_RECEPTION(4);
 		private int res;
+
 		private Result(int res) {
 			this.res = res;
 		}
+
 		public int getRes() {
 			return res;
 		}
+
 		public static Result parseInt(int res) {
 			switch (res) {
 			case 0:
@@ -69,7 +72,8 @@ public class Abk extends ParametricSentence {
 	}
 
 	/**
-	 * Parse method. Will always return 0 as sentence will always be in a single line.
+	 * Parse method. Will always return 0 as sentence will always be in a single
+	 * line.
 	 */
 	@Override
 	public int parse(String line) throws SentenceException, SixbitException {
@@ -100,7 +104,7 @@ public class Abk extends ParametricSentence {
 
 		// Message id
 		msgId = Sentence.parseInt(fields[3]);
-		
+
 		// Sequence
 		sequence = Sentence.parseInt(fields[4]);
 
@@ -127,6 +131,7 @@ public class Abk extends ParametricSentence {
 
 	/**
 	 * Returns if result indicates success
+	 * 
 	 * @return success
 	 */
 	public boolean isSuccess() {

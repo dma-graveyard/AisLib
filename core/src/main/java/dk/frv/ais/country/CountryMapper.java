@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.country;
 
 import java.io.IOException;
@@ -24,11 +24,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
- * Singleton class that allows to a country by ISO 3166 code or MID
- * (Maritime Identification Digits)
+ * Singleton class that allows to a country by ISO 3166 code or MID (Maritime
+ * Identification Digits)
  * 
  * See {@link http://en.wikipedia.org/wiki/Maritime_Mobile_Service_Identity}
- *
+ * 
  * The mappings are defined in the country.properties file.
  */
 public class CountryMapper {
@@ -76,6 +76,7 @@ public class CountryMapper {
 
 	/**
 	 * Get MidCountry by ISO 3166 two or three letter code
+	 * 
 	 * @param code
 	 * @return
 	 */
@@ -88,6 +89,7 @@ public class CountryMapper {
 
 	/**
 	 * Get MidCountry by MID
+	 * 
 	 * @param mid
 	 * @return
 	 */

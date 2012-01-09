@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.proprietary;
 
 import java.text.ParseException;
@@ -26,7 +26,8 @@ import dk.frv.ais.country.CountryMapper;
 import dk.frv.ais.country.MidCountry;
 
 /**
- * An implementation of the IProprietaryFactory for Gatehouse proprietary sentences
+ * An implementation of the IProprietaryFactory for Gatehouse proprietary
+ * sentences
  */
 public class GatehouseFactory implements IProprietaryFactory {
 
@@ -73,7 +74,7 @@ public class GatehouseFactory implements IProprietaryFactory {
 			LOG.error("Error in Gatehouse proprietary message: wrong date: " + dateStr + " line: " + line);
 			return null;
 		}
-		
+
 		MidCountry midCountry = null;
 		if (country.length() > 0) {
 			midCountry = CountryMapper.getInstance().getByMid(Integer.parseInt(country));

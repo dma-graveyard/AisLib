@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.utils.filter;
 
 import java.text.ParseException;
@@ -85,10 +85,10 @@ public class FilterSettings {
 			regions.add(region);
 		}
 	}
-	
+
 	public void parseStartAndEnd(String start, String end) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH:mm");
-		if (start != null) {			
+		if (start != null) {
 			try {
 				startDate = dateFormat.parse(start);
 			} catch (ParseException e) {
@@ -103,19 +103,19 @@ public class FilterSettings {
 			}
 		}
 	}
-	
+
 	public Date getStartDate() {
 		return startDate;
 	}
-	
+
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	
+
 	public Date getEndDate() {
 		return endDate;
 	}
-	
+
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}

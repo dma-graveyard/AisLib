@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message;
 
 import dk.frv.ais.binary.BinArray;
@@ -24,14 +24,14 @@ import dk.frv.ais.sentence.Vdm;
  * AIS message 6
  * 
  * Addressed binary message as defined by ITU-R M.1371-4
- *
+ * 
  */
 public class AisMessage6 extends AisBinaryMessage {
 
-	private int seqNum = 0 ; // 2 bits: sequence number
+	private int seqNum = 0; // 2 bits: sequence number
 	private long destination; // 30 bits: Destination MMSI
 	private int retransmit = 0; // 1 bit: Retransmit flag
-	
+
 	public AisMessage6() {
 		super(6);
 	}
@@ -55,14 +55,14 @@ public class AisMessage6 extends AisBinaryMessage {
 		this.fi = (int) sixbit.getVal(6);
 		this.data = sixbit;
 	}
-	
+
 	@Override
 	public SixbitEncoder getEncoded() {
 		SixbitEncoder encoder = super.encode();
 		encoder.addVal(seqNum, 2);
 		encoder.addVal(destination, 30);
 		encoder.addVal(retransmit, 1);
-		encoder.addVal(spare, 1);		
+		encoder.addVal(spare, 1);
 		encoder.addVal(dac, 10);
 		encoder.addVal(fi, 6);
 		encoder.append(appMessage.getEncoded());
@@ -96,7 +96,7 @@ public class AisMessage6 extends AisBinaryMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(super.toString());		
+		builder.append(super.toString());
 		builder.append(", destination=");
 		builder.append(destination);
 		builder.append(", retransmit=");
@@ -106,5 +106,5 @@ public class AisMessage6 extends AisBinaryMessage {
 		builder.append("]");
 		return builder.toString();
 	}
-	
+
 }

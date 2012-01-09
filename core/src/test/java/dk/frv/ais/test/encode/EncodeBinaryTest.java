@@ -15,18 +15,19 @@ import dk.frv.ais.sentence.SentenceException;
 import dk.frv.ais.sentence.Vdm;
 
 public class EncodeBinaryTest {
-		
+
 	/**
 	 * Test encoding a binary AIS message
-	 * @throws BitExhaustionException 
-	 * @throws IllegalArgumentException 
+	 * 
+	 * @throws BitExhaustionException
+	 * @throws IllegalArgumentException
 	 */
 	@Test
 	public void binaryEncode() throws IllegalArgumentException, SixbitException {
 		Capability capability = new Capability();
 		capability.setReqDac(296);
 		SixbitEncoder encoder = capability.getEncoded();
-		
+
 		int destination = 992199007;
 
 		AisMessage6 msg6 = new AisMessage6();
@@ -41,7 +42,7 @@ public class EncodeBinaryTest {
 		System.out.println("expected: " + expected);
 		System.out.println("pad bits: " + encoder.getPadBits());
 		Assert.assertTrue(encoded.equals(expected));
-		
+
 		Vdm vdm = new Vdm();
 		vdm.setTalker("AI");
 		vdm.setTotal(1);
@@ -49,8 +50,8 @@ public class EncodeBinaryTest {
 		vdm.setMessageData(msg6);
 		vdm.setSequence(0);
 		encoded = vdm.getEncoded();
-		System.out.println("VDM encoded: " + encoded);	
-		
+		System.out.println("VDM encoded: " + encoded);
+
 		Abm abm = new Abm();
 		abm.setTalker("AI");
 		abm.setTotal(1);
@@ -60,9 +61,9 @@ public class EncodeBinaryTest {
 		abm.setDestination(destination);
 		encoded = abm.getEncoded();
 		System.out.println("ABM encoded: " + encoded);
-		
+
 	}
-	
+
 	@Test
 	public void encodeAsmAcknowledge() throws SixbitException, SentenceException, AisMessageException {
 		AsmAcknowledge acknowledge = new AsmAcknowledge();
@@ -71,27 +72,24 @@ public class EncodeBinaryTest {
 		acknowledge.setAiAvailable(1);
 		acknowledge.setAiResponse(1);
 		acknowledge.setTextSequenceNum(800);
-		
-		
+
 		AisMessage6 msg6 = new AisMessage6();
 		msg6.setDestination(992199013);
 		msg6.setAppMessage(acknowledge);
 		msg6.setRetransmit(0);
-		
+
 		String[] sentences = Vdm.createSentences(msg6, 0);
 		Assert.assertEquals(1, sentences.length);
 		Vdm vdm = new Vdm();
 		int res = vdm.parse(sentences[0]);
 		Assert.assertEquals(0, res);
-		msg6 = (AisMessage6)AisMessage.getInstance(vdm);
-		acknowledge = (AsmAcknowledge)msg6.getApplicationMessage();
+		msg6 = (AisMessage6) AisMessage.getInstance(vdm);
+		acknowledge = (AsmAcknowledge) msg6.getApplicationMessage();
 		Assert.assertEquals(28, acknowledge.getReceivedFi());
 		Assert.assertEquals(2, acknowledge.getReceivedDac());
 		Assert.assertEquals(1, acknowledge.getAiAvailable());
 		Assert.assertEquals(1, acknowledge.getAiResponse());
-		Assert.assertEquals(800, acknowledge.getTextSequenceNum());		
+		Assert.assertEquals(800, acknowledge.getTextSequenceNum());
 	}
-	
-
 
 }
