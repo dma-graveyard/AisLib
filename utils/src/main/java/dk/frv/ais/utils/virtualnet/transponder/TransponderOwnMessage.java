@@ -26,7 +26,7 @@ public class TransponderOwnMessage extends Thread {
 
 	private static final Logger LOG = Logger.getLogger(TransponderOwnMessage.class);
 
-	private static final long MESSAGE_MAX_AGE = 10 * 60 * 1000; // 10 minutes
+	private static final long MESSAGE_MAX_AGE = 20 * 60 * 1000; // 20 minutes
 
 	private long lastReceived = 0L;
 	private byte[] ownMessage = null;
