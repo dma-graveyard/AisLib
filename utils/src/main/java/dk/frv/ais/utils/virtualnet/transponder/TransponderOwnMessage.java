@@ -74,7 +74,6 @@ public class TransponderOwnMessage extends Thread {
 	}
 
 	public synchronized void setOwnMessage(byte[] ownMessage) {
-		System.out.println("Setting own message");
 		this.ownMessage = ownMessage;
 		this.lastReceived = System.currentTimeMillis();
 	}
