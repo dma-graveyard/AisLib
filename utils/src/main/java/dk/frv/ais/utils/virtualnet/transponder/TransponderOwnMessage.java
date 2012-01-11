@@ -67,7 +67,7 @@ public class TransponderOwnMessage extends Thread {
 		}
 		// Send if not too old
 		if (elapsed < MESSAGE_MAX_AGE) {
-			LOG.info("Re-sending own message");
+			LOG.info("Re-sending own message for " + transponder.getMmsi());
 			transponder.sendData(ownMessage);
 		}
 
