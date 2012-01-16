@@ -15,7 +15,11 @@
  */
 package dk.frv.ais.message;
 
-public class ShipTypeCargo {
+import java.io.Serializable;
+
+public class ShipTypeCargo implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	public enum ShipType {
 		UNDEFINED, WIG, PILOT, SAR, TUG, PORT_TENDER, ANTI_POLLUTION, LAW_ENFORCEMENT, MEDICAL, FISHING, TOWING, TOWING_LONG_WIDE, DREDGING, DIVING, MILITARY, SAILING, PLEASURE, HSC, PASSENGER, CARGO, TANKER, SHIPS_ACCORDING_TO_RR, UNKNOWN
 	}
