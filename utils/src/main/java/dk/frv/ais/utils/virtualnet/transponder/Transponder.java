@@ -181,7 +181,7 @@ public class Transponder extends Thread implements IAisHandler {
 		sendAbk();
 	}
 
-	private void sendAbk() {
+	private synchronized void sendAbk() {
 		String encoded = abk.getEncoded() + "\r\n";
 		LOG.info("Sending ABK: " + encoded);
 		if (out != null) {
@@ -230,11 +230,12 @@ public class Transponder extends Thread implements IAisHandler {
 
 	}
 
-	public void sendData(byte[] bytes) {
+	public synchronized void sendData(byte[] bytes) {
 		// Send to writer thread
 		if (out != null) {
 			try {
 				out.write(bytes);
+				out.flush();
 			} catch (IOException e) {
 				LOG.info("Failed to write to transponder client");
 				try {

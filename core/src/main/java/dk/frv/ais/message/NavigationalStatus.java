@@ -15,7 +15,12 @@
  */
 package dk.frv.ais.message;
 
-public class NavigationalStatus {
+import java.io.Serializable;
+
+public class NavigationalStatus implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	public enum NavStatus {
 		UNDEFINED, UNDER_WAY_USING_ENGINE, AT_ANCHOR, NOT_UNDER_COMMAND, RESTRICTED_MANOEUVRABILITY, CONSTRAINED_BY_HER_DRAUGHT, MOORED, AGROUND, ENGAGED_IN_FISHING, UNDER_WAY, SAILING, AIS_SART
 	}

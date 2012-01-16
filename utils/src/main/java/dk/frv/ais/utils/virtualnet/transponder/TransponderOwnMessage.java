@@ -28,7 +28,7 @@ public class TransponderOwnMessage extends Thread {
 
 	private static final long MESSAGE_MAX_AGE = 20 * 60 * 1000; // 20 minutes
 
-	private long lastReceived = 0L;
+	private Long lastReceived = 0L;
 	private byte[] ownMessage = null;
 	private int forceInterval = 0;
 	private Transponder transponder = null;
@@ -54,13 +54,17 @@ public class TransponderOwnMessage extends Thread {
 		}
 	}
 
-	private synchronized void reSend() {
-		if (ownMessage == null) {
-			return;
+	private void reSend() {
+		long elapsed = 0L;
+
+		synchronized (lastReceived) {
+			if (ownMessage == null) {
+				return;
+			}
+			// Determine last send elapsed
+			elapsed = System.currentTimeMillis() - lastReceived;
 		}
 
-		// Determine last send elapsed
-		long elapsed = System.currentTimeMillis() - lastReceived;
 		// Do not send if already sent with interval
 		if (elapsed < forceInterval * 1000) {
 			return;
@@ -73,9 +77,12 @@ public class TransponderOwnMessage extends Thread {
 
 	}
 
-	public synchronized void setOwnMessage(byte[] ownMessage) {
-		this.ownMessage = ownMessage;
-		this.lastReceived = System.currentTimeMillis();
+	public void setOwnMessage(byte[] ownMessage) {
+		synchronized (lastReceived) {			
+			LOG.debug("Setting own message for " + transponder.getMmsi());
+			this.ownMessage = ownMessage;
+			this.lastReceived = System.currentTimeMillis();
+		}
 	}
 
 	public void setForceInterval(int forceInterval) {

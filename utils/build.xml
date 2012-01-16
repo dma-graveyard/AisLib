@@ -71,7 +71,7 @@
 	</target>
 	
 	<target name="utils" depends="jar">
-		<copy todir="${basedir}" overwrite="true">
+		<copy todir="${basedir}" overwrite="false">
 			<fileset dir="${src.main.resources.dir}" />			
 		</copy>
 		<copy file="${build.dir}/${build.final.name}" todir="${lib.dir}" overwrite="true"/>
