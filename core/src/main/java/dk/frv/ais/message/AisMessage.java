@@ -255,6 +255,19 @@ public abstract class AisMessage {
 		// Trim leading and trailing spaces
 		return text.trim();
 	}
+	
+	/**
+	 * Method for reassembling original message appending possible proprietary source tag
+	 * @return
+	 */
+	public String reassemble() {
+		StringBuilder buf = new StringBuilder();
+		if (getSourceTag() != null && getSourceTag().getSentence() != null) {
+			buf.append(getSourceTag().getSentence() + "\r\n");
+		}
+		buf.append(getVdm().getOrgLinesJoined());
+		return buf.toString();
+	}
 
 	@Override
 	public String toString() {
