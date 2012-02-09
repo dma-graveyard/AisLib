@@ -1,3 +1,7 @@
+2012-02-09 Version 1.4
+  * Virtual NET simulator tool
+  * Various improvements
+
 2011-11-03 Version 1.3
 
   * Implemented intended route ASM (DAC=219, FI=1)
