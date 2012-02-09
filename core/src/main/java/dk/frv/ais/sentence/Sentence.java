@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.sentence;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public abstract class Sentence {
 	protected String prefix;
 	protected List<String> orgLines = new ArrayList<String>();
 	protected LinkedList<String> encodedFields;
-	
+
 	public Sentence() {
 		talker = "AI";
 	}
@@ -47,7 +47,7 @@ public abstract class Sentence {
 	 * 
 	 * The method handles assembly and extraction of the 6-bit data from
 	 * sentences. The sentence is expected to be in order.
-	 *  
+	 * 
 	 * It will return an error if received line is out of order or from a new
 	 * sequence before the previous one is finished.
 	 * 
@@ -55,13 +55,14 @@ public abstract class Sentence {
 	 * @return 0 Complete packet - 1 Incomplete packet
 	 */
 	public abstract int parse(String line) throws SentenceException, SixbitException;
-	
+
 	/**
 	 * Get an encoded sentence
+	 * 
 	 * @return
 	 */
 	public abstract String getEncoded();
-		
+
 	/**
 	 * Basic parse of line into sentence parts
 	 * 
@@ -70,9 +71,9 @@ public abstract class Sentence {
 	 */
 	protected void baseParse(String line) throws SentenceException {
 		this.orgLines.add(line);
-		
+
 		// Split into prefix and sentence
-		splitLine(line);		
+		splitLine(line);
 		// Calculate checksum
 		calculateChecksum();
 		// Check checksum
@@ -91,7 +92,7 @@ public abstract class Sentence {
 		talker = fields[0].substring(1, 3);
 		formatter = fields[0].substring(3, 6);
 	}
-	
+
 	/**
 	 * The top most encode method
 	 */
@@ -99,15 +100,16 @@ public abstract class Sentence {
 		encodedFields = new LinkedList<String>();
 		encodedFields.add("!" + talker + formatter);
 	}
-	
+
 	/**
 	 * Method to finalize the encoding and return sentence
+	 * 
 	 * @return final sentence
 	 */
 	protected String finalEncode() {
 		// Join fields
 		String encoded = StringUtils.join(encodedFields.iterator(), ',');
-		
+
 		this.msg = encoded;
 		try {
 			calculateChecksum();
@@ -115,14 +117,17 @@ public abstract class Sentence {
 			e.printStackTrace();
 		}
 		msgChecksum = Integer.toString(checksum, 16).toUpperCase();
-		if (msgChecksum.length() < 2) msgChecksum = "0" + msgChecksum;
+		if (msgChecksum.length() < 2)
+			msgChecksum = "0" + msgChecksum;
 		encoded += "*" + msgChecksum;
-		
+
 		return encoded;
 	}
 
 	/**
-	 * Split line into prefix and message part. Message will start at first ! or $ character
+	 * Split line into prefix and message part. Message will start at first ! or
+	 * $ character
+	 * 
 	 * @param line
 	 * @throws SentenceException
 	 */
@@ -142,14 +147,16 @@ public abstract class Sentence {
 
 	/**
 	 * Calculate checksum of this sentence
+	 * 
 	 * @throws SentenceException
 	 */
 	private void calculateChecksum() throws SentenceException {
 		this.checksum = getChecksum(msg);
 	}
-	
+
 	/**
 	 * Calculate checksum of sentence
+	 * 
 	 * @param sentence
 	 * @return
 	 * @throws SentenceException
@@ -169,6 +176,7 @@ public abstract class Sentence {
 
 	/**
 	 * Check calculated checksum with checksum indicated in sentence line
+	 * 
 	 * @throws SentenceException
 	 */
 	private void checkChecksum() throws SentenceException {
@@ -200,10 +208,9 @@ public abstract class Sentence {
 			throw new SentenceException("Invalid integer field: " + str);
 		}
 	}
-	
+
 	/**
-	 * Determine if a line seems to contain a sentence
-	 * There should be a ! or $
+	 * Determine if a line seems to contain a sentence There should be a ! or $
 	 * 
 	 * @param line
 	 * @return
@@ -221,47 +228,52 @@ public abstract class Sentence {
 	public static boolean hasProprietarySentence(String line) {
 		return (line.indexOf("$P") >= 0);
 	}
-	
+
 	/**
 	 * Get original lines for this sentence
+	 * 
 	 * @return
 	 */
 	public List<String> getOrgLines() {
 		return orgLines;
 	}
-	
+
 	/**
 	 * Get original lines joined by carrige return line feed
+	 * 
 	 * @return
 	 */
 	public String getOrgLinesJoined() {
 		return StringUtils.join(orgLines.iterator(), "\r\n");
 	}
-	
+
 	/**
 	 * Set talker
+	 * 
 	 * @param talker
 	 */
 	public void setTalker(String talker) {
 		this.talker = talker;
 	}
-	
+
 	/**
 	 * Convert any sentence to new sentence with !<talker><formatter>,....,
+	 * 
 	 * @param sentence
 	 * @param talker
 	 * @param formatter
 	 * @return
-	 * @throws SentenceException 
+	 * @throws SentenceException
 	 */
 	public static String convert(String sentence, String talker, String formatter) throws SentenceException {
 		String newSentence = sentence.trim();
 		newSentence = newSentence.substring(6, newSentence.length() - 3);
-		newSentence = "!" + talker + formatter + newSentence;		
+		newSentence = "!" + talker + formatter + newSentence;
 		String checksum = Integer.toString(getChecksum(newSentence), 16).toUpperCase();
-		if (checksum.length() < 2) checksum = "0" + checksum;
+		if (checksum.length() < 2)
+			checksum = "0" + checksum;
 		newSentence += "*" + checksum;
 		return newSentence;
 	}
-	
+
 }

@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.reader;
 
 import java.io.BufferedReader;
@@ -35,8 +35,8 @@ import dk.frv.ais.sentence.Sentence;
 import dk.frv.ais.sentence.Vdm;
 
 /**
- * Abstract base for classes reading from an AIS source. 
- * Also handles ABK and a number of proprietary sentences. 
+ * Abstract base for classes reading from an AIS source. Also handles ABK and a
+ * number of proprietary sentences.
  */
 public abstract class AisReader extends Thread {
 
@@ -47,17 +47,18 @@ public abstract class AisReader extends Thread {
 	};
 
 	/**
-	 * List receivers for the AIS messages 
+	 * List receivers for the AIS messages
 	 */
 	protected List<IAisHandler> handlers = new ArrayList<IAisHandler>();
-	
+
 	/**
-	 * List of proprietary factories 
+	 * List of proprietary factories
 	 */
 	protected List<IProprietaryFactory> proprietaryFactories = new ArrayList<IProprietaryFactory>();
-	
+
 	/**
-	 * A pool of sending threads. A sending thread handles the sending and reception of ABK message.
+	 * A pool of sending threads. A sending thread handles the sending and
+	 * reception of ABK message.
 	 */
 	protected SendThreadPool sendThreadPool = new SendThreadPool();
 
@@ -65,14 +66,15 @@ public abstract class AisReader extends Thread {
 	 * A received VDO/VDM
 	 */
 	protected Vdm vdm = new Vdm();
-	
+
 	/**
-	 * Possible proprietary source tag for current VDM 
+	 * Possible proprietary source tag for current VDM
 	 */
 	protected IProprietarySourceTag sourceTag = null;
-	
+
 	/**
 	 * Add an AIS handler
+	 * 
 	 * @param aisHandler
 	 */
 	public void registerHandler(IAisHandler aisHandler) {
@@ -81,6 +83,7 @@ public abstract class AisReader extends Thread {
 
 	/**
 	 * Add a proprietary factory
+	 * 
 	 * @param proprietaryFactory
 	 */
 	public void addProprietaryFactory(IProprietaryFactory proprietaryFactory) {
@@ -97,7 +100,8 @@ public abstract class AisReader extends Thread {
 	public abstract void send(SendRequest sendRequest, ISendResultListener resultListener) throws SendException;
 
 	/**
-	 * Get the status of the connection, either connected or disconnected 
+	 * Get the status of the connection, either connected or disconnected
+	 * 
 	 * @return status
 	 */
 	public abstract Status getStatus();
@@ -136,11 +140,12 @@ public abstract class AisReader extends Thread {
 
 	/**
 	 * Handle a received line
+	 * 
 	 * @param line
 	 */
 	protected void handleLine(String line) {
-		AisMessage message;		
-		
+		AisMessage message;
+
 		// LOG.info("line: " + line);
 
 		// Ignore everything else than sentences
@@ -201,7 +206,9 @@ public abstract class AisReader extends Thread {
 
 	/**
 	 * The main read loop
-	 * @param stream the generic input stream to read from
+	 * 
+	 * @param stream
+	 *            the generic input stream to read from
 	 * @throws IOException
 	 */
 	protected void readLoop(InputStream stream) throws IOException {
@@ -211,7 +218,7 @@ public abstract class AisReader extends Thread {
 		while ((line = reader.readLine()) != null) {
 			handleLine(line);
 		}
-		
+
 	}
 
 }

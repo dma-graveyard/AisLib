@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message;
 
 import dk.frv.ais.binary.BinArray;
@@ -24,20 +24,27 @@ import dk.frv.ais.sentence.Vdm;
  * AIS message 7
  * 
  * Binary acknowledge message as defined by ITU-R M.1371-4
- *
+ * 
  */
 public class AisMessage7 extends AisMessage {
 
-	private int spare = 0 ; // 2 bits: Not used. Should be set to zero. Reserved for future use
+	private int spare = 0; // 2 bits: Not used. Should be set to zero. Reserved
+							// for future use
 	private long dest1; // 30 bits: MMSI number of first destination of this ACK
-	private int seq1; // 2 bits: Sequence number of message to be acknowledged; 0-3
-	private long dest2; // 30 bits: MMSI number of second destination of this ACK
-	private int seq2; // 2 bits: Sequence number of message to be acknowledged; 0-3
+	private int seq1; // 2 bits: Sequence number of message to be acknowledged;
+						// 0-3
+	private long dest2; // 30 bits: MMSI number of second destination of this
+						// ACK
+	private int seq2; // 2 bits: Sequence number of message to be acknowledged;
+						// 0-3
 	private long dest3; // 30 bits: MMSI number of third destination of this ACK
-	private int seq3; // 2 bits: Sequence number of message to be acknowledged; 0-3
-	private long dest4; // 30 bits: MMSI number of fourth destination of this ACK
-	private int seq4; // 2 bits: Sequence number of message to be acknowledged; 0-3
-	
+	private int seq3; // 2 bits: Sequence number of message to be acknowledged;
+						// 0-3
+	private long dest4; // 30 bits: MMSI number of fourth destination of this
+						// ACK
+	private int seq4; // 2 bits: Sequence number of message to be acknowledged;
+						// 0-3
+
 	public AisMessage7() {
 		super(7);
 	}
@@ -56,17 +63,20 @@ public class AisMessage7 extends AisMessage {
 		this.spare = (int) sixbit.getVal(2);
 		this.dest1 = sixbit.getVal(30);
 		this.seq1 = (int) sixbit.getVal(2);
-		if (!sixbit.hasMoreBits()) return;
+		if (!sixbit.hasMoreBits())
+			return;
 		this.dest2 = sixbit.getVal(30);
 		this.seq2 = (int) sixbit.getVal(2);
-		if (!sixbit.hasMoreBits()) return;
+		if (!sixbit.hasMoreBits())
+			return;
 		this.dest3 = sixbit.getVal(30);
 		this.seq3 = (int) sixbit.getVal(2);
-		if (!sixbit.hasMoreBits()) return;
+		if (!sixbit.hasMoreBits())
+			return;
 		this.dest4 = sixbit.getVal(30);
 		this.seq4 = (int) sixbit.getVal(2);
 	}
-	
+
 	@Override
 	public SixbitEncoder getEncoded() {
 		SixbitEncoder encoder = super.encode();
@@ -157,7 +167,7 @@ public class AisMessage7 extends AisMessage {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(super.toString());		
+		builder.append(super.toString());
 		builder.append(", spare=");
 		builder.append(spare);
 		builder.append(", dest1=");

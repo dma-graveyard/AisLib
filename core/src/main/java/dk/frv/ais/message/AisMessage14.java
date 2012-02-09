@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message;
 
 import dk.frv.ais.binary.BinArray;
@@ -27,7 +27,7 @@ public class AisMessage14 extends AisMessage {
 
 	private int spare; // 2 bit: Spare
 	private String message; // Max 968 bit - 161 characters
-	
+
 	public AisMessage14() {
 		super(14);
 	}
@@ -46,7 +46,7 @@ public class AisMessage14 extends AisMessage {
 		this.spare = (int) binArray.getVal(2);
 		this.message = binArray.getString((binArray.getLength() - 40) / 6);
 	}
-	
+
 	@Override
 	public SixbitEncoder getEncoded() {
 		SixbitEncoder encoder = super.encode();
@@ -54,16 +54,17 @@ public class AisMessage14 extends AisMessage {
 		encoder.addString(message);
 		return encoder;
 	}
-	
+
 	/**
 	 * Set message from a binary array
+	 * 
 	 * @param binArray
 	 * @throws SixbitException
 	 */
 	public void setMessage(BinArray binArray) throws SixbitException {
 		message = binArray.getString(binArray.length() / 6);
 	}
-	
+
 	public int getSpare() {
 		return spare;
 	}
@@ -83,5 +84,5 @@ public class AisMessage14 extends AisMessage {
 		builder.append("]");
 		return builder.toString();
 	}
-	
+
 }

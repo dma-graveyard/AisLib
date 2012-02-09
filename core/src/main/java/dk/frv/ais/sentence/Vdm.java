@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.sentence;
 
 import java.util.regex.Pattern;
@@ -27,9 +27,9 @@ import dk.frv.ais.message.AisMessage;
 public class Vdm extends EncapsulatedSentence {
 
 	/**
-	 * The number of six bit characters to allow in each message part.
-	 * Number based on the maximum size of resulting sentence part which
-	 * may not exceed 80 characters.
+	 * The number of six bit characters to allow in each message part. Number
+	 * based on the maximum size of resulting sentence part which may not exceed
+	 * 80 characters.
 	 */
 	private static final int DATA_SENTENCE_MAX_LENGTH = 61;
 
@@ -37,7 +37,7 @@ public class Vdm extends EncapsulatedSentence {
 	 * Pattern for recognizing VDM/VDO sentences
 	 */
 	private static final Pattern vdmPattern = Pattern.compile("^.*!..VD(M|O).*$", Pattern.DOTALL);
-	
+
 	/**
 	 * Determines is this is VDM or VDO
 	 */
@@ -48,8 +48,7 @@ public class Vdm extends EncapsulatedSentence {
 	}
 
 	/**
-	 * Implemented parse method.
-	 * See {@link EncapsulatedSentence}
+	 * Implemented parse method. See {@link EncapsulatedSentence}
 	 */
 	@Override
 	public int parse(String line) throws SentenceException, SixbitException {
@@ -101,6 +100,7 @@ public class Vdm extends EncapsulatedSentence {
 
 	/**
 	 * Determine if line seems to contain VDM or VDO sentence
+	 * 
 	 * @param line
 	 * @return
 	 */
@@ -110,6 +110,7 @@ public class Vdm extends EncapsulatedSentence {
 
 	/**
 	 * Determine if VDO instead of VDM
+	 * 
 	 * @return
 	 */
 	public boolean isOwnMessage() {
@@ -174,10 +175,11 @@ public class Vdm extends EncapsulatedSentence {
 
 		return sentences;
 	}
-	
+
 	/**
-	 *  Split single VDM into possible multiple VDM's to adherne to the
-	 *  80 character max 
+	 * Split single VDM into possible multiple VDM's to adherne to the 80
+	 * character max
+	 * 
 	 * @return
 	 */
 	public Vdm[] createSentences() {
@@ -185,7 +187,7 @@ public class Vdm extends EncapsulatedSentence {
 		if (sequence == null) {
 			sequence = 0;
 		}
-		
+
 		int sentenceCount = (sixbitString.length() / DATA_SENTENCE_MAX_LENGTH) + 1;
 		Vdm[] sentences = new Vdm[sentenceCount];
 		// Split the string
@@ -213,8 +215,8 @@ public class Vdm extends EncapsulatedSentence {
 
 			sentences[i] = vdm;
 		}
-		
-		return sentences;		
+
+		return sentences;
 	}
 
 }

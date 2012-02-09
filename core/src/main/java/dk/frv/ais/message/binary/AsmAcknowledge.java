@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message.binary;
 
 import dk.frv.ais.binary.BinArray;
@@ -35,23 +35,17 @@ public class AsmAcknowledge extends AisApplicationMessage {
 	 */
 	private int receivedFi; // 6 bits
 	/**
-	 * Sequence number in the message being acknowledged as
-	 * properly received
-     * 0 = default (no sequence number)
-     * 1-2 047 = sequence number of received FM
+	 * Sequence number in the message being acknowledged as properly received 0
+	 * = default (no sequence number) 1-2 047 = sequence number of received FM
 	 */
 	private int textSequenceNum; // 11 bits
 	/**
-	 * 0 = received but AI not available
-	 * 1 = AI available
+	 * 0 = received but AI not available 1 = AI available
 	 */
 	private int aiAvailable; // 1 bit
 	/**
-	 * 0 = unable to respond
-	 * 1 = reception acknowledged
-	 * 2 = response to follow
-	 * 3 = able to respond but currently inhibited
-	 * 4-7 = spare for future use
+	 * 0 = unable to respond 1 = reception acknowledged 2 = response to follow 3
+	 * = able to respond but currently inhibited 4-7 = spare for future use
 	 */
 	private int aiResponse; // 3 bits
 	private int spare; // 49 bits
@@ -63,16 +57,15 @@ public class AsmAcknowledge extends AisApplicationMessage {
 	public AsmAcknowledge(BinArray binArray) throws SixbitException {
 		super(1, 5, binArray);
 	}
-	
+
 	@Override
 	public void parse(BinArray binArray) throws SixbitException {
-		this.receivedDac = (int)binArray.getVal(10);
-		this.receivedFi = (int)binArray.getVal(6);
-		this.textSequenceNum = (int)binArray.getVal(11);
-		this.aiAvailable = (int)binArray.getVal(1);
-		this.aiResponse = (int)binArray.getVal(3);
+		this.receivedDac = (int) binArray.getVal(10);
+		this.receivedFi = (int) binArray.getVal(6);
+		this.textSequenceNum = (int) binArray.getVal(11);
+		this.aiAvailable = (int) binArray.getVal(1);
+		this.aiResponse = (int) binArray.getVal(3);
 	}
-
 
 	@Override
 	public SixbitEncoder getEncoded() {
@@ -85,19 +78,19 @@ public class AsmAcknowledge extends AisApplicationMessage {
 		encoder.addVal(0, 49);
 		return encoder;
 	}
-	
+
 	public int getReceivedDac() {
 		return receivedDac;
 	}
-	
+
 	public void setReceivedDac(int receivedDac) {
 		this.receivedDac = receivedDac;
 	}
-	
+
 	public int getReceivedFi() {
 		return receivedFi;
 	}
-	
+
 	public void setReceivedFi(int receivedFi) {
 		this.receivedFi = receivedFi;
 	}
@@ -153,7 +146,5 @@ public class AsmAcknowledge extends AisApplicationMessage {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
+
 }

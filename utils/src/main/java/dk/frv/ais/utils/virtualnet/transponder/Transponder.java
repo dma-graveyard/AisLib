@@ -28,6 +28,7 @@ import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.AisMessage6;
 import dk.frv.ais.message.AisMessage7;
+import dk.frv.ais.message.AisPositionMessage;
 import dk.frv.ais.sentence.Abk;
 import dk.frv.ais.sentence.Abm;
 import dk.frv.ais.sentence.Bbm;
@@ -52,14 +53,19 @@ public class Transponder extends Thread implements IAisHandler {
 	private Abm abm = new Abm();
 	private Bbm bbm = new Bbm();
 	private Abk abk = new Abk();
+	private TransponderOwnMessage ownMessage;
 
 	public Transponder(AisNetwork aisNetwork) {
 		this.aisNetwork = aisNetwork;
+		ownMessage = new TransponderOwnMessage(this);
 		aisNetwork.addListener(this);
 	}
 
 	@Override
 	public void run() {
+		// Start own message re-sender
+		ownMessage.start();
+
 		// Open server socket
 		try {
 			serverSocket = new ServerSocket(tcpPort);
@@ -113,7 +119,7 @@ public class Transponder extends Thread implements IAisHandler {
 				if (Bbm.isBbm(line)) {
 					int result = bbm.parse(line);
 					if (result == 0) {
-						handleBbm();						
+						handleBbm();
 					} else {
 						continue;
 					}
@@ -175,7 +181,7 @@ public class Transponder extends Thread implements IAisHandler {
 		sendAbk();
 	}
 
-	private void sendAbk() {
+	private synchronized void sendAbk() {
 		String encoded = abk.getEncoded() + "\r\n";
 		LOG.info("Sending ABK: " + encoded);
 		if (out != null) {
@@ -206,19 +212,30 @@ public class Transponder extends Thread implements IAisHandler {
 				return;
 			}
 		}
-		
+
 		// Maybe the transponder needs to send a binary acknowledge
 		if (aisMessage.getMsgId() == 6) {
-			AisMessage6 msg6 = (AisMessage6)aisMessage;
+			AisMessage6 msg6 = (AisMessage6) aisMessage;
 			if (msg6.getDestination() == mmsi) {
 				sendBinAck(msg6);
 			}
 		}
 
+		byte[] message = buf.toString().getBytes();
+		// Save own (position) message
+		if (own && aisMessage instanceof AisPositionMessage) {
+			ownMessage.setOwnMessage(message);
+		}
+		sendData(message);
+
+	}
+
+	public synchronized void sendData(byte[] bytes) {
 		// Send to writer thread
 		if (out != null) {
 			try {
-				out.write(buf.toString().getBytes());
+				out.write(bytes);
+				out.flush();
 			} catch (IOException e) {
 				LOG.info("Failed to write to transponder client");
 				try {
@@ -228,7 +245,6 @@ public class Transponder extends Thread implements IAisHandler {
 				}
 			}
 		}
-
 	}
 
 	private void sendBinAck(AisMessage6 msg6) {
@@ -269,6 +285,10 @@ public class Transponder extends Thread implements IAisHandler {
 
 	public void setAisNetwork(AisNetwork aisNetwork) {
 		this.aisNetwork = aisNetwork;
+	}
+
+	public void setForceOwnInterval(int forceOwnInterval) {
+		ownMessage.setForceInterval(forceOwnInterval);
 	}
 
 }

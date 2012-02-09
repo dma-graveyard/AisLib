@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.reader;
 
 import java.util.HashMap;
@@ -23,22 +23,23 @@ import org.apache.log4j.Logger;
 import dk.frv.ais.sentence.Abk;
 
 /**
- * Class to hold a pool of send threads. 
+ * Class to hold a pool of send threads.
  */
 public class SendThreadPool {
-	
+
 	private static final Logger LOG = Logger.getLogger(SendThreadPool.class);
 
 	/**
 	 * The pool is implemented as a hash map
 	 */
 	private Map<String, SendThread> threads = new HashMap<String, SendThread>();
-	
-	public SendThreadPool() {		
+
+	public SendThreadPool() {
 	}
-	
+
 	/**
 	 * Create a new send thread and register in pool
+	 * 
 	 * @param sendRequest
 	 * @param resultListener
 	 * @return
@@ -46,20 +47,21 @@ public class SendThreadPool {
 	public synchronized SendThread createSendThread(SendRequest sendRequest, ISendResultListener resultListener) {
 		// Generate hash value that uniquely defines message
 		String hash = sendHash(sendRequest);
-		
+
 		// Create thread
 		LOG.debug("Creating SendThread with hash: " + hash);
 		SendThread sendThread = new SendThread(hash, resultListener, this);
-		
-		// Add thread to threads		
-		threads.put(hash, sendThread);	
+
+		// Add thread to threads
+		threads.put(hash, sendThread);
 		LOG.debug("Threads in pool: " + threads.size());
-		
+
 		return sendThread;
 	}
-	
+
 	/**
 	 * Handle received ABK
+	 * 
 	 * @param abk
 	 */
 	public synchronized void handleAbk(Abk abk) {
@@ -74,15 +76,16 @@ public class SendThreadPool {
 		// Set Abk for thread
 		sendThread.setAbk(abk);
 	}
-	
+
 	public synchronized void removeThread(String hash) {
 		LOG.debug("Removing thread with hash: " + hash);
 		threads.remove(hash);
 		LOG.debug("Threads in pool: " + threads.size());
 	}
-	
+
 	/**
 	 * Static method to generate hash from send request
+	 * 
 	 * @param sendRequest
 	 * @return seq+msg id+dest
 	 */
@@ -92,9 +95,10 @@ public class SendThreadPool {
 		int destination = sendRequest.getDestination();
 		return String.format("%d+%d+%d", seq, msgId, destination);
 	}
-	
+
 	/**
 	 * Static method to generate hash from ABK
+	 * 
 	 * @param abk
 	 * @return seq+msg id+dest
 	 */

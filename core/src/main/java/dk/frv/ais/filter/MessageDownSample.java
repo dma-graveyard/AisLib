@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.filter;
 
 import java.util.HashMap;
@@ -24,13 +24,13 @@ import dk.frv.ais.message.AisMessage;
  * A down sampling filter.
  * 
  * For position reports 1,2,3,4 and 18, only one message will be forwarded
- * within the give sampling rate. E.g. one message per minute. 
+ * within the give sampling rate. E.g. one message per minute.
  * 
- * For static reports 5 and 24 the same apply. But it is handled separately
- * from the position reports.
+ * For static reports 5 and 24 the same apply. But it is handled separately from
+ * the position reports.
  * 
  * All remaining message types are passed through without down sampling.
- *
+ * 
  */
 public class MessageDownSample extends GenericFilter {
 
@@ -38,31 +38,32 @@ public class MessageDownSample extends GenericFilter {
 	 * Sample rate in seconds
 	 */
 	private long samplingRate = 60;
-	
+
 	/**
 	 * Map from MMSI to last time a pos report was received
 	 */
 	private Map<Long, Long> posReceived = new HashMap<Long, Long>();
-	
+
 	/**
 	 * Map from MMSI to last time a static report was received
 	 */
 	private Map<Long, Long> statReceived = new HashMap<Long, Long>();
-	
+
 	/**
 	 * Empty contructor
 	 */
 	public MessageDownSample() {
 	}
-	
+
 	/**
 	 * Constructor given sampling rate
+	 * 
 	 * @param samplingRate
 	 */
 	public MessageDownSample(long samplingRate) {
 		this.samplingRate = samplingRate;
 	}
-	
+
 	/**
 	 * Receive message from source or other filter
 	 */
@@ -73,9 +74,9 @@ public class MessageDownSample extends GenericFilter {
 			sendMessage(aisMessage);
 			return;
 		}
-		
+
 		boolean posReport = false;
-		
+
 		switch (aisMessage.getMsgId()) {
 		case 1:
 		case 2:
@@ -94,47 +95,49 @@ public class MessageDownSample extends GenericFilter {
 			sendMessage(aisMessage);
 			return;
 		}
-		
-		Long now = System.currentTimeMillis();		
+
+		Long now = System.currentTimeMillis();
 		Long lastReceived = null;
-		
+
 		// Get last received
 		Map<Long, Long> receiveSet = (posReport) ? posReceived : statReceived;
 		lastReceived = receiveSet.get(aisMessage.getUserId());
 		if (lastReceived == null) {
 			lastReceived = 0L;
 		}
-		
+
 		// Elapsed in seconds
-		double elapsed = (double)(now - lastReceived) / 1000.0;
-		
+		double elapsed = (double) (now - lastReceived) / 1000.0;
+
 		// Sample message
 		if (elapsed < samplingRate) {
 			return;
 		}
-		
+
 		// Mark new received time
 		receiveSet.put(aisMessage.getUserId(), now);
-		
+
 		// Send message
 		sendMessage(aisMessage);
 
 	}
-	
+
 	/**
 	 * Get sampling rate in seconds
+	 * 
 	 * @return
 	 */
 	public synchronized long getSamplingRate() {
 		return samplingRate;
 	}
-	
+
 	/**
 	 * Set sampling rate in seconds
+	 * 
 	 * @param samplingRate
 	 */
 	public synchronized void setSamplingRate(long samplingRate) {
 		this.samplingRate = samplingRate;
 	}
-	
+
 }

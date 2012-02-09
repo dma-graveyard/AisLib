@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message;
 
 import java.util.Calendar;
@@ -25,7 +25,7 @@ import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.sentence.Vdm;
 
 /**
- * AIS message 4  
+ * AIS message 4
  * 
  * Base station report as defined by ITU-R M.1371-4
  * 
@@ -41,7 +41,8 @@ public class AisMessage4 extends AisMessage {
 	private int posAcc; // 1 bit : AisPosition Accuracy
 	private AisPosition pos; // : Lat/Long 1/100000 minute
 	private int posType; // 4 bits : Type of position fixing device
-	private int transmissionControl; // 1 bit : Transmission control for longrange broadcast message
+	private int transmissionControl; // 1 bit : Transmission control for
+										// longrange broadcast message
 	private int spare; // 9 bits : Spare
 	private int raim; // 1 bit : RAIM flag
 	private int syncState; // 2 bits : SOTDMA sync state
@@ -80,7 +81,7 @@ public class AisMessage4 extends AisMessage {
 		this.slotTimeout = (int) binArray.getVal(3);
 		this.subMessage = (int) binArray.getVal(14);
 	}
-	
+
 	@Override
 	public SixbitEncoder getEncoded() {
 		SixbitEncoder encoder = super.encode();
@@ -106,7 +107,7 @@ public class AisMessage4 extends AisMessage {
 	public int getUtcYear() {
 		return utcYear;
 	}
-	
+
 	public void setUtcYear(int utcYear) {
 		this.utcYear = utcYear;
 	}
@@ -114,7 +115,7 @@ public class AisMessage4 extends AisMessage {
 	public int getUtcMonth() {
 		return utcMonth;
 	}
-	
+
 	public void setUtcMonth(int utcMonth) {
 		this.utcMonth = utcMonth;
 	}
@@ -122,7 +123,7 @@ public class AisMessage4 extends AisMessage {
 	public int getUtcDay() {
 		return utcDay;
 	}
-	
+
 	public void setUtcDay(int utcDay) {
 		this.utcDay = utcDay;
 	}
@@ -130,15 +131,15 @@ public class AisMessage4 extends AisMessage {
 	public int getUtcHour() {
 		return utcHour;
 	}
-	
+
 	public void setUtcHour(int utcHour) {
 		this.utcHour = utcHour;
 	}
 
 	public int getUtcMinute() {
-		return utcMinute;	
+		return utcMinute;
 	}
-	
+
 	public void setUtcMinute(int utcMinute) {
 		this.utcMinute = utcMinute;
 	}
@@ -146,11 +147,11 @@ public class AisMessage4 extends AisMessage {
 	public int getUtcSecond() {
 		return utcSecond;
 	}
-	
+
 	public void setUtcSecond(int utcSecond) {
 		this.utcSecond = utcSecond;
 	}
-	
+
 	public Date getDate() {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, getUtcYear());
@@ -166,7 +167,7 @@ public class AisMessage4 extends AisMessage {
 	public int getPosAcc() {
 		return posAcc;
 	}
-	
+
 	public void setPosAcc(int posAcc) {
 		this.posAcc = posAcc;
 	}
@@ -174,7 +175,7 @@ public class AisMessage4 extends AisMessage {
 	public AisPosition getPos() {
 		return pos;
 	}
-	
+
 	public void setPos(AisPosition pos) {
 		this.pos = pos;
 	}
@@ -182,11 +183,11 @@ public class AisMessage4 extends AisMessage {
 	public int getPosType() {
 		return posType;
 	}
-	
+
 	public void setPosType(int posType) {
 		this.posType = posType;
 	}
-	
+
 	/**
 	 * @return the transmissionControl
 	 */
@@ -195,16 +196,17 @@ public class AisMessage4 extends AisMessage {
 	}
 
 	/**
-	 * @param transmissionControl the transmissionControl to set
+	 * @param transmissionControl
+	 *            the transmissionControl to set
 	 */
 	public void setTransmissionControl(int transmissionControl) {
 		this.transmissionControl = transmissionControl;
 	}
-	
+
 	public int getSpare() {
 		return spare;
 	}
-	
+
 	public void setSpare(int spare) {
 		this.spare = spare;
 	}
@@ -212,7 +214,7 @@ public class AisMessage4 extends AisMessage {
 	public int getRaim() {
 		return raim;
 	}
-	
+
 	public void setRaim(int raim) {
 		this.raim = raim;
 	}
@@ -220,7 +222,7 @@ public class AisMessage4 extends AisMessage {
 	public int getSyncState() {
 		return syncState;
 	}
-	
+
 	public void setSyncState(int syncState) {
 		this.syncState = syncState;
 	}
@@ -228,7 +230,7 @@ public class AisMessage4 extends AisMessage {
 	public int getSlotTimeout() {
 		return slotTimeout;
 	}
-	
+
 	public void setSlotTimeout(int slotTimeout) {
 		this.slotTimeout = slotTimeout;
 	}
@@ -236,7 +238,7 @@ public class AisMessage4 extends AisMessage {
 	public int getSubMessage() {
 		return subMessage;
 	}
-	
+
 	public void setSubMessage(int subMessage) {
 		this.subMessage = subMessage;
 	}
@@ -277,5 +279,5 @@ public class AisMessage4 extends AisMessage {
 		builder.append(getDate());
 		builder.append("]");
 		return builder.toString();
-	}	
+	}
 }

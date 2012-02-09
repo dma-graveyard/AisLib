@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message.binary;
 
 import dk.frv.ais.binary.BinArray;
@@ -21,14 +21,14 @@ import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.message.AisPosition;
 
 public class MetHyd11 extends AisApplicationMessage {
-	
+
 	private AisPosition pos;
 	private int utcDay; // 5 bits : UTC Day
 	private int utcHour; // 5 bits : UTC Hour
 	private int utcMinute; // 6 bits : UTC Minute
 	private int wind; // 7 bits
 	private int gust; // 7 bits
-	private int windDirection; //9 bits
+	private int windDirection; // 9 bits
 	private int gustDirection; // 9 bits
 	private int airTemp; // 11 bits
 	private int humidity; // 7 bits
@@ -58,7 +58,7 @@ public class MetHyd11 extends AisApplicationMessage {
 	private int salinity; // 9 bits
 	private int ice; // 2 bits
 	private int spare; // 6 bits;
-	
+
 	public MetHyd11(BinArray binArray) throws SixbitException {
 		super(1, 11, binArray);
 	}
@@ -67,48 +67,48 @@ public class MetHyd11 extends AisApplicationMessage {
 	public SixbitEncoder getEncoded() {
 		return null;
 	}
-	
+
 	@Override
-	public void parse(BinArray binArray) throws SixbitException {		
+	public void parse(BinArray binArray) throws SixbitException {
 		pos = new AisPosition();
 		pos.set2524();
 		this.pos.setRawLatitude(binArray.getVal(24));
-		this.pos.setRawLongitude(binArray.getVal(25));		
-		this.utcDay = (int)binArray.getVal(5);
-		this.utcHour = (int)binArray.getVal(5);
-		this.utcMinute = (int)binArray.getVal(6);
-		this.wind = (int)binArray.getVal(7);
-		this.gust = (int)binArray.getVal(7);
-		this.windDirection = (int)binArray.getVal(9);
-		this.gustDirection = (int)binArray.getVal(9);
-		this.airTemp = (int)binArray.getVal(11);
-		this.humidity = (int)binArray.getVal(7);
-		this.dewPoint = (int)binArray.getVal(10);
-		this.airPressure = (int)binArray.getVal(9);
-		this.airPressureTend = (int)binArray.getVal(2);
-		this.horzVisibility = (int)binArray.getVal(8);
-		this.waterLevel = (int)binArray.getVal(9);
-		this.waterLevelTrend = (int)binArray.getVal(2);
-		this.surfaceCurrent = (int)binArray.getVal(8);
-		this.surfaceCurrentDir = (int)binArray.getVal(9);
-		this.secondCurrent = (int)binArray.getVal(8);
-		this.secondCurrentDir = (int)binArray.getVal(9);
-		this.secondCurrentLevel = (int)binArray.getVal(5);
-		this.thirdCurrent = (int)binArray.getVal(8);
-		this.thirdCurrentDir = (int)binArray.getVal(9);
-		this.thirdCurrentLevel = (int)binArray.getVal(5);
-		this.waveHeight = (int)binArray.getVal(8);
-		this.wavePeriod = (int)binArray.getVal(6);
-		this.waveDirection = (int)binArray.getVal(9);
-		this.swellHeight = (int)binArray.getVal(8);
-		this.swellPeriod = (int)binArray.getVal(6);
-		this.swellDirection = (int)binArray.getVal(9);
-		this.seaState = (int)binArray.getVal(4);
-		this.waterTemp = (int)binArray.getVal(10);
-		this.precipitation = (int)binArray.getVal(3);
-		this.salinity = (int)binArray.getVal(9);
-		this.ice = (int)binArray.getVal(2);
-		this.spare = (int)binArray.getVal(6);
+		this.pos.setRawLongitude(binArray.getVal(25));
+		this.utcDay = (int) binArray.getVal(5);
+		this.utcHour = (int) binArray.getVal(5);
+		this.utcMinute = (int) binArray.getVal(6);
+		this.wind = (int) binArray.getVal(7);
+		this.gust = (int) binArray.getVal(7);
+		this.windDirection = (int) binArray.getVal(9);
+		this.gustDirection = (int) binArray.getVal(9);
+		this.airTemp = (int) binArray.getVal(11);
+		this.humidity = (int) binArray.getVal(7);
+		this.dewPoint = (int) binArray.getVal(10);
+		this.airPressure = (int) binArray.getVal(9);
+		this.airPressureTend = (int) binArray.getVal(2);
+		this.horzVisibility = (int) binArray.getVal(8);
+		this.waterLevel = (int) binArray.getVal(9);
+		this.waterLevelTrend = (int) binArray.getVal(2);
+		this.surfaceCurrent = (int) binArray.getVal(8);
+		this.surfaceCurrentDir = (int) binArray.getVal(9);
+		this.secondCurrent = (int) binArray.getVal(8);
+		this.secondCurrentDir = (int) binArray.getVal(9);
+		this.secondCurrentLevel = (int) binArray.getVal(5);
+		this.thirdCurrent = (int) binArray.getVal(8);
+		this.thirdCurrentDir = (int) binArray.getVal(9);
+		this.thirdCurrentLevel = (int) binArray.getVal(5);
+		this.waveHeight = (int) binArray.getVal(8);
+		this.wavePeriod = (int) binArray.getVal(6);
+		this.waveDirection = (int) binArray.getVal(9);
+		this.swellHeight = (int) binArray.getVal(8);
+		this.swellPeriod = (int) binArray.getVal(6);
+		this.swellDirection = (int) binArray.getVal(9);
+		this.seaState = (int) binArray.getVal(4);
+		this.waterTemp = (int) binArray.getVal(10);
+		this.precipitation = (int) binArray.getVal(3);
+		this.salinity = (int) binArray.getVal(9);
+		this.ice = (int) binArray.getVal(2);
+		this.spare = (int) binArray.getVal(6);
 	}
 
 	public AisPosition getPos() {

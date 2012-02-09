@@ -1,18 +1,18 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.message;
 
 import dk.frv.ais.geo.GeoLocation;
@@ -28,51 +28,56 @@ public class AisPosition {
 
 	private long rawLongitude;
 	private long rawLatitude;
-	
+
 	private int bitCorrection = 0;
-	private double resolution = 10000.0; 
-	
+	private double resolution = 10000.0;
+
 	public AisPosition() {
 	}
-	
+
 	/**
-	 * Constructor given raw latitude and raw longitude as received in
-	 * AIS message
+	 * Constructor given raw latitude and raw longitude as received in AIS
+	 * message
+	 * 
 	 * @param rawLatitude
 	 * @param rawLongitude
 	 */
-	public AisPosition(long rawLatitude, long rawLongitude) {		
+	public AisPosition(long rawLatitude, long rawLongitude) {
 		this.rawLatitude = rawLatitude;
 		this.rawLongitude = rawLongitude;
 	}
-	
+
 	/**
 	 * Constructor given a GeoLocation
+	 * 
 	 * @param location
 	 */
 	public AisPosition(GeoLocation location) {
 		setLatitude(Math.round(location.getLatitude() * resolution * 60.0));
-		setLongitude(Math.round(location.getLongitude() * resolution * 60.0));	
+		setLongitude(Math.round(location.getLongitude() * resolution * 60.0));
 	}
-	
+
 	/**
-	 * Set the resolution to be 25 and 24 bits for longitude and latitude respectively
+	 * Set the resolution to be 25 and 24 bits for longitude and latitude
+	 * respectively
 	 */
 	public void set2524() {
 		resolution = 1000.0;
 		bitCorrection = 3;
 	}
-	
+
 	/**
 	 * Set the raw latitude as received from AIS
+	 * 
 	 * @param rawLatitude
 	 */
 	public void setRawLatitude(long rawLatitude) {
 		this.rawLatitude = rawLatitude;
 	}
-	
+
 	/**
 	 * Set the raw longitude as received from AIS
+	 * 
 	 * @param rawLatitude
 	 */
 	public void setRawLongitude(long rawLongitude) {
@@ -82,11 +87,11 @@ public class AisPosition {
 	public long getRawLatitude() {
 		return rawLatitude;
 	}
-	
+
 	public long getRawLongitude() {
 		return rawLongitude;
 	}
-	
+
 	/**
 	 * Set signed longitude
 	 */
@@ -97,12 +102,13 @@ public class AisPosition {
 			rawLongitude = longitude;
 		}
 	}
+
 	/**
 	 * Set signed latitude
-	 */	
+	 */
 	public void setLatitude(long latitude) {
 		if (latitude < 0) {
-			rawLatitude = latitude + (0x8000000 >> bitCorrection); 
+			rawLatitude = latitude + (0x8000000 >> bitCorrection);
 		} else {
 			rawLatitude = latitude;
 		}
@@ -110,6 +116,7 @@ public class AisPosition {
 
 	/**
 	 * Get signed longitude
+	 * 
 	 * @return
 	 */
 	public long getLongitude() {
@@ -125,6 +132,7 @@ public class AisPosition {
 
 	/**
 	 * Get signed latitude
+	 * 
 	 * @return
 	 */
 	public long getLatitude() {
@@ -137,25 +145,27 @@ public class AisPosition {
 		}
 		return latitude;
 	}
-	
+
 	/**
 	 * Get position as {@link GeoLocation} object
+	 * 
 	 * @return
 	 */
 	public GeoLocation getGeoLocation() {
 		return new GeoLocation(getLatitude() / resolution / 60.0, getLongitude() / resolution / 60.0);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		AisPosition pos2 = (AisPosition)obj;
-		return (pos2.rawLatitude == this.rawLatitude && pos2.rawLongitude == this.rawLongitude);		
+		AisPosition pos2 = (AisPosition) obj;
+		return (pos2.rawLatitude == this.rawLatitude && pos2.rawLongitude == this.rawLongitude);
 	}
 
 	@Override
 	public String toString() {
 		GeoLocation geoLocation = getGeoLocation();
-		return "(" + getRawLatitude() + "," + getRawLongitude() + ") = (" + geoLocation.getLatitude() + "," + geoLocation.getLongitude() + ")";
+		return "(" + getRawLatitude() + "," + getRawLongitude() + ") = (" + geoLocation.getLatitude() + ","
+				+ geoLocation.getLongitude() + ")";
 	}
 
 }

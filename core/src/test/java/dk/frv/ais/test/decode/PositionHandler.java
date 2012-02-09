@@ -7,7 +7,7 @@ import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.AisPositionMessage;
 
 public class PositionHandler implements IAisHandler {
-	
+
 	private static final Logger LOG = Logger.getLogger(PositionHandler.class);
 
 	/**
@@ -20,11 +20,11 @@ public class PositionHandler implements IAisHandler {
 		if (aisMessage.getMsgId() > 3) {
 			return;
 		}
-		
+
 		// Just consider the position part
-		AisPositionMessage aisPosMessage = (AisPositionMessage)aisMessage;
+		AisPositionMessage aisPosMessage = (AisPositionMessage) aisMessage;
 		LOG.debug(aisPosMessage);
-		
+
 	}
 
 }

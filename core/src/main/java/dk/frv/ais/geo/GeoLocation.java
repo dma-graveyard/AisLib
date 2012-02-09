@@ -1,26 +1,26 @@
 /* Copyright (c) 2011 Danish Maritime Safety Administration
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-* Lesser General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package dk.frv.ais.geo;
 
 import java.io.Serializable;
 import java.util.TimeZone;
 
 /**
- * Representation of a WGS84 position and methods for calculating range and bearing
- * between positions.
+ * Representation of a WGS84 position and methods for calculating range and
+ * bearing between positions.
  */
 public class GeoLocation implements Serializable {
 
@@ -35,8 +35,11 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Constructor given position and timezone
-	 * @param latitude Negative south of equator
-	 * @param longitude Negative east of Prime Meridian
+	 * 
+	 * @param latitude
+	 *            Negative south of equator
+	 * @param longitude
+	 *            Negative east of Prime Meridian
 	 * @param timeZone
 	 */
 	public GeoLocation(double latitude, double longitude, TimeZone timeZone) {
@@ -47,8 +50,11 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Constructor given position and timezone
-	 * @param latitude Negative south of equator
-	 * @param longitude Negative east of Prime Meridian
+	 * 
+	 * @param latitude
+	 *            Negative south of equator
+	 * @param longitude
+	 *            Negative east of Prime Meridian
 	 */
 	public GeoLocation(double latitude, double longitude) {
 		this();
@@ -81,7 +87,9 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Set latitude
-	 * @param latitude [-90,...,90]
+	 * 
+	 * @param latitude
+	 *            [-90,...,90]
 	 */
 	public void setLatitude(double latitude) {
 		if (latitude > 90 || latitude < -90) {
@@ -92,10 +100,13 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Set latitude with degrees, minutes, seconds and direction
-	 * @param degrees [0,...,89[ Use direction for north or south
+	 * 
+	 * @param degrees
+	 *            [0,...,89[ Use direction for north or south
 	 * @param minutes
 	 * @param seconds
-	 * @param direction N | S
+	 * @param direction
+	 *            N | S
 	 */
 	public void setLatitude(int degrees, int minutes, double seconds, String direction) {
 		double tempLat = degrees + ((minutes + (seconds / 60.0)) / 60.0);
@@ -112,6 +123,7 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Get latitude
+	 * 
 	 * @return latitude
 	 */
 	public double getLatitude() {
@@ -120,7 +132,9 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Set longitude
-	 * @param longitude [-180,...,180]
+	 * 
+	 * @param longitude
+	 *            [-180,...,180]
 	 */
 	public void setLongitude(double longitude) {
 		if (longitude > 180 || longitude < -180) {
@@ -131,10 +145,13 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Set longitude with degrees, minutes, seconds and direction
-	 * @param degrees [0,...,179[ Use direction for east or west
+	 * 
+	 * @param degrees
+	 *            [0,...,179[ Use direction for east or west
 	 * @param minutes
 	 * @param seconds
-	 * @param direction E | W
+	 * @param direction
+	 *            E | W
 	 */
 	public void setLongitude(int degrees, int minutes, double seconds, String direction) {
 		double longTemp = degrees + ((minutes + (seconds / 60.0)) / 60.0);
@@ -151,6 +168,7 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Get longitude
+	 * 
 	 * @return longitude
 	 */
 	public double getLongitude() {
@@ -159,6 +177,7 @@ public class GeoLocation implements Serializable {
 
 	/**
 	 * Get timezone
+	 * 
 	 * @return timezone
 	 */
 	public TimeZone getTimeZone() {
@@ -166,7 +185,8 @@ public class GeoLocation implements Serializable {
 	}
 
 	/**
-	 * Set timezone 
+	 * Set timezone
+	 * 
 	 * @param timezone
 	 */
 	public void setTimeZone(TimeZone timeZone) {
@@ -174,10 +194,11 @@ public class GeoLocation implements Serializable {
 	}
 
 	/**
-	 * Calculate initial bearing for great circle route to location
-	 * using Thaddeus Vincenty's</a> inverse formula.
+	 * Calculate initial bearing for great circle route to location using
+	 * Thaddeus Vincenty's</a> inverse formula.
 	 * 
-	 * @param the second location
+	 * @param the
+	 *            second location
 	 * @return bearing in degrees
 	 */
 	public double getGeodesicInitialBearing(GeoLocation location) {
@@ -185,10 +206,11 @@ public class GeoLocation implements Serializable {
 	}
 
 	/**
-	 * Calculate final bearing for great circle route to location
-	 * using Thaddeus Vincenty's</a> inverse formula.
+	 * Calculate final bearing for great circle route to location using Thaddeus
+	 * Vincenty's</a> inverse formula.
 	 * 
-	 * @param the second location
+	 * @param the
+	 *            second location
 	 * @return bearing in degrees
 	 */
 	public double getGeodesicFinalBearing(GeoLocation location) {
@@ -196,7 +218,8 @@ public class GeoLocation implements Serializable {
 	}
 
 	/**
-	 * Get great circle distance to location 
+	 * Get great circle distance to location
+	 * 
 	 * @param location
 	 * @return distance in meters
 	 */
@@ -281,7 +304,8 @@ public class GeoLocation implements Serializable {
 	}
 
 	/**
-	 * Get rhumb line bearing to location 
+	 * Get rhumb line bearing to location
+	 * 
 	 * @param location
 	 * @return bearing in degrees
 	 */
@@ -298,7 +322,8 @@ public class GeoLocation implements Serializable {
 	}
 
 	/**
-	 * Get rhumb line distance to location 
+	 * Get rhumb line distance to location
+	 * 
 	 * @param location
 	 * @return distance in meters
 	 */
@@ -323,7 +348,7 @@ public class GeoLocation implements Serializable {
 	}
 
 	/**
-	 * Equals method 
+	 * Equals method
 	 */
 	@Override
 	public boolean equals(Object object) {

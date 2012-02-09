@@ -99,7 +99,7 @@ public class Bbm extends SendSentence {
 		} else {
 			throw new SentenceException("BBM can only contain AIS message 8 or 14");
 		}
-		
+
 		return aisMessage;
 	}
 
