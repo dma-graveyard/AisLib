@@ -30,6 +30,7 @@ public abstract class Sentence {
 
 	protected String talker;
 	protected String formatter;
+	protected String delimiter;
 	protected int checksum;
 	protected String msgChecksum;
 	protected String[] fields;
@@ -40,6 +41,7 @@ public abstract class Sentence {
 
 	public Sentence() {
 		talker = "AI";
+		delimiter = "!";
 	}
 
 	/**
@@ -98,7 +100,7 @@ public abstract class Sentence {
 	 */
 	protected void encode() {
 		encodedFields = new LinkedList<String>();
-		encodedFields.add("!" + talker + formatter);
+		encodedFields.add(delimiter + talker + formatter);
 	}
 
 	/**

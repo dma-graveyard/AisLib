@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -96,7 +98,7 @@ public class DecodeTest {
 		// Prepare message classes
 		AisMessage message;
 		Vdm vdm = new Vdm();
-		List<IProprietaryTag> tags = new ArrayList<IProprietaryTag>();
+		Deque<IProprietaryTag> tags = new ArrayDeque<IProprietaryTag>();
 
 		while ((line = in.readLine()) != null) {
 
@@ -138,7 +140,7 @@ public class DecodeTest {
 				}
 
 			} catch (Exception e) {
-				LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.get(0) : "null"));
+				LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.peekLast() : "null"));
 				Assert.assertTrue(false);
 			}
 

@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -70,7 +72,7 @@ public abstract class AisReader extends Thread {
 	/**
 	 * Possible proprietary tags for current VDM
 	 */
-	protected List<IProprietaryTag> tags = new ArrayList<IProprietaryTag>();
+	protected Deque<IProprietaryTag> tags = new ArrayDeque<IProprietaryTag>();
 
 	/**
 	 * Add an AIS handler
@@ -170,7 +172,7 @@ public abstract class AisReader extends Thread {
 			// Go through factories to find one that fits
 			for (IProprietaryFactory factory : proprietaryFactories) {
 				if (factory.match(line)) {
-					tags.add(factory.getTag(line));
+					tags.addFirst(factory.getTag(line));
 				}
 			}
 			return;
@@ -188,7 +190,7 @@ public abstract class AisReader extends Thread {
 				// Complete message
 				message = AisMessage.getInstance(vdm);
 				if (tags.size() > 0) {
-					message.setTags(tags);
+					message.setTags(new ArrayDeque<IProprietaryTag>(tags));
 				}
 				for (IAisHandler aisHandler : handlers) {
 					aisHandler.receive(message);
@@ -198,7 +200,7 @@ public abstract class AisReader extends Thread {
 				return;
 			}
 		} catch (Exception e) {
-			LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.get(0) : "null"));
+			LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.peekLast() : "null"));
 			// TODO Should this be handled more gracefully
 		}
 

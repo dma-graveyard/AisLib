@@ -15,8 +15,8 @@
  */
 package dk.frv.ais.message;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.apache.log4j.Logger;
 
@@ -38,7 +38,7 @@ public abstract class AisMessage {
 	protected int repeat; // 2 bit: How many times message has been repeated
 	protected long userId; // 30 bit: MMSI number
 	protected Vdm vdm; // The VDM encapsulating the AIS message
-	protected List<IProprietaryTag> tags = null; // Possible proprietary source tags for the message
+	protected Deque<IProprietaryTag> tags = null; // Possible proprietary source tags for the message
 
 	/**
 	 * Constructor given message id
@@ -136,22 +136,22 @@ public abstract class AisMessage {
 	 * Get all tags
 	 * @return
 	 */
-	public List<IProprietaryTag> getTags() {
+	public Deque<IProprietaryTag> getTags() {
 		return tags;
 	}
 
 	/**
-	 * Add tag
+	 * Add tag (to front)
 	 * @param sourceTag
 	 */
 	public void setTag(IProprietaryTag tag) {
 		if (this.tags == null) {
-			this.tags = new ArrayList<IProprietaryTag>();			
+			this.tags = new ArrayDeque<IProprietaryTag>();			
 		}
-		this.tags.add(tag);
+		tags.addFirst(tag);
 	}
 	
-	public void setTags(List<IProprietaryTag> tags) {		
+	public void setTags(Deque<IProprietaryTag> tags) {		
 		this.tags = tags;
 	}
 
@@ -291,13 +291,17 @@ public abstract class AisMessage {
 	}
 	
 	/**
-	 * Method for reassembling original message appending possible proprietary source tag
+	 * Method for reassembling original message appending possible proprietary source tags
 	 * @return
 	 */
 	public String reassemble() {
 		StringBuilder buf = new StringBuilder();
-		if (getSourceTag() != null && getSourceTag().getSentence() != null) {
-			buf.append(getSourceTag().getSentence() + "\r\n");
+		if (tags != null) {
+			for (IProprietaryTag tag : tags) {
+				if (tag.getSentence() != null) {
+					buf.append(tag.getSentence() + "\r\n");
+				}
+			}
 		}
 		buf.append(getVdm().getOrgLinesJoined());
 		return buf.toString();

@@ -122,7 +122,7 @@ public class Vdm extends EncapsulatedSentence {
 	 */
 	@Override
 	public String getEncoded() {
-		formatter = (isOwnMessage()) ? "VDO" : "VDM";
+		formatter = (isOwnMessage()) ? "VDO" : "VDM";		
 		super.encode();
 		return finalEncode();
 	}

@@ -27,6 +27,7 @@ import dk.frv.ais.message.AisBinaryMessage;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.binary.AisApplicationMessage;
 import dk.frv.ais.proprietary.IProprietarySourceTag;
+import dk.frv.ais.proprietary.IProprietaryTag;
 
 public class MessageHandler implements IAisHandler {
 
@@ -58,27 +59,27 @@ public class MessageHandler implements IAisHandler {
 		String region = "";
 
 		// Get source tag properties
-		IProprietarySourceTag tag = aisMessage.getSourceTag();
-		if (tag != null) {
-			baseMMSI = tag.getBaseMmsi();
-			if (tag.getCountry() != null) {
-				country = tag.getCountry().getTwoLetter();
+		IProprietarySourceTag sourceTag = aisMessage.getSourceTag();
+		if (sourceTag != null) {
+			baseMMSI = sourceTag.getBaseMmsi();
+			if (sourceTag.getCountry() != null) {
+				country = sourceTag.getCountry().getTwoLetter();
 			}
-			if (tag.getRegion() != null) {
-				region = tag.getRegion();
+			if (sourceTag.getRegion() != null) {
+				region = sourceTag.getRegion();
 			}
 		}
 
 		// Maybe check for start date
-		if (filter.getStartDate() != null && tag.getTimestamp() != null) {
-			if (tag.getTimestamp().before(filter.getStartDate())) {
+		if (filter.getStartDate() != null && sourceTag.getTimestamp() != null) {
+			if (sourceTag.getTimestamp().before(filter.getStartDate())) {
 				return;
 			}
 		}
 
 		// Maybe check for end date
-		if (filter.getEndDate() != null && tag.getTimestamp() != null) {
-			if (tag.getTimestamp().after(filter.getEndDate())) {
+		if (filter.getEndDate() != null && sourceTag.getTimestamp() != null) {
+			if (sourceTag.getTimestamp().after(filter.getEndDate())) {
 				System.exit(0);
 			}
 		}
@@ -112,12 +113,14 @@ public class MessageHandler implements IAisHandler {
 		msgCount++;
 
 		// Print tag line
-		if (tag != null) {
-			bytes += tag.getSentence().length() + 2;
-			out.println(tag.getSentence());
-			// Maybe print parsed
-			if (dumpParsed) {
-				out.println("+-- " + tag.toString());
+		if (aisMessage.getTags() != null) {
+			for (IProprietaryTag tag : aisMessage.getTags()) {
+				bytes += tag.getSentence().length() + 2;
+				out.println(tag.getSentence());
+				// Maybe print parsed
+				if (dumpParsed) {
+					out.println("+-- " + tag.toString());
+				}
 			}
 		}
 		// Print original line
