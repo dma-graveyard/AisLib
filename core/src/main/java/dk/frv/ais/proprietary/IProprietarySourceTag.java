@@ -22,7 +22,7 @@ import dk.frv.ais.country.MidCountry;
 /**
  * Interface for proprietary source tags
  */
-public interface IProprietarySourceTag {
+public interface IProprietarySourceTag extends IProprietaryTag {
 
 	/**
 	 * Time of message receival at source
@@ -51,12 +51,5 @@ public interface IProprietarySourceTag {
 	 * @return
 	 */
 	Long getBaseMmsi();
-
-	/**
-	 * Get the original sentence
-	 * 
-	 * @return
-	 */
-	String getSentence();
 
 }

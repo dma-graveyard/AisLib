@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.proprietary.IProprietaryFactory;
-import dk.frv.ais.proprietary.IProprietarySourceTag;
+import dk.frv.ais.proprietary.IProprietaryTag;
 import dk.frv.ais.sentence.Abk;
 import dk.frv.ais.sentence.Sentence;
 import dk.frv.ais.sentence.Vdm;
@@ -68,9 +68,9 @@ public abstract class AisReader extends Thread {
 	protected Vdm vdm = new Vdm();
 
 	/**
-	 * Possible proprietary source tag for current VDM
+	 * Possible proprietary tags for current VDM
 	 */
-	protected IProprietarySourceTag sourceTag = null;
+	protected List<IProprietaryTag> tags = new ArrayList<IProprietaryTag>();
 
 	/**
 	 * Add an AIS handler
@@ -170,7 +170,7 @@ public abstract class AisReader extends Thread {
 			// Go through factories to find one that fits
 			for (IProprietaryFactory factory : proprietaryFactories) {
 				if (factory.match(line)) {
-					sourceTag = factory.getSourceTag(line);
+					tags.add(factory.getTag(line));
 				}
 			}
 			return;
@@ -187,7 +187,9 @@ public abstract class AisReader extends Thread {
 			if (result == 0) {
 				// Complete message
 				message = AisMessage.getInstance(vdm);
-				message.setSourceTag(sourceTag);
+				if (tags.size() > 0) {
+					message.setTags(tags);
+				}
 				for (IAisHandler aisHandler : handlers) {
 					aisHandler.receive(message);
 				}
@@ -196,11 +198,12 @@ public abstract class AisReader extends Thread {
 				return;
 			}
 		} catch (Exception e) {
-			LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + sourceTag);
+			LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.get(0) : "null"));
 			// TODO Should this be handled more gracefully
 		}
 
 		vdm = new Vdm();
+		tags.clear();
 
 	}
 

@@ -16,24 +16,15 @@
 package dk.frv.ais.proprietary;
 
 /**
- * General interface for proprietary factories
+ * Interface for general proprietary tags
  */
-public interface IProprietaryFactory {
-
+public interface IProprietaryTag {
+	
 	/**
-	 * Return if the line matches proprietary message for this vendor
+	 * Get the original sentence
 	 * 
-	 * @param line
 	 * @return
 	 */
-	boolean match(String line);
-
-	/**
-	 * Return the tag for line, if matches, otherwise null is returned
-	 * 
-	 * @param line
-	 * @return
-	 */
-	IProprietaryTag getTag(String line);
+	String getSentence();
 
 }

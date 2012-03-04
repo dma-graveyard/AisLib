@@ -15,12 +15,16 @@
  */
 package dk.frv.ais.message;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitEncoder;
 import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.proprietary.IProprietarySourceTag;
+import dk.frv.ais.proprietary.IProprietaryTag;
 import dk.frv.ais.sentence.Vdm;
 
 /**
@@ -34,8 +38,7 @@ public abstract class AisMessage {
 	protected int repeat; // 2 bit: How many times message has been repeated
 	protected long userId; // 30 bit: MMSI number
 	protected Vdm vdm; // The VDM encapsulating the AIS message
-	protected IProprietarySourceTag sourceTag; // A possible proprietary source
-												// tag for the message
+	protected List<IProprietaryTag> tags = null; // Possible proprietary source tags for the message
 
 	/**
 	 * Constructor given message id
@@ -113,12 +116,43 @@ public abstract class AisMessage {
 		this.userId = userId;
 	}
 
+	/** 
+	 * Return the first source tag
+	 * @return
+	 */
 	public IProprietarySourceTag getSourceTag() {
-		return sourceTag;
+		if (tags == null) {
+			return null;
+		}		
+		for (IProprietaryTag tag : tags) {
+			if (tag instanceof IProprietarySourceTag) {
+				return (IProprietarySourceTag)tag;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all tags
+	 * @return
+	 */
+	public List<IProprietaryTag> getTags() {
+		return tags;
 	}
 
-	public void setSourceTag(IProprietarySourceTag sourceTag) {
-		this.sourceTag = sourceTag;
+	/**
+	 * Add tag
+	 * @param sourceTag
+	 */
+	public void setTag(IProprietaryTag tag) {
+		if (this.tags == null) {
+			this.tags = new ArrayList<IProprietaryTag>();			
+		}
+		this.tags.add(tag);
+	}
+	
+	public void setTags(List<IProprietaryTag> tags) {		
+		this.tags = tags;
 	}
 
 	/**

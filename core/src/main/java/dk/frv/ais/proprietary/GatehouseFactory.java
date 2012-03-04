@@ -37,7 +37,8 @@ public class GatehouseFactory implements IProprietaryFactory {
 		return (line.indexOf("$PGHP,1") >= 0);
 	}
 
-	public IProprietarySourceTag getSourceTag(String line) {
+	@Override
+	public IProprietarySourceTag getTag(String line) {
 		int start = line.indexOf("$PGHP,1");
 		if (start < 0) {
 			return null;

@@ -18,7 +18,7 @@ import dk.frv.ais.message.AisMessage6;
 import dk.frv.ais.message.binary.RouteSuggestionReply;
 import dk.frv.ais.proprietary.GatehouseFactory;
 import dk.frv.ais.proprietary.IProprietaryFactory;
-import dk.frv.ais.proprietary.IProprietarySourceTag;
+import dk.frv.ais.proprietary.IProprietaryTag;
 import dk.frv.ais.reader.AisStreamReader;
 import dk.frv.ais.sentence.Abk;
 import dk.frv.ais.sentence.Abm;
@@ -96,7 +96,7 @@ public class DecodeTest {
 		// Prepare message classes
 		AisMessage message;
 		Vdm vdm = new Vdm();
-		IProprietarySourceTag sourceTag = null;
+		List<IProprietaryTag> tags = new ArrayList<IProprietaryTag>();
 
 		while ((line = in.readLine()) != null) {
 
@@ -110,7 +110,7 @@ public class DecodeTest {
 				// Go through factories to find one that fits
 				for (IProprietaryFactory factory : proprietaryFactories) {
 					if (factory.match(line)) {
-						sourceTag = factory.getSourceTag(line);
+						tags.add(factory.getTag(line));
 					}
 				}
 				continue;
@@ -123,7 +123,9 @@ public class DecodeTest {
 				if (result == 0) {
 					message = AisMessage.getInstance(vdm);
 					Assert.assertNotNull(message);
-					message.setSourceTag(sourceTag);
+					if (tags.size() > 0) {
+						message.setTags(tags);
+					}
 
 					// Message ready for handling
 
@@ -136,12 +138,13 @@ public class DecodeTest {
 				}
 
 			} catch (Exception e) {
-				LOG.error("VDM/VDO failed: " + e.getClass() + " line: " + line + " tag: " + sourceTag + ": " + e.getMessage());
+				LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.get(0) : "null"));
 				Assert.assertTrue(false);
 			}
 
 			// Create new VDM
 			vdm = new Vdm();
+			tags.clear();
 		}
 
 		in.close();
