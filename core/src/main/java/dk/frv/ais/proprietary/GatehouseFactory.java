@@ -33,6 +33,7 @@ public class GatehouseFactory implements IProprietaryFactory {
 
 	private static final Logger LOG = Logger.getLogger(GatehouseFactory.class);
 
+	@Override
 	public boolean match(String line) {
 		return (line.indexOf("$PGHP,1") >= 0);
 	}

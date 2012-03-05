@@ -15,6 +15,9 @@
  */
 package dk.frv.ais.proprietary;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
 import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.sentence.Sentence;
 import dk.frv.ais.sentence.SentenceException;
@@ -29,7 +32,10 @@ import dk.frv.ais.sentence.SentenceException;
  */
 public class DmaSourceTag extends Sentence implements IProprietaryTag {
 	
+	private static final Logger LOG = Logger.getLogger(DmaSourceTag.class);
+	
 	protected String sourceName;
+	private String sentence = null;
 	
 	public DmaSourceTag() {
 		talker = "P";
@@ -39,11 +45,30 @@ public class DmaSourceTag extends Sentence implements IProprietaryTag {
 	
 	@Override
 	public String getSentence() {
-		return getEncoded();
+		if (sentence == null) {
+			sentence = getEncoded(); 
+		}
+		return sentence;
 	}
 
 	@Override
 	public int parse(String line) throws SentenceException, SixbitException {
+		int start = line.indexOf("$PDMA,");
+		if (start < 0) {
+			throw new SentenceException("Error in DMA proprietary sentence: " + line);
+		}
+		line = line.substring(start);
+		setSentence(line);
+		
+		// Remove checksum
+		String dataLine = line.substring(0, line.indexOf("*"));
+		
+		String[] elems = StringUtils.splitByWholeSeparatorPreserveAllTokens(dataLine, ",");
+		if (elems.length < 2) {
+			LOG.error("Error in Gatehouse proprietary message: wrong number of fields " + elems.length + " in line: " + line);
+			throw new SentenceException("Error in DMA proprietary sentence: " + line);
+		}
+		setSourceName(elems[1]);
 		
 		return 0;
 	}
@@ -55,8 +80,25 @@ public class DmaSourceTag extends Sentence implements IProprietaryTag {
 		return finalEncode();
 	}
 	
+	public String getSourceName() {
+		return sourceName;
+	}
+	
 	public void setSourceName(String sourceName) {
 		this.sourceName = sourceName;
+	}
+	
+	public void setSentence(String sentence) {
+		this.sentence = sentence;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("DmaSourceTag [sourceName=");
+		builder.append(sourceName);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

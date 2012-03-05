@@ -296,7 +296,7 @@ public abstract class AisMessage {
 	 */
 	public String reassemble() {
 		StringBuilder buf = new StringBuilder();
-		if (tags != null) {
+		if (tags != null) {			
 			for (IProprietaryTag tag : tags) {
 				if (tag.getSentence() != null) {
 					buf.append(tag.getSentence() + "\r\n");

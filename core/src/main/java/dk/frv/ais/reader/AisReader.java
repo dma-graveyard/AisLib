@@ -172,7 +172,7 @@ public abstract class AisReader extends Thread {
 			// Go through factories to find one that fits
 			for (IProprietaryFactory factory : proprietaryFactories) {
 				if (factory.match(line)) {
-					tags.addFirst(factory.getTag(line));
+					tags.add(factory.getTag(line));
 				}
 			}
 			return;
