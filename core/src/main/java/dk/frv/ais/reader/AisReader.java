@@ -107,6 +107,11 @@ public abstract class AisReader extends Thread {
 	 * @return status
 	 */
 	public abstract Status getStatus();
+	
+	/**
+	 * Stop the reading thread
+	 */
+	public abstract void stopReader();
 
 	/**
 	 * The method to do the actual sending

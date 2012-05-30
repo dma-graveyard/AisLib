@@ -52,9 +52,28 @@ public class AisSerialReader extends AisReader implements SerialPortEventListene
 			try {
 				Thread.sleep(reconnectInterval);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				return;
 			}
 
+		}
+	}
+
+	@Override
+	public void stopReader() {
+		// TODO this should be fixed
+		if (serialPort != null) {
+			serialPort.close();
+		}
+		try {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			if (outputStream != null) {
+				outputStream.close();
+			}
+			this.interrupt();
+		} catch (IOException e) {
+			LOG.info("Failed to close streams");
 		}
 	}
 
@@ -105,7 +124,8 @@ public class AisSerialReader extends AisReader implements SerialPortEventListene
 		}
 	}
 
-	private void connect() throws IOException, UnsupportedCommOperationException, PortInUseException, TooManyListenersException {
+	private void connect() throws IOException, UnsupportedCommOperationException, PortInUseException,
+			TooManyListenersException {
 		// Find port
 		findPort();
 		// Open port

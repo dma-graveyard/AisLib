@@ -65,4 +65,14 @@ public class AisStreamReader extends AisReader {
 	public Status getStatus() {
 		return (stream != null ? Status.CONNECTED : Status.DISCONNECTED);
 	}
+	
+	@Override
+	public void stopReader() {
+		if (stream != null) {
+			try {
+				stream.close();
+			} catch (IOException e) {
+			}
+		}
+	}
 }

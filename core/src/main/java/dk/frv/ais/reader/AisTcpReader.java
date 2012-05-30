@@ -121,13 +121,30 @@ public class AisTcpReader extends AisReader {
 				connect();
 				readLoop(clientSocket.getInputStream());
 			} catch (IOException e) {
-				LOG.error("Source communication failed: " + e.getMessage() + " retry in " + (reconnectInterval / 1000) + " seconds");
+				LOG.error("Source communication failed: " + e.getMessage() + " retry in " + (reconnectInterval / 1000)
+						+ " seconds");
 				try {
 					Thread.sleep(reconnectInterval);
 				} catch (InterruptedException intE) {
+					LOG.info("Stopping reader");
+					return;
 				}
 			}
 		}
+	}
+
+	@Override
+	public void stopReader() {
+		try {
+			// Close socket if open
+			if (clientSocket != null) {
+				clientSocket.close();
+			}
+		} catch (IOException e) {
+			LOG.info("Could not close client socket");
+		}
+		// Interrupt this thread
+		this.interrupt();
 	}
 
 	protected void connect() throws IOException {
