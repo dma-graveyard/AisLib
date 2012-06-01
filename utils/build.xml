@@ -30,7 +30,6 @@
 		<delete dir="${lib.dir}" />
 		<delete dir="${javadoc.dir}" />
 		<delete dir="${basedir}/filter" />
-		<delete dir="${basedir}/virtualnet" />
 	</target>
 
 	<target name="init">
@@ -89,13 +88,4 @@
 		</javadoc>
 	</target>
 	
-	<target name="virtualnet" depends="utils">
-		<java classname="dk.frv.ais.utils.virtualnet.VirtualNet" fork="true" dir="${basedir}/virtualnet">
-			<classpath>
-				<pathelement path="${basedir}/virtualnet"/>
-			</classpath>
-			<classpath refid="compile.class.path" />
-		</java>
-	</target>
-
 </project>
