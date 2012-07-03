@@ -257,6 +257,22 @@ public abstract class Sentence {
 	public void setTalker(String talker) {
 		this.talker = talker;
 	}
+	
+	/**
+	 * Set delimiter
+	 * @param delimiter
+	 */
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
+	}
+	
+	/**
+	 * Set formatter
+	 * @param formatter
+	 */
+	public void setFormatter(String formatter) {
+		this.formatter = formatter;
+	}
 
 	/**
 	 * Convert any sentence to new sentence with !<talker><formatter>,....,

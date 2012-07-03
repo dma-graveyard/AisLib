@@ -100,6 +100,36 @@ public abstract class AisReader extends Thread {
 	 *            A class to handle the result when it is ready.
 	 */
 	public abstract void send(SendRequest sendRequest, ISendResultListener resultListener) throws SendException;
+	
+	/**
+	 * Blocking method to send message in an easy way
+	 * 
+	 * @param aisMessage
+	 * @param sequence
+	 * @param destination
+	 * @param timeout
+	 * @return
+	 * @throws InterruptedException 
+	 * @throws SendException 
+	 */
+	public Abk send(AisMessage aisMessage, int sequence, int destination, int timeout) throws SendException, InterruptedException {
+		SendRequest sendRequest = new SendRequest(aisMessage, sequence, destination);				
+		ClientSendThread clientSendThread = new ClientSendThread(this, sendRequest);
+		return clientSendThread.send();
+	}
+	
+	/**
+	 * Sending with 60 sec default timeout 
+	 * @param aisMessage
+	 * @param sequence
+	 * @param destination
+	 * @return
+	 * @throws SendException
+	 * @throws InterruptedException
+	 */
+	public Abk send(AisMessage aisMessage, int sequence, int destination) throws SendException, InterruptedException {
+		return send(aisMessage, sequence, destination, 60000);
+	}
 
 	/**
 	 * Get the status of the connection, either connected or disconnected
@@ -162,6 +192,7 @@ public abstract class AisReader extends Thread {
 
 		// Check for ABK
 		if (Abk.isAbk(line)) {
+			LOG.debug("Received ABK: " + line);
 			Abk abk = new Abk();
 			try {
 				abk.parse(line);

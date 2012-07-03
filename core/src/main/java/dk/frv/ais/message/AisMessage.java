@@ -221,8 +221,7 @@ public abstract class AisMessage {
 			message = new AisMessage12(vdm);
 			break;
 		case 13:
-			// TODO implement real message class
-			message = new AisMessageDummy(vdm);
+			message = new AisMessage13(vdm);
 			break;
 		case 14:
 			message = new AisMessage14(vdm);
