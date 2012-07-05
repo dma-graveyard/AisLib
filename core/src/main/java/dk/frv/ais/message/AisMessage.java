@@ -15,8 +15,8 @@
  */
 package dk.frv.ais.message;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
 
@@ -38,7 +38,9 @@ public abstract class AisMessage {
 	protected int repeat; // 2 bit: How many times message has been repeated
 	protected long userId; // 30 bit: MMSI number
 	protected Vdm vdm; // The VDM encapsulating the AIS message
-	protected Deque<IProprietaryTag> tags = null; // Possible proprietary source tags for the message
+	protected LinkedList<IProprietaryTag> tags = null; // Possible proprietary
+														// source tags for the
+														// message
 
 	/**
 	 * Constructor given message id
@@ -67,7 +69,8 @@ public abstract class AisMessage {
 	 * @throws AisMessageException
 	 * @throws SixbitException
 	 */
-	protected void parse(BinArray binArray) throws AisMessageException, SixbitException {
+	protected void parse(BinArray binArray) throws AisMessageException,
+			SixbitException {
 		this.repeat = (int) binArray.getVal(2);
 		this.userId = binArray.getVal(30);
 	}
@@ -116,42 +119,48 @@ public abstract class AisMessage {
 		this.userId = userId;
 	}
 
-	/** 
-	 * Return the first source tag
+	/**
+	 * Return the LAST source tag (closest to AIS sentence)
+	 * 
 	 * @return
 	 */
 	public IProprietarySourceTag getSourceTag() {
 		if (tags == null) {
 			return null;
-		}		
-		for (IProprietaryTag tag : tags) {
+		}
+		// Iterate backwards
+		for (Iterator<IProprietaryTag> iterator = tags.descendingIterator(); iterator
+				.hasNext();) {
+			IProprietarySourceTag tag = (IProprietarySourceTag) iterator.next();
 			if (tag instanceof IProprietarySourceTag) {
-				return (IProprietarySourceTag)tag;
+				return (IProprietarySourceTag) tag;
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get all tags
+	 * 
 	 * @return
 	 */
-	public Deque<IProprietaryTag> getTags() {
+	public LinkedList<IProprietaryTag> getTags() {
 		return tags;
 	}
 
 	/**
 	 * Add tag (to front)
+	 * 
 	 * @param sourceTag
 	 */
 	public void setTag(IProprietaryTag tag) {
 		if (this.tags == null) {
-			this.tags = new ArrayDeque<IProprietaryTag>();			
+			this.tags = new LinkedList<IProprietaryTag>();
 		}
-		tags.addFirst(tag);
+		this.tags.addFirst(tag);
 	}
-	
-	public void setTags(Deque<IProprietaryTag> tags) {		
+
+	public void setTags(LinkedList<IProprietaryTag> tags) {
 		this.tags = tags;
 	}
 
@@ -177,7 +186,8 @@ public abstract class AisMessage {
 	 * @throws AisMessageException
 	 * @throws SixbitException
 	 */
-	public static AisMessage getInstance(Vdm vdm) throws AisMessageException, SixbitException {
+	public static AisMessage getInstance(Vdm vdm) throws AisMessageException,
+			SixbitException {
 		AisMessage message = null;
 
 		switch (vdm.getMsgId()) {
@@ -289,14 +299,16 @@ public abstract class AisMessage {
 		// Trim leading and trailing spaces
 		return text.trim();
 	}
-	
+
 	/**
-	 * Method for reassembling original message appending possible proprietary source tags
+	 * Method for reassembling original message appending possible proprietary
+	 * source tags
+	 * 
 	 * @return
 	 */
 	public String reassemble() {
 		StringBuilder buf = new StringBuilder();
-		if (tags != null) {			
+		if (tags != null) {
 			for (IProprietaryTag tag : tags) {
 				if (tag.getSentence() != null) {
 					buf.append(tag.getSentence() + "\r\n");

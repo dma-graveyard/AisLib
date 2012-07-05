@@ -190,6 +190,8 @@ public class ShipTypeCargo implements Serializable {
 		case D:
 			result = "Category D";
 			break;
+		default:
+			break;
 		}
 
 		return result;

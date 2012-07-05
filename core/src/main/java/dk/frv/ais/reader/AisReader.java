@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -195,7 +196,7 @@ public abstract class AisReader extends Thread {
 				// Complete message
 				message = AisMessage.getInstance(vdm);
 				if (tags.size() > 0) {
-					message.setTags(new ArrayDeque<IProprietaryTag>(tags));
+					message.setTags(new LinkedList<IProprietaryTag>(tags));
 				}
 				for (IAisHandler aisHandler : handlers) {
 					aisHandler.receive(message);
