@@ -101,7 +101,7 @@ public abstract class AisReader extends Thread {
 	 *            A class to handle the result when it is ready.
 	 */
 	public abstract void send(SendRequest sendRequest, ISendResultListener resultListener) throws SendException;
-	
+
 	/**
 	 * Blocking method to send message in an easy way
 	 * 
@@ -110,17 +110,18 @@ public abstract class AisReader extends Thread {
 	 * @param destination
 	 * @param timeout
 	 * @return
-	 * @throws InterruptedException 
-	 * @throws SendException 
+	 * @throws InterruptedException
+	 * @throws SendException
 	 */
 	public Abk send(AisMessage aisMessage, int sequence, int destination, int timeout) throws SendException, InterruptedException {
-		SendRequest sendRequest = new SendRequest(aisMessage, sequence, destination);				
+		SendRequest sendRequest = new SendRequest(aisMessage, sequence, destination);
 		ClientSendThread clientSendThread = new ClientSendThread(this, sendRequest);
 		return clientSendThread.send();
 	}
-	
+
 	/**
-	 * Sending with 60 sec default timeout 
+	 * Sending with 60 sec default timeout
+	 * 
 	 * @param aisMessage
 	 * @param sequence
 	 * @param destination
@@ -138,7 +139,7 @@ public abstract class AisReader extends Thread {
 	 * @return status
 	 */
 	public abstract Status getStatus();
-	
+
 	/**
 	 * Stop the reading thread
 	 */
@@ -188,6 +189,7 @@ public abstract class AisReader extends Thread {
 
 		// Ignore everything else than sentences
 		if (!Sentence.hasSentence(line)) {
+			tags.clear();
 			return;
 		}
 
@@ -201,6 +203,7 @@ public abstract class AisReader extends Thread {
 			} catch (Exception e) {
 				LOG.error("Failed to parse ABK: " + line + ": " + e.getMessage());
 			}
+			tags.clear();
 			return;
 		}
 
@@ -217,6 +220,7 @@ public abstract class AisReader extends Thread {
 
 		// Check for VDM
 		if (!Vdm.isVdm(line)) {
+			tags.clear();
 			return;
 		}
 
@@ -243,7 +247,6 @@ public abstract class AisReader extends Thread {
 
 		vdm = new Vdm();
 		tags.clear();
-
 	}
 
 	/**

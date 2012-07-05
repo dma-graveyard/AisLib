@@ -1,6 +1,5 @@
 javadoc/
 build/
-/aislib*.jar
 /utils/filter
 /utils/lib
 /utils/virtualnet
