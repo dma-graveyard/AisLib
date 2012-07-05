@@ -37,6 +37,8 @@ public class SendRequest {
 	private List<String> prefixSentences = new ArrayList<String>();
 	private int sequence;
 	private int destination;
+	private String talker = null;
+	
 
 	public SendRequest(AisMessage aisMessage, int sequence, int destination) {
 		this.aisMessage = aisMessage;
@@ -75,7 +77,11 @@ public class SendRequest {
 
 		// Set sequence
 		sendSentence.setSequence(sequence);
-
+		
+		if (talker != null) {
+			sendSentence.setTalker(talker);
+		}
+		
 		try {
 			// Handle binary data
 			if (aisMessage instanceof AisBinaryMessage) {
@@ -131,6 +137,14 @@ public class SendRequest {
 	
 	public void addPrefixSentence(String sentence) {
 		this.prefixSentences.add(sentence);
+	}
+	
+	public String getTalker() {
+		return talker;
+	}
+	
+	public void setTalker(String talker) {
+		this.talker = talker;
 	}
 
 	@Override

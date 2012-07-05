@@ -39,11 +39,11 @@ public class SendTextTest {
 		sleep(2000);
 	}
 
-	//@Test
+	@Test
 	public void sendAddressedTextTest3() throws InterruptedException, SendException {
 		String hostPort = "aistrans1:4001";
 		String message = "TEST FROM DAMSA1";
-		int destination = 992190002;
+		int destination = 992199001;
 		sendAddressedTextSimple(hostPort, destination, message);
 		sleep(2000);
 	}
@@ -58,7 +58,7 @@ public class SendTextTest {
 		sleep(2000);
 	}
 
-	@Test
+	//@Test
 	public void sendWithPrefixSentence() throws SendException, InterruptedException {
 		AnySentence sentence = new AnySentence();
 		sentence.setDelimiter("$");
@@ -72,10 +72,12 @@ public class SendTextTest {
 		prefixSentences.add(virtMmsiSentence);
 		
 		String hostPort = "localhost:4001";
-		String message = "TEST FROM FRV";
+		//String message = "TEST FROM FRV";
+		String message = "A";
 		//int destination = 219015063; // DAMSA1
 		// int destination = 219593000; // Jens Sørensen
-		int destination = 219997000; // Poul Løwenørn
+		//int destination = 219997000; // Poul Løwenørn
+		int destination = 123456789;
 		sendAddressedWithPrefix(hostPort, destination, message, prefixSentences);
 		sleep(2000);
 
@@ -98,7 +100,8 @@ public class SendTextTest {
 		msg12.setMessage(message);
 
 		// Make sendrequest
-		SendRequest sendRequest = new SendRequest(msg12, 1, destination);
+		SendRequest sendRequest = new SendRequest(msg12, 2, destination);
+		sendRequest.setTalker("PN");
 		for (String prefixSentence : prefixSentences) {
 			sendRequest.addPrefixSentence(prefixSentence);
 		}		
