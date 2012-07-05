@@ -48,6 +48,10 @@ public class AisMessage7 extends AisMessage {
 	public AisMessage7() {
 		super(7);
 	}
+	
+	public AisMessage7(int num) {
+		super(num);
+	}
 
 	public AisMessage7(Vdm vdm) throws AisMessageException, SixbitException {
 		super(vdm);

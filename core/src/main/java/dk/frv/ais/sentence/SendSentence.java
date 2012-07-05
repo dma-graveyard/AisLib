@@ -132,6 +132,7 @@ public abstract class SendSentence extends EncapsulatedSentence {
 			sendSentence.setSixbitString(partEncoded);
 			sendSentence.setPadBits(partPadBits);
 			sendSentence.setChannel(channel);
+			sendSentence.setTalker(talker);
 
 			sentences[i] = sendSentence;
 		}

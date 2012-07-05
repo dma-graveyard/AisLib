@@ -15,6 +15,9 @@
  */
 package dk.frv.ais.reader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.message.AisBinaryMessage;
 import dk.frv.ais.message.AisMessage;
@@ -31,8 +34,11 @@ import dk.frv.ais.sentence.SendSentence;
 public class SendRequest {
 
 	private AisMessage aisMessage;
+	private List<String> prefixSentences = new ArrayList<String>();
 	private int sequence;
 	private int destination;
+	private String talker = null;
+	
 
 	public SendRequest(AisMessage aisMessage, int sequence, int destination) {
 		this.aisMessage = aisMessage;
@@ -71,7 +77,11 @@ public class SendRequest {
 
 		// Set sequence
 		sendSentence.setSequence(sequence);
-
+		
+		if (talker != null) {
+			sendSentence.setTalker(talker);
+		}
+		
 		try {
 			// Handle binary data
 			if (aisMessage instanceof AisBinaryMessage) {
@@ -88,10 +98,14 @@ public class SendRequest {
 			throw new SendException("Failed to create send sentence: " + e.getMessage());
 		}
 
+		// Split into sentences
 		SendSentence[] sentences = sendSentence.split();
-		String[] encodedSentences = new String[sentences.length];
-		for (int i = 0; i < encodedSentences.length; i++) {
-			encodedSentences[i] = sentences[i].getEncoded();
+		String[] encodedSentences = new String[sentences.length + prefixSentences.size()];
+		for (int i = 0; i < prefixSentences.size(); i++) {
+			encodedSentences[i] = prefixSentences.get(i);
+		}
+		for (int i = 0; i < sentences.length; i++) {
+			encodedSentences[i + prefixSentences.size()] = sentences[i].getEncoded();
 		}
 
 		return encodedSentences;
@@ -119,6 +133,18 @@ public class SendRequest {
 
 	public void setDestination(int destination) {
 		this.destination = destination;
+	}
+	
+	public void addPrefixSentence(String sentence) {
+		this.prefixSentences.add(sentence);
+	}
+	
+	public String getTalker() {
+		return talker;
+	}
+	
+	public void setTalker(String talker) {
+		this.talker = talker;
 	}
 
 	@Override

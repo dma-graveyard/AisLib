@@ -1,6 +1,7 @@
 2012-06-xx Version 1.5
   * Support for multiple proprietary tags
   * Support for stopping readers
+  * Better support for sending messages with accompanying JUnit test classes 
 
 2012-02-09 Version 1.4
   * Virtual NET simulator tool
