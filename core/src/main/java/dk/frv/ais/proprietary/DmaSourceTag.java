@@ -116,6 +116,8 @@ public class DmaSourceTag extends Sentence implements IProprietaryTag {
 		StringBuilder builder = new StringBuilder();
 		builder.append("DmaSourceTag [sourceName=");
 		builder.append(sourceName);
+		builder.append(", timestamp=");
+		builder.append(timestamp);
 		builder.append("]");
 		return builder.toString();
 	}
