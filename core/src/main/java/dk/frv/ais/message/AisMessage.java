@@ -129,11 +129,10 @@ public abstract class AisMessage {
 			return null;
 		}
 		// Iterate backwards
-		for (Iterator<IProprietaryTag> iterator = tags.descendingIterator(); iterator
-				.hasNext();) {
+		for (Iterator<IProprietaryTag> iterator = tags.descendingIterator(); iterator.hasNext();) {
 			IProprietarySourceTag tag = (IProprietarySourceTag) iterator.next();
 			if (tag instanceof IProprietarySourceTag) {
-				return (IProprietarySourceTag) tag;
+				return tag;
 			}
 		}
 		return null;

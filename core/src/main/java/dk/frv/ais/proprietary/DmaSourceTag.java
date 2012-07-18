@@ -15,6 +15,8 @@
  */
 package dk.frv.ais.proprietary;
 
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -26,8 +28,9 @@ import dk.frv.ais.sentence.SentenceException;
  * Class representing a DMA source tag
  * 
  * <source_name> : Name of source system
+ * <timestamp> : Time when this sentence was generated
  * 
- * $PDMA,<source_name>*hh  
+ * $PDMA,<source_name>,<timestamp>*hh  
  *  
  */
 public class DmaSourceTag extends Sentence implements IProprietaryTag {
@@ -35,6 +38,7 @@ public class DmaSourceTag extends Sentence implements IProprietaryTag {
 	private static final Logger LOG = Logger.getLogger(DmaSourceTag.class);
 	
 	protected String sourceName;
+	protected Date timestamp = new Date(0);
 	private String sentence = null;
 	
 	public DmaSourceTag() {
@@ -64,11 +68,17 @@ public class DmaSourceTag extends Sentence implements IProprietaryTag {
 		String dataLine = line.substring(0, line.indexOf("*"));
 		
 		String[] elems = StringUtils.splitByWholeSeparatorPreserveAllTokens(dataLine, ",");
-		if (elems.length < 2) {
-			LOG.error("Error in Gatehouse proprietary message: wrong number of fields " + elems.length + " in line: " + line);
+		if (elems.length < 3) {
+			LOG.error("Error in DMA proprietary message: wrong number of fields " + elems.length + " in line: " + line);
 			throw new SentenceException("Error in DMA proprietary sentence: " + line);
 		}
 		setSourceName(elems[1]);
+		try {
+			setTimestamp(new Date(Long.parseLong(elems[2])));
+		} catch (NumberFormatException e) {
+			LOG.error("Error in DMA propritary tag. Wrong timestamp: " + elems[2]);
+			throw new SentenceException("Error in DMA proprietary sentence: " + line);
+		}
 		
 		return 0;
 	}
@@ -77,6 +87,7 @@ public class DmaSourceTag extends Sentence implements IProprietaryTag {
 	public String getEncoded() {		
 		super.encode();
 		encodedFields.add(sourceName);
+		encodedFields.add(Long.toString(timestamp.getTime()));
 		return finalEncode();
 	}
 	
@@ -86,6 +97,14 @@ public class DmaSourceTag extends Sentence implements IProprietaryTag {
 	
 	public void setSourceName(String sourceName) {
 		this.sourceName = sourceName;
+	}
+	
+	public Date getTimestamp() {
+		return timestamp;
+	}
+	
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 	
 	public void setSentence(String sentence) {

@@ -26,6 +26,7 @@ import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisBinaryMessage;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.binary.AisApplicationMessage;
+import dk.frv.ais.proprietary.DmaSourceTag;
 import dk.frv.ais.proprietary.IProprietarySourceTag;
 import dk.frv.ais.proprietary.IProprietaryTag;
 
@@ -40,6 +41,7 @@ public class MessageHandler implements IAisHandler {
 	private long end = 0;
 	private long msgCount = 0;
 	private long bytes = 0;
+	private boolean replayTag = false;	
 
 	public MessageHandler(FilterSettings filter, PrintStream out) {
 		this.filter = filter;
@@ -111,6 +113,14 @@ public class MessageHandler implements IAisHandler {
 
 		// Count message
 		msgCount++;
+		
+		// Print replay line
+		if (replayTag) {
+			DmaSourceTag dmaSourceTag = new DmaSourceTag();
+			dmaSourceTag.setSourceName("AISFILTER");
+			dmaSourceTag.setTimestamp(new Date());
+			aisMessage.setTag(dmaSourceTag);
+		}
 
 		// Print tag line
 		if (aisMessage.getTags() != null) {
@@ -143,6 +153,14 @@ public class MessageHandler implements IAisHandler {
 			}
 		}
 
+	}
+	
+	public boolean isReplayTag() {
+		return replayTag;
+	}
+	
+	public void setReplayTag(boolean replayTag) {
+		this.replayTag = replayTag;
 	}
 
 	public void setDumpParsed(boolean dumpParsed) {

@@ -56,6 +56,8 @@ public class AisFilter {
 		long downsampleRate = 0;
 		PrintStream out = System.out;
 		boolean doubletFiltering = false;
+		boolean replayTag = false;
+		
 		if (args.length < 2) {
 			usage();
 			System.exit(1);
@@ -88,6 +90,8 @@ public class AisFilter {
 				out = new PrintStream(args[++i]);
 			} else if (args[i].indexOf("-F") >= 0) {
 				doubletFiltering = true;
+			} else if (args[i].indexOf("-R") >= 0) {
+				replayTag = true;
 			}
 			i++;
 		}
@@ -131,6 +135,7 @@ public class AisFilter {
 		// Message handler
 		MessageHandler messageHandler = new MessageHandler(filterSettings, out);
 		messageHandler.setDumpParsed(dumpParsed);
+		messageHandler.setReplayTag(replayTag);
 		IAisHandler handler = (IAisHandler) messageHandler;
 
 		// Maybe insert downsampling filter
@@ -185,6 +190,7 @@ public class AisFilter {
 		System.out.println("\t-O Write output to file");
 		System.out.println("\t-C TCP read timeout in seconds, default none");
 		System.out.println("\t-b b1,...,bN comma separated list of base station MMSI's");
+		System.out.println("\t-r r1,...,rN comma separated list of regions");
 		System.out.println("\t-c c1,...,cN comma separated list of country codes in two letter ISO 3166");
 		System.out.println("\t-T time to run in seconds (default 1 hour)");
 		System.out.println("\t-d Dump message content (default false)");
@@ -192,6 +198,7 @@ public class AisFilter {
 		System.out.println("\t-E End time in format yyyy-MM-dd-HH:mm (Local time)");
 		System.out.println("\t-D Down sample rate in seconds (default none)");
 		System.out.println("\t-F Do doublet filtering (default off)");
+		System.out.println("\t-R Insert reply proprietary tag with time of reception");
 	}
 
 }
