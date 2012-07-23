@@ -71,6 +71,9 @@ public class MessageHandler implements IAisHandler {
 				region = sourceTag.getRegion();
 			}
 		}
+		if (region.equals("")) {
+		    region = "0";
+		}
 
 		// Maybe check for start date
 		if (filter.getStartDate() != null && sourceTag.getTimestamp() != null) {
