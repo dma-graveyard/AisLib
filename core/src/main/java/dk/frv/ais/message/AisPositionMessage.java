@@ -36,7 +36,7 @@ import dk.frv.ais.sentence.Vdm;
  * mobile equipment)
  * 
  */
-public abstract class AisPositionMessage extends AisMessage {
+public abstract class AisPositionMessage extends AisMessage implements IGeneralPositionMessage {
 
 	/**
 	 * Navigational status: 0 = under way using engine 1 = at anchor 2 = not

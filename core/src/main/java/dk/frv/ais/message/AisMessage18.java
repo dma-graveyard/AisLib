@@ -27,7 +27,7 @@ import dk.frv.ais.sentence.Vdm;
  * CLASS B position report implemented according to ITU-R M.1371-4
  * 
  */
-public class AisMessage18 extends AisMessage {
+public class AisMessage18 extends AisMessage implements IGeneralPositionMessage {
 
 	/** Not used. Should be set to zero. Reserved for future use */
 	private int spareAfterUserId; // 8 bits
