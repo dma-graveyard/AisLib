@@ -55,9 +55,10 @@ public class AisMessage24 extends AisStaticCommon {
 
 	public void parse() throws AisMessageException, SixbitException {
 		BinArray binArray = vdm.getBinArray();
-		if (binArray.getLength() > 168)
+		if (binArray.getLength() < 160) {
 			throw new AisMessageException("Message 24 wrong length " + binArray.getLength());
-
+		}
+			
 		super.parse(binArray);
 
 		this.partNumber = (int) binArray.getVal(2);
@@ -67,7 +68,12 @@ public class AisMessage24 extends AisStaticCommon {
 			this.name = binArray.getString(20);
 			return;
 		}
+		
+		if (binArray.getLength() < 168) {
+			throw new AisMessageException("Message 24 (Part B) wrong length " + binArray.getLength());
+		}
 
+		
 		// Handle part B
 		this.shipType = (int) binArray.getVal(8);
 		this.vendorId = binArray.getVal(42);

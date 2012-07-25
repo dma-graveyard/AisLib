@@ -2,36 +2,31 @@
 <project name="aislib" default="all">
 
 	<target name="clean">
-			<ant dir="${basedir}/core" target="clean" />
-			<ant dir="${basedir}/utils" target="clean" />
-			<delete>
-				<fileset dir="${basedir}" >
-					<include name="aislib*.jar"/>
-				</fileset>
-			</delete>
+		<ant dir="${basedir}/core" target="clean" />
+		<ant dir="${basedir}/utils" target="clean" />
 	</target>
-	
+
 	<target name="javadoc">
-		<ant dir="${basedir}/core" target="javadoc" />		
+		<ant dir="${basedir}/core" target="javadoc" />
 		<ant dir="${basedir}/utils" target="javadoc" />
 	</target>
-	
+
 	<target name="core">
-		<ant dir="${basedir}/core"/>		
+		<ant dir="${basedir}/core"/>
 	</target>
-	
+
 	<target name="dist">
-		<ant dir="${basedir}/core" target="dist" />		
+		<ant dir="${basedir}/core" target="dist" />
 	</target>
-		
+
 	<target name="utils">
-		<ant dir="${basedir}/utils"/>		
-		</target>
-	
+		<ant dir="${basedir}/utils"/>
+	</target>
+
 	<target name="test">
 		<ant dir="${basedir}/core" target="test" />
 	</target>
-	
+
 	<target name="all" depends="core,utils"/>
-	
+
 </project>
