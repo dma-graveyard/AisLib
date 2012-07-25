@@ -139,7 +139,8 @@ public class DecodeTest {
 				}
 
 			} catch (Exception e) {
-				LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.peekLast() : "null"));
+				LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: "
+						+ ((tags.size() > 0) ? tags.peekLast() : "null"));
 				Assert.assertTrue(false);
 			}
 
@@ -149,6 +150,20 @@ public class DecodeTest {
 		}
 
 		in.close();
+	}
+
+	@Test
+	public void simpleDecodeTest() throws IOException, InterruptedException {
+		// Open input stream
+		URL url = ClassLoader.getSystemResource("small_example.txt");
+		Assert.assertNotNull(url);
+		InputStream inputStream = url.openStream();
+		Assert.assertNotNull(inputStream);
+
+		// Make AIS reader instance
+		AisStreamReader aisReader = new AisStreamReader(inputStream);
+		aisReader.start();
+		aisReader.join();
 	}
 
 	@Test

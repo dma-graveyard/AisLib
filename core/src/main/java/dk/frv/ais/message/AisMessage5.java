@@ -96,7 +96,7 @@ public class AisMessage5 extends AisStaticCommon {
 
 	public void parse() throws AisMessageException, SixbitException {
 		BinArray binArray = vdm.getBinArray();
-		if (binArray.getLength() != 424)
+		if (binArray.getLength() < 424)
 			throw new AisMessageException("Message 5 wrong length " + binArray.getLength());
 
 		super.parse(binArray);
