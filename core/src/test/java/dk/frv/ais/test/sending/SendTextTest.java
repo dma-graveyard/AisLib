@@ -41,9 +41,10 @@ public class SendTextTest {
 
 	@Test
 	public void sendAddressedTextTest3() throws InterruptedException, SendException {
-		String hostPort = "aistrans1:4001";
+		String hostPort = "aistrans1.fomfrv.dk:4001";
 		String message = "TEST FROM DAMSA1";
-		int destination = 992199001;
+		int destination = 992199001; // SOK
+		//int destination = 992199007; // ais-frv-obo
 		sendAddressedTextSimple(hostPort, destination, message);
 		sleep(2000);
 	}
@@ -57,7 +58,7 @@ public class SendTextTest {
 		sendAddressedTextSimple(hostPort, destination, message);
 		sleep(2000);
 	}
-
+ 
 	//@Test
 	public void sendWithPrefixSentence() throws SendException, InterruptedException {
 		AnySentence sentence = new AnySentence();
