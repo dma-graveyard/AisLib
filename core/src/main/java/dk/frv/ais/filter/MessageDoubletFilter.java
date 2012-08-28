@@ -15,9 +15,9 @@
  */
 package dk.frv.ais.filter;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.TreeMap;
 
 import dk.frv.ais.message.AisMessage;
@@ -59,8 +59,23 @@ public class MessageDoubletFilter extends GenericFilter {
 		public String getSixbit() {
 			return sixbit;
 		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			return sixbit.equals(((DoubletEntry)obj).sixbit);
+		}
+		
+		@Override
+		public int hashCode() {
+			return sixbit.hashCode();
+		}
 
 	}
+	
+	/**
+	 * Number of message receptions between cleanups
+	 */
+	private static final long MAX_CLEANUP_AGE = 10000;
 
 	/**
 	 * A TreeMap is used with raw six bit string as key. compareTo is used which
@@ -70,15 +85,14 @@ public class MessageDoubletFilter extends GenericFilter {
 	private Map<DoubletEntry, Long> sixbitReceived = new TreeMap<DoubletEntry, Long>();
 
 	/**
-	 * A queue with entries to later remove. If no cleaning up is done a memory
-	 * leak would be introduced.
-	 */
-	private Queue<DoubletEntry> cleanupQueue = new LinkedList<DoubletEntry>();
-
-	/**
 	 * A default window size of 10 seconds is used
 	 */
 	private long windowSize = 10000;
+	
+	/**
+	 * Number of message receptions since last cleanup
+	 */
+	private long cleanupAge = 0;
 
 	public MessageDoubletFilter() {
 	}
@@ -100,7 +114,7 @@ public class MessageDoubletFilter extends GenericFilter {
 	public synchronized void receive(AisMessage aisMessage) {
 		// Get time now
 		Long now = System.currentTimeMillis();
-
+		
 		// Make new entry
 		DoubletEntry newEntry = new DoubletEntry(aisMessage.getVdm().getSixbitString(), now);
 
@@ -122,22 +136,25 @@ public class MessageDoubletFilter extends GenericFilter {
 
 		// Save message in map
 		sixbitReceived.put(newEntry, now);
+		
+		// Update message reception count
+		cleanupAge++;
 
-		// Add to cleanup queue
-		cleanupQueue.add(newEntry);
-
-		// TODO cleanup from queue
-		boolean entryRemoved;
-		do {
-			entryRemoved = false;
-			DoubletEntry entry = cleanupQueue.peek();
-			if (entry != null && now - entry.getReceived() > windowSize) {
-				entryRemoved = true;
-				sixbitReceived.remove(entry);
-				cleanupQueue.poll();
+		// Do cleanup for every 1.000 inserts/updates		
+		if (cleanupAge >= MAX_CLEANUP_AGE) {			
+			List<DoubletEntry> oldEntries = new ArrayList<DoubletEntry>(sixbitReceived.size());
+			// Iterate through all elements
+			for (DoubletEntry entry : sixbitReceived.keySet()) {
+				if (now - entry.getReceived() > windowSize) {
+					oldEntries.add(entry);
+				}
 			}
-		} while (entryRemoved);
-
+			for (DoubletEntry oldEntry : oldEntries) {
+				sixbitReceived.remove(oldEntry);
+			}
+			cleanupAge = 0;
+		}		
+		
 		// Send message
 		sendMessage(aisMessage);
 

@@ -29,12 +29,15 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessageException;
 import dk.frv.ais.proprietary.IProprietaryFactory;
 import dk.frv.ais.proprietary.IProprietaryTag;
 import dk.frv.ais.sentence.Abk;
 import dk.frv.ais.sentence.Sentence;
+import dk.frv.ais.sentence.SentenceException;
 import dk.frv.ais.sentence.Vdm;
 
 /**
@@ -240,9 +243,12 @@ public abstract class AisReader extends Thread {
 				// result = 1: Wait for more data
 				return;
 			}
-		} catch (Exception e) {
-			LOG.info("VDM failed: " + e.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.peekLast() : "null"));
-			// TODO Should this be handled more gracefully
+		} catch (SentenceException se) {
+			LOG.debug("Sentence error: " + se.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.peekLast() : "null"));
+		} catch (AisMessageException ae) {
+			LOG.debug("AIS message error: " + ae.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.peekLast() : "null"));		
+		} catch (SixbitException se) {
+			LOG.debug("Six bit error: " + se.getMessage() + " line: " + line + " tag: " + ((tags.size() > 0) ? tags.peekLast() : "null"));
 		}
 
 		vdm = new Vdm();
