@@ -18,8 +18,6 @@ package dk.frv.ais.message;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.apache.log4j.Logger;
-
 import dk.frv.ais.binary.BinArray;
 import dk.frv.ais.binary.SixbitEncoder;
 import dk.frv.ais.binary.SixbitException;
@@ -31,8 +29,6 @@ import dk.frv.ais.sentence.Vdm;
  * Abstract base class for all AIS messages
  */
 public abstract class AisMessage {
-
-	private static final Logger LOG = Logger.getLogger(AisMessage.class);
 
 	protected int msgId; // 6 bit: message id
 	protected int repeat; // 2 bit: How many times message has been repeated
@@ -273,8 +269,7 @@ public abstract class AisMessage {
 			message = new AisMessage24(vdm);
 			break;
 		default:
-			LOG.info("Unknown AIS message id " + vdm.getMsgId());
-			return null;
+			throw new AisMessageException("Unknown AIS message id " + vdm.getMsgId());
 		}
 
 		return message;
