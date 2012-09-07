@@ -15,6 +15,9 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisPositionMessage;
+import dk.frv.ais.message.IGeneralPositionMessage;
+
 /**
  * Class to represent a class A position
  */
@@ -27,6 +30,23 @@ public class AisClassAPosition extends AisVesselPosition {
 	public AisClassAPosition() {
 		super();
 	}
+	
+	public AisClassAPosition(AisPositionMessage posMessage) {
+		super();
+		update(posMessage);
+	}
+	
+	/**
+	 * Update data object with data from AIS message
+	 * @param posMessage
+	 */
+	public void update(AisPositionMessage posMessage) {
+		rot = (posMessage.isRotValid() ? (double)posMessage.getRot() : null);
+		navStatus = (byte)posMessage.getNavStatus();
+		specialManIndicator = (byte)posMessage.getSpecialManIndicator();
+		super.update((IGeneralPositionMessage)posMessage);
+	}
+	
 
 	public Double getRot() {
 		return rot;

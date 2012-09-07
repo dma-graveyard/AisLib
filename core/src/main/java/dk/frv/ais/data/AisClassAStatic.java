@@ -17,6 +17,9 @@ package dk.frv.ais.data;
 
 import java.util.Date;
 
+import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage5;
+
 /**
  * Class to represent class A statics
  */
@@ -26,12 +29,30 @@ public class AisClassAStatic extends AisVesselStatic {
 	private String destination;
 	private Date eta;
 	private byte posType;
-	private Short draught;
+	private Double draught;
 	private byte version;
 	private byte dte;
 	
 	public AisClassAStatic() {
 		super();
+	}
+	
+	public AisClassAStatic(AisMessage5 msg5) {
+		super();
+		update(msg5); 
+	}
+	
+	public void update(AisMessage5 msg5) {
+		this.destination = AisMessage.trimText(msg5.getDest());
+		if (this.destination.length() == 0) {
+			this.destination = null;
+		}
+		this.draught =(msg5.getDraught() == 0 ? null : msg5.getDraught() / 10.0);
+		this.eta = msg5.getEtaDate();
+		this.posType = (byte)msg5.getPosType();
+		this.version = (byte)msg5.getVersion();
+		this.dte = (byte)msg5.getDte();
+		super.update(msg5);
 	}
 
 	public Integer getImoNo() {
@@ -66,11 +87,11 @@ public class AisClassAStatic extends AisVesselStatic {
 		this.posType = posType;
 	}
 
-	public Short getDraught() {
+	public Double getDraught() {
 		return draught;
 	}
 
-	public void setDraught(Short draught) {
+	public void setDraught(Double draught) {
 		this.draught = draught;
 	}
 

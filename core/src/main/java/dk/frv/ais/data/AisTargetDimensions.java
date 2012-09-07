@@ -15,8 +15,15 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisStaticCommon;
+
 /**
- * Class to represent dimensions of an AIS target with dimensions 
+ * Class to represent dimensions of an AIS target with dimensions
+ * 
+ * TODO: Evaluate the parameters and set length and witdt 
+ * accordingly. Make attributes to determine if dimensions
+ * is available, and if reference point is available.  
+ *  
  */
 public class AisTargetDimensions {
 	
@@ -25,8 +32,13 @@ public class AisTargetDimensions {
 	private byte dimPort;
 	private byte dimStarboard;
 	
-	public AisTargetDimensions() {
+	public AisTargetDimensions(AisStaticCommon staticCommon) { 
+		this.dimBow = (short)staticCommon.getDimBow();
+		this.dimStern = (short)staticCommon.getDimStern();
+		this.dimPort = (byte)staticCommon.getDimPort();
+		this.dimStarboard = (byte)staticCommon.getDimStarboard();
 		
+		// TODO
 	}
 
 	public short getDimBow() {

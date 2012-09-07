@@ -15,6 +15,10 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage24;
+import dk.frv.ais.message.ShipTypeCargo;
+
 /**
  * Class to represent class B statics
  */
@@ -22,6 +26,23 @@ public class AisClassBStatic extends AisVesselStatic {
 	
 	public AisClassBStatic() {
 		super();
+	}
+	
+	public AisClassBStatic(AisMessage24 msg24) {
+		super();
+		update(msg24);
+	}
+	
+	public void update(AisMessage24 msg24) {
+		if (msg24.getPartNumber() == 0) {
+			this.name = msg24.getName();
+		} else {
+			this.callsign = msg24.getCallsign();
+			this.shipType = (byte)msg24.getShipType();
+			this.shipTypeCargo = new ShipTypeCargo(this.shipType);
+			this.dimensions = new AisTargetDimensions(msg24);
+		}
+		super.update((AisMessage)msg24);
 	}
 
 }

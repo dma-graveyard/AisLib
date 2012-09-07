@@ -115,7 +115,7 @@ public class AisMessage18 extends AisMessage implements IGeneralPositionMessage 
 	 * electronic position fixing device; 0 = RAIM not in use = default; 1 =
 	 * RAIM in use see Table 47
 	 */
-	private int raimFlag; // 1 bit
+	private int raim; // 1 bit
 
 	/**
 	 * Communication state selector flag: 0 = SOTDMA communication state follows
@@ -167,7 +167,7 @@ public class AisMessage18 extends AisMessage implements IGeneralPositionMessage 
 		this.modeFlag = (int) sixbit.getVal(1);
 
 		// Raim and communication
-		this.raimFlag = (int) sixbit.getVal(1);
+		this.raim = (int) sixbit.getVal(1);
 		this.commStateSelectorFlag = (int) sixbit.getVal(1);
 		this.commState = (int) sixbit.getVal(19);
 	}
@@ -190,7 +190,7 @@ public class AisMessage18 extends AisMessage implements IGeneralPositionMessage 
 		encoder.addVal(classBBandFlag, 1);
 		encoder.addVal(classBMsg22Flag, 1);
 		encoder.addVal(modeFlag, 1);
-		encoder.addVal(raimFlag, 1);
+		encoder.addVal(raim, 1);
 		encoder.addVal(commStateSelectorFlag, 1);
 		encoder.addVal(commState, 19);
 		return encoder;
@@ -409,16 +409,16 @@ public class AisMessage18 extends AisMessage implements IGeneralPositionMessage 
 	/**
 	 * @return the raimFlag
 	 */
-	public int getRaimFlag() {
-		return raimFlag;
+	public int getRaim() {
+		return raim;
 	}
 
 	/**
 	 * @param raimFlag
 	 *            the raimFlag to set
 	 */
-	public void setRaimFlag(int raimFlag) {
-		this.raimFlag = raimFlag;
+	public void setRaim(int raim) {
+		this.raim = raim;
 	}
 
 	/**
@@ -477,8 +477,8 @@ public class AisMessage18 extends AisMessage implements IGeneralPositionMessage 
 		builder.append(pos);
 		builder.append(", posAcc=");
 		builder.append(posAcc);
-		builder.append(", raimFlag=");
-		builder.append(raimFlag);
+		builder.append(", raim=");
+		builder.append(raim);
 		builder.append(", sog=");
 		builder.append(sog);
 		builder.append(", spare=");

@@ -17,17 +17,28 @@ package dk.frv.ais.data;
 
 import java.util.Date;
 
+import dk.frv.ais.message.AisMessage;
+
 /**
- * Abstract class representing any vessel report 
+ * Abstract class representing any AIS report 
  */
-public abstract class AisVesselReport {
+public abstract class AisReport {
 	
+	protected int mmsi;
 	protected Date received;
 	protected Date sourceTimestamp;
 	protected Date created;
 	
-	public AisVesselReport() {
+	public AisReport() {
 		this.created = new Date();
+	}
+	
+	public void update(AisMessage aisMessage) {
+		this.mmsi = (int)aisMessage.getUserId();
+		this.received = new Date();
+		if (aisMessage.getSourceTag() != null && aisMessage.getSourceTag().getTimestamp() != null) {
+			this.sourceTimestamp = aisMessage.getSourceTag().getTimestamp();
+		}
 	}
 
 	public Date getReceived() {

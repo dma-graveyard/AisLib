@@ -16,12 +16,14 @@
 package dk.frv.ais.data;
 
 import dk.frv.ais.geo.GeoLocation;
+import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.IGeneralPositionMessage;
 
 /**
  * Abstract class for representing the common position of an 
  * AIS class A and class B target
  */
-public abstract class AisVesselPosition extends AisVesselReport {
+public abstract class AisVesselPosition extends AisReport {
 	
 	protected Double sog;
 	protected Double cog;
@@ -33,6 +35,21 @@ public abstract class AisVesselPosition extends AisVesselReport {
 	
 	public AisVesselPosition() {
 		super();
+	}
+
+	public void update(IGeneralPositionMessage posMessage) {
+		sog = (posMessage.isSogValid() ? posMessage.getSog() / 10.0 : null);
+		cog = (posMessage.isCogValid() ? posMessage.getCog() / 10.0 : null);
+		heading = (posMessage.isHeadingValid() ? (double)posMessage.getTrueHeading() : null);
+		if (posMessage.isPositionValid()) {
+			pos = posMessage.getPos().getGeoLocation();
+		} else {
+			pos = null;
+		}
+		posAcc = (byte)posMessage.getPosAcc();
+		raim = (byte)posMessage.getRaim();
+		utcSec = (byte)posMessage.getUtcSec();
+		super.update((AisMessage)posMessage);
 	}
 
 	public Double getSog() {

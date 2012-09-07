@@ -79,4 +79,11 @@ public interface IGeneralPositionMessage {
 	 */
 	public boolean isHeadingValid();
 	
+	/**
+	 * Get raim
+	 * @return
+	 */
+	public int getRaim();
+	
+	
 }

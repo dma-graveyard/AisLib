@@ -15,17 +15,17 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisStaticCommon;
 import dk.frv.ais.message.ShipTypeCargo;
 
 /** 
  * Class to represent vessel static information 
  */
-public abstract class AisVesselStatic extends AisVesselReport {
+public abstract class AisVesselStatic extends AisReport {
 	
 	protected String name;
 	protected String callsign;
-	protected Byte shipType;
-	protected Byte cargo;
+	protected byte shipType;
 	protected ShipTypeCargo shipTypeCargo;
 	protected AisTargetDimensions dimensions;
 	
@@ -33,6 +33,15 @@ public abstract class AisVesselStatic extends AisVesselReport {
 		super();
 	}
 
+	public void update(AisStaticCommon staticMessage) {
+		this.name = staticMessage.getName();
+		this.callsign = staticMessage.getCallsign();
+		this.shipType = (byte)staticMessage.getShipType();
+		this.shipTypeCargo = new ShipTypeCargo(this.shipType);
+		this.dimensions = new AisTargetDimensions(staticMessage);
+		super.update(staticMessage);
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -49,20 +58,12 @@ public abstract class AisVesselStatic extends AisVesselReport {
 		this.callsign = callsign;
 	}
 
-	public Byte getShipType() {
+	public byte getShipType() {
 		return shipType;
 	}
 
-	public void setShipType(Byte shipType) {
+	public void setShipType(byte shipType) {
 		this.shipType = shipType;
-	}
-
-	public Byte getCargo() {
-		return cargo;
-	}
-
-	public void setCargo(Byte cargo) {
-		this.cargo = cargo;
 	}
 
 	public ShipTypeCargo getShipTypeCargo() {
