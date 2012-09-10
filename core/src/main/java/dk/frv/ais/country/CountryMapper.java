@@ -96,7 +96,7 @@ public class CountryMapper {
 	public MidCountry getByMid(int mid) {
 		MidCountry country = midCountryMap.get(mid);
 		if (country == null) {
-			LOG.warn("Unknown MID " + mid);
+			LOG.debug("Unknown MID " + mid);
 		}
 		return country;
 	}

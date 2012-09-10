@@ -15,6 +15,12 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage18;
+import dk.frv.ais.message.AisMessage24;
+import dk.frv.ais.message.AisMessage5;
+import dk.frv.ais.message.AisPositionMessage;
+
 /** 
  * Class to represent any vessel target 
  */
@@ -25,6 +31,39 @@ public abstract class AisVesselTarget extends AisTarget {
 	
 	public AisVesselTarget() {
 		super();
+	}
+	
+	@Override
+	public void update(AisMessage aisMessage) {
+		if (aisMessage instanceof AisMessage5) {
+			if (vesselStatic == null || !(vesselStatic instanceof AisClassAStatic)) {
+				vesselStatic = new AisClassAStatic((AisMessage5)aisMessage);
+			} else {
+				((AisClassAStatic)vesselStatic).update((AisMessage5)aisMessage);
+			}
+		}
+		else if (aisMessage instanceof AisPositionMessage) {
+			if (vesselPosition == null || !(vesselPosition instanceof AisClassAPosition)) {
+				vesselPosition = new AisClassAPosition((AisPositionMessage)aisMessage);
+			} else {
+				((AisClassAPosition)vesselPosition).update((AisPositionMessage)aisMessage);
+			}
+		}
+		else if (aisMessage instanceof AisMessage18) {
+			if (vesselPosition == null || !(vesselPosition instanceof AisClassBPosition)) {
+				vesselPosition = new AisClassBPosition((AisMessage18)aisMessage);
+			} else {
+				((AisClassBPosition)vesselPosition).update((AisMessage18)aisMessage);
+			}			
+		}
+		else if (aisMessage instanceof AisMessage24) {
+			if (vesselStatic == null || !(vesselStatic instanceof AisClassBStatic)) {
+				vesselStatic = new AisClassBStatic((AisMessage24)aisMessage);
+			} else {
+				((AisClassBStatic)vesselStatic).update((AisMessage24)aisMessage);
+			}
+		}
+		super.update(aisMessage);
 	}
 
 	public AisVesselStatic getVesselStatic() {

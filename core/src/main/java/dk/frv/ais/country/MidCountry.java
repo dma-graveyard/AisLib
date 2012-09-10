@@ -45,6 +45,16 @@ public class MidCountry extends Country {
 	public HashSet<Integer> getMids() {
 		return mids;
 	}
+	
+	public static MidCountry getCountryForMmsi(Long mmsi) {
+		MidCountry country = null;
+		String str = Long.toString(mmsi);
+		if (str.length() == 9) {
+			str = str.substring(0, 3);
+			country = CountryMapper.getInstance().getByMid(Integer.parseInt(str));
+		}
+		return country;
+	}
 
 	@Override
 	public String toString() {

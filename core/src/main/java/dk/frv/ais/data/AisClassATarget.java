@@ -15,6 +15,8 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisMessage;
+
 /**
  * Class to represent a class A vessel target
  */
@@ -22,6 +24,11 @@ public class AisClassATarget extends AisVesselTarget {
 	
 	public AisClassATarget() {
 		super();
+	}
+	
+	@Override
+	public void update(AisMessage aisMessage) {
+		super.update(aisMessage);
 	}
 	
 	public AisClassAPosition getClassAPosition() {

@@ -24,10 +24,10 @@ import dk.frv.ais.country.MidCountry;
  */
 public class AisTargetSourceData {
 	
-	private String sourceType;
+	private String sourceType = "LIVE";
 	private MidCountry sourceCountry;
 	private String sourceRegion;
-	private String sourceBs;
+	private Long sourceBs;
 	private String sourceSystem;
 	private Date lastReport;
 	private Date created;
@@ -60,11 +60,11 @@ public class AisTargetSourceData {
 		this.sourceRegion = sourceRegion;
 	}
 
-	public String getSourceBs() {
+	public Long getSourceBs() {
 		return sourceBs;
 	}
 
-	public void setSourceBs(String sourceBs) {
+	public void setSourceBs(Long sourceBs) {
 		this.sourceBs = sourceBs;
 	}
 

@@ -15,6 +15,8 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisMessage;
+
 /**
  * Class to represent an AIS base station target
  */
@@ -24,6 +26,11 @@ public class AisBsTarget extends AisTarget {
 	
 	public AisBsTarget() {
 		
+	}
+	
+	@Override
+	public void update(AisMessage aisMessage) {		
+		super.update(aisMessage);
 	}
 	
 }

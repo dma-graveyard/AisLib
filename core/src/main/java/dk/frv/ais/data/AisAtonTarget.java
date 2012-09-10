@@ -15,6 +15,8 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisMessage;
+
 /**
  * Class to represent AIS AtoN target
  */
@@ -24,6 +26,11 @@ public class AisAtonTarget extends AisTarget {
 	
 	public AisAtonTarget() {
 		
+	}
+	
+	@Override
+	public void update(AisMessage aisMessage) {		
+		super.update(aisMessage);
 	}
 
 }
