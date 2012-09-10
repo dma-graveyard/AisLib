@@ -34,6 +34,9 @@ import dk.frv.ais.proprietary.IProprietaryTag;
  */
 public abstract class AisTarget {
 	
+	private static int anonymousCounter = 0;
+	
+	protected int anonymousId;
 	protected int mmsi;
 	protected MidCountry country;
 	protected Date lastReport;
@@ -42,6 +45,7 @@ public abstract class AisTarget {
 	
 	public AisTarget() {
 		this.created = new Date();
+		this.anonymousId = anonymousCounter++;
 	}
 	
 	/**
@@ -87,7 +91,11 @@ public abstract class AisTarget {
 		// Set country
 		country = MidCountry.getCountryForMmsi(aisMessage.getUserId());
 	}
-
+	
+	public int getAnonymousId() {
+		return anonymousId;
+	}
+	
 	public int getMmsi() {
 		return mmsi;
 	}

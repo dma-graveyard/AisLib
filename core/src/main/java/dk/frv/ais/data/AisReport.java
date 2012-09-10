@@ -65,4 +65,12 @@ public abstract class AisReport {
 		this.created = created;
 	}
 	
+	public int getMmsi() {
+		return mmsi;
+	}
+	
+	public void setMmsi(int mmsi) {
+		this.mmsi = mmsi;
+	}
+	
 }
