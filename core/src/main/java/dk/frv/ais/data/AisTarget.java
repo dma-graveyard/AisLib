@@ -49,6 +49,17 @@ public abstract class AisTarget {
 	}
 	
 	/**
+	 * Determine if target is alive based on ttl given in seconds
+	 * @param ttl
+	 * @return
+	 */
+	public boolean isAlive(int ttl) {
+		if (lastReport == null) return false;
+		long elapsed = System.currentTimeMillis() - lastReport.getTime();
+		return (elapsed / 1000 < ttl);		
+	}
+	
+	/**
 	 * Update target given AIS message
 	 * @param aisMessage
 	 */

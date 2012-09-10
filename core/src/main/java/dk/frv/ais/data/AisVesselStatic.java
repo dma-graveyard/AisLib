@@ -15,6 +15,7 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.AisStaticCommon;
 import dk.frv.ais.message.ShipTypeCargo;
 
@@ -34,8 +35,8 @@ public abstract class AisVesselStatic extends AisReport {
 	}
 
 	public void update(AisStaticCommon staticMessage) {
-		this.name = staticMessage.getName();
-		this.callsign = staticMessage.getCallsign();
+		this.name = AisMessage.trimText(staticMessage.getName());
+		this.callsign = AisMessage.trimText(staticMessage.getCallsign());
 		this.shipType = (byte)staticMessage.getShipType();
 		this.shipTypeCargo = new ShipTypeCargo(this.shipType);
 		this.dimensions = new AisTargetDimensions(staticMessage);

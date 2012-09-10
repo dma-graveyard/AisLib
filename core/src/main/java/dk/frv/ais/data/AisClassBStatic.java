@@ -35,9 +35,9 @@ public class AisClassBStatic extends AisVesselStatic {
 	
 	public void update(AisMessage24 msg24) {
 		if (msg24.getPartNumber() == 0) {
-			this.name = msg24.getName();
+			this.name = AisMessage.trimText(msg24.getName());
 		} else {
-			this.callsign = msg24.getCallsign();
+			this.callsign = AisMessage.trimText(msg24.getCallsign());
 			this.shipType = (byte)msg24.getShipType();
 			this.shipTypeCargo = new ShipTypeCargo(this.shipType);
 			this.dimensions = new AisTargetDimensions(msg24);

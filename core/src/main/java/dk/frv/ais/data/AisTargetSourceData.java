@@ -92,4 +92,8 @@ public class AisTargetSourceData {
 		this.created = created;
 	}
 	
+	public boolean isSatData() {
+		return (sourceType != null && sourceType.equals("SAT"));
+	}
+	
 }
