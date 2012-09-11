@@ -15,11 +15,15 @@
  */
 package dk.frv.ais.country;
 
+import java.io.Serializable;
+
 /**
  * Class representing an ISO 3166 country
  */
-public class Country {
-
+public class Country implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	protected String name;
 	protected String twoLetter;
 	protected String threeLetter;

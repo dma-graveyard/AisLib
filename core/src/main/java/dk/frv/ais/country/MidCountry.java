@@ -27,6 +27,8 @@ import org.apache.commons.lang.StringUtils;
  * 
  */
 public class MidCountry extends Country {
+	
+	private static final long serialVersionUID = 1L;
 
 	private HashSet<Integer> mids = new HashSet<Integer>();
 
