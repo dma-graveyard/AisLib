@@ -33,6 +33,7 @@ import dk.frv.ais.binary.SixbitException;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.AisMessageException;
+import dk.frv.ais.proprietary.DmaSourceTag;
 import dk.frv.ais.proprietary.IProprietaryFactory;
 import dk.frv.ais.proprietary.IProprietaryTag;
 import dk.frv.ais.sentence.Abk;
@@ -47,6 +48,10 @@ import dk.frv.ais.sentence.Vdm;
 public abstract class AisReader extends Thread {
 
 	private static final Logger LOG = Logger.getLogger(AisReader.class);
+	
+	// Temporary hack to allow the insertion of the DMA tag to indicate source
+	private boolean addDmaTag = false;
+	private String sourceName = null;
 
 	public enum Status {
 		CONNECTED, DISCONNECTED
@@ -233,9 +238,15 @@ public abstract class AisReader extends Thread {
 			if (result == 0) {
 				// Complete message
 				message = AisMessage.getInstance(vdm);
+				// Maybe add temporary DMA tag
+				if (addDmaTag && sourceName != null) {
+					DmaSourceTag dmaSourceTag = new DmaSourceTag();
+					dmaSourceTag.setSourceName(sourceName);
+					tags.add(dmaSourceTag);
+				}
 				if (tags.size() > 0) {
 					message.setTags(new LinkedList<IProprietaryTag>(tags));
-				}
+				}				
 				for (IAisHandler aisHandler : handlers) {
 					aisHandler.receive(message);
 				}
@@ -272,4 +283,20 @@ public abstract class AisReader extends Thread {
 
 	}
 
+	public boolean isAddDmaTag() {
+		return addDmaTag;
+	}
+
+	public void setAddDmaTag(boolean addDmaTag) {
+		this.addDmaTag = addDmaTag;
+	}
+
+	public String getSourceName() {
+		return sourceName;
+	}
+
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
+	}
+	
 }
