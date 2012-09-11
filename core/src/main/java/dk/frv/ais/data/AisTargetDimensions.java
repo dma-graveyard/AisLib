@@ -15,6 +15,8 @@
  */
 package dk.frv.ais.data;
 
+import java.io.Serializable;
+
 import dk.frv.ais.message.AisStaticCommon;
 
 /**
@@ -25,7 +27,9 @@ import dk.frv.ais.message.AisStaticCommon;
  * is available, and if reference point is available.  
  *  
  */
-public class AisTargetDimensions {
+public class AisTargetDimensions implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private short dimBow;
 	private short dimStern;

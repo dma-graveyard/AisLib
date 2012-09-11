@@ -15,6 +15,7 @@
  */
 package dk.frv.ais.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import dk.frv.ais.country.MidCountry;
@@ -32,7 +33,9 @@ import dk.frv.ais.proprietary.IProprietaryTag;
 /**
  * Abstract class representing any AIS target
  */
-public abstract class AisTarget {
+public abstract class AisTarget implements Serializable  {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private static int anonymousCounter = 0;
 	

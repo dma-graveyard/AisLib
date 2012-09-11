@@ -22,6 +22,8 @@ import dk.frv.ais.message.AisMessage;
  */
 public class AisClassATarget extends AisVesselTarget {
 	
+	private static final long serialVersionUID = 1L;
+	
 	public AisClassATarget() {
 		super();
 	}

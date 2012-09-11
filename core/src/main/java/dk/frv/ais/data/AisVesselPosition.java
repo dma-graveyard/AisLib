@@ -25,6 +25,8 @@ import dk.frv.ais.message.IGeneralPositionMessage;
  */
 public abstract class AisVesselPosition extends AisReport {
 	
+	private static final long serialVersionUID = 1L;
+	
 	protected Double sog;
 	protected Double cog;
 	protected Double heading;

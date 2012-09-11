@@ -15,6 +15,7 @@
  */
 package dk.frv.ais.data;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +24,9 @@ import dk.frv.ais.geo.GeoLocation;
 /**
  * Class to hold track of a vessel target
  */
-public class PastTrack {
+public class PastTrack implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private LinkedList<PastTrackPoint> points = new LinkedList<PastTrackPoint>();
 

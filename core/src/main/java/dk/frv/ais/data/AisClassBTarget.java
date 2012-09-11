@@ -20,6 +20,8 @@ package dk.frv.ais.data;
  */
 public class AisClassBTarget extends AisVesselTarget {
 	
+	private static final long serialVersionUID = 1L;
+	
 	public AisClassBTarget() {
 		super();
 	}

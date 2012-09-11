@@ -15,6 +15,7 @@
  */
 package dk.frv.ais.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import dk.frv.ais.geo.GeoLocation;
@@ -22,7 +23,9 @@ import dk.frv.ais.geo.GeoLocation;
 /**
  * Class to represent a point on a past track
  */
-public class PastTrackPoint {
+public class PastTrackPoint implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	private double lat;
 	private double lon;

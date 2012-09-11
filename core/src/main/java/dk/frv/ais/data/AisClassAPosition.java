@@ -23,6 +23,8 @@ import dk.frv.ais.message.IGeneralPositionMessage;
  */
 public class AisClassAPosition extends AisVesselPosition {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private Double rot;
 	private byte navStatus;
 	private byte specialManIndicator;

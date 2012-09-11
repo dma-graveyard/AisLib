@@ -24,6 +24,8 @@ import dk.frv.ais.message.ShipTypeCargo;
  */
 public class AisClassBStatic extends AisVesselStatic {
 	
+	private static final long serialVersionUID = 1L;
+	
 	public AisClassBStatic() {
 		super();
 	}

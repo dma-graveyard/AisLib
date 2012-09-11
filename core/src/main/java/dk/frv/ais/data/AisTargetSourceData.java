@@ -15,6 +15,7 @@
  */
 package dk.frv.ais.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import dk.frv.ais.country.MidCountry;
@@ -22,7 +23,9 @@ import dk.frv.ais.country.MidCountry;
 /**
  * Class to data about the source of an AIS target
  */
-public class AisTargetSourceData {
+public class AisTargetSourceData implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	private String sourceType = "LIVE";
 	private MidCountry sourceCountry;

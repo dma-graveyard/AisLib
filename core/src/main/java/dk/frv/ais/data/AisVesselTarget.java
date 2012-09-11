@@ -26,6 +26,8 @@ import dk.frv.ais.message.AisPositionMessage;
  */
 public abstract class AisVesselTarget extends AisTarget {
 	
+	private static final long serialVersionUID = 1L;
+	
 	protected AisVesselStatic vesselStatic;
 	protected AisVesselPosition vesselPosition;
 	

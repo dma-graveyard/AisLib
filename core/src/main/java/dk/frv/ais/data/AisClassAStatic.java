@@ -25,6 +25,8 @@ import dk.frv.ais.message.AisMessage5;
  */
 public class AisClassAStatic extends AisVesselStatic {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private Integer imoNo;
 	private String destination;
 	private Date eta;

@@ -15,6 +15,7 @@
  */
 package dk.frv.ais.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import dk.frv.ais.message.AisMessage;
@@ -22,7 +23,9 @@ import dk.frv.ais.message.AisMessage;
 /**
  * Abstract class representing any AIS report 
  */
-public abstract class AisReport {
+public abstract class AisReport implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	protected long mmsi;
 	protected Date received;
