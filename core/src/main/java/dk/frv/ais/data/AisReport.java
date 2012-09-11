@@ -24,7 +24,7 @@ import dk.frv.ais.message.AisMessage;
  */
 public abstract class AisReport {
 	
-	protected int mmsi;
+	protected long mmsi;
 	protected Date received;
 	protected Date sourceTimestamp;
 	protected Date created;
@@ -65,11 +65,11 @@ public abstract class AisReport {
 		this.created = created;
 	}
 	
-	public int getMmsi() {
+	public long getMmsi() {
 		return mmsi;
 	}
 	
-	public void setMmsi(int mmsi) {
+	public void setMmsi(long mmsi) {
 		this.mmsi = mmsi;
 	}
 	

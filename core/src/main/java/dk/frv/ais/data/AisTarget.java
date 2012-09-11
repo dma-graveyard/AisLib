@@ -37,7 +37,7 @@ public abstract class AisTarget {
 	private static int anonymousCounter = 0;
 	
 	protected int anonymousId;
-	protected int mmsi;
+	protected long mmsi;
 	protected MidCountry country;
 	protected Date lastReport;
 	protected Date created;
@@ -107,11 +107,11 @@ public abstract class AisTarget {
 		return anonymousId;
 	}
 	
-	public int getMmsi() {
+	public long getMmsi() {
 		return mmsi;
 	}
 
-	public void setMmsi(int mmsi) {
+	public void setMmsi(long mmsi) {
 		this.mmsi = mmsi;
 	}
 
