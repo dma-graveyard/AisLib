@@ -36,6 +36,11 @@ import dk.frv.ais.message.AisMessageException;
 import dk.frv.ais.proprietary.DmaSourceTag;
 import dk.frv.ais.proprietary.IProprietaryFactory;
 import dk.frv.ais.proprietary.IProprietaryTag;
+import dk.frv.ais.queue.AisMessageQueue;
+import dk.frv.ais.queue.AisMessageQueueOverflowException;
+import dk.frv.ais.queue.AisMessageQueueReader;
+import dk.frv.ais.queue.IAisMessageQueue;
+import dk.frv.ais.queue.IAisQueueEntryHandler;
 import dk.frv.ais.sentence.Abk;
 import dk.frv.ais.sentence.Sentence;
 import dk.frv.ais.sentence.SentenceException;
@@ -61,6 +66,11 @@ public abstract class AisReader extends Thread {
 	 * List receivers for the AIS messages
 	 */
 	protected List<IAisHandler> handlers = new ArrayList<IAisHandler>();
+	
+	/**
+	 * List of receiver queues 
+	 */
+	protected List<IAisMessageQueue> messageQueues = new ArrayList<IAisMessageQueue>();
 
 	/**
 	 * List of proprietary factories
@@ -90,6 +100,25 @@ public abstract class AisReader extends Thread {
 	 */
 	public void registerHandler(IAisHandler aisHandler) {
 		handlers.add(aisHandler);
+	}
+	
+	/**
+	 * Add a queue for receiving messages
+	 * @param queue
+	 */
+	public void registerQueue(IAisMessageQueue queue) {
+		messageQueues.add(queue);
+	}
+	
+	/**
+	 * Make a new queue and reader for the queue. Start and attach to 
+	 * to given handler.   
+	 * @param handler
+	 */
+	public void registerQueueHandler(IAisQueueEntryHandler handler) {
+		AisMessageQueueReader queueReader = new AisMessageQueueReader(handler, new AisMessageQueue());
+		registerQueue(queueReader.getQueue());
+		queueReader.start();
 	}
 
 	/**
@@ -249,6 +278,13 @@ public abstract class AisReader extends Thread {
 				}				
 				for (IAisHandler aisHandler : handlers) {
 					aisHandler.receive(message);
+				}
+				for (IAisMessageQueue queue : messageQueues) {
+					try {
+						queue.push(message);
+					} catch (AisMessageQueueOverflowException e) {
+						LOG.error("Message queue overflow, dropping message: " + e.getMessage());
+					}
 				}
 			} else {
 				// result = 1: Wait for more data
