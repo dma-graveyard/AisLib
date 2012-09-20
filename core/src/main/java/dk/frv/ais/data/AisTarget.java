@@ -37,9 +37,6 @@ public abstract class AisTarget implements Serializable  {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static int anonymousCounter = 0;
-	
-	protected int anonymousId;
 	protected long mmsi;
 	protected MidCountry country;
 	protected Date lastReport;
@@ -48,7 +45,6 @@ public abstract class AisTarget implements Serializable  {
 	
 	public AisTarget() {
 		this.created = new Date();
-		this.anonymousId = anonymousCounter++;
 	}
 	
 	/**
@@ -104,10 +100,6 @@ public abstract class AisTarget implements Serializable  {
 		}
 		// Set country
 		country = MidCountry.getCountryForMmsi(aisMessage.getUserId());
-	}
-	
-	public int getAnonymousId() {
-		return anonymousId;
 	}
 	
 	public long getMmsi() {
