@@ -15,24 +15,37 @@
  */
 package dk.frv.ais.data;
 
+import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage18;
+import dk.frv.ais.message.AisMessage24;
+
 /**
  * Class to represent a class B vessel target
  */
 public class AisClassBTarget extends AisVesselTarget {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public AisClassBTarget() {
 		super();
 	}
-	
-	public AisClassBPosition getClassBPosition() {
-		return (AisClassBPosition)this.vesselPosition;
-	}
-	
-	public AisClassBStatic getClassBStatic() {
-		return (AisClassBStatic)this.vesselStatic;
+
+	@Override
+	public void update(AisMessage aisMessage) {
+		// Check that update has same class as this
+		if (!(aisMessage instanceof AisMessage18 || aisMessage instanceof AisMessage24)) {
+			// Simply ignore as another vessel uses same MMSI
+			return;
+		}
+		super.update(aisMessage);
 	}
 
+	public AisClassBPosition getClassBPosition() {
+		return (AisClassBPosition) this.vesselPosition;
+	}
+
+	public AisClassBStatic getClassBStatic() {
+		return (AisClassBStatic) this.vesselStatic;
+	}
 
 }

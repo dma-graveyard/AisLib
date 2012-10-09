@@ -36,7 +36,7 @@ public abstract class AisVesselTarget extends AisTarget {
 	}
 	
 	@Override
-	public void update(AisMessage aisMessage) {
+	public void update(AisMessage aisMessage) {		
 		if (aisMessage instanceof AisMessage5) {
 			if (vesselStatic == null || !(vesselStatic instanceof AisClassAStatic)) {
 				vesselStatic = new AisClassAStatic((AisMessage5)aisMessage);
@@ -65,6 +65,7 @@ public abstract class AisVesselTarget extends AisTarget {
 				((AisClassBStatic)vesselStatic).update((AisMessage24)aisMessage);
 			}
 		}
+		
 		super.update(aisMessage);
 	}
 

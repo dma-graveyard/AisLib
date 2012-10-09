@@ -16,6 +16,8 @@
 package dk.frv.ais.data;
 
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage5;
+import dk.frv.ais.message.AisPositionMessage;
 
 /**
  * Class to represent a class A vessel target
@@ -30,6 +32,11 @@ public class AisClassATarget extends AisVesselTarget {
 	
 	@Override
 	public void update(AisMessage aisMessage) {
+		// Check that update has same class as this
+		if (!(aisMessage instanceof AisPositionMessage || aisMessage instanceof AisMessage5)) {
+			// Simply ignore as another vessel uses same MMSI
+			return;
+		}		
 		super.update(aisMessage);
 	}
 	
