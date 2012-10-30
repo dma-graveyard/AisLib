@@ -54,6 +54,9 @@ public class AisClassAStatic extends AisVesselStatic {
 		this.posType = (byte)msg5.getPosType();
 		this.version = (byte)msg5.getVersion();
 		this.dte = (byte)msg5.getDte();
+		if (msg5.getImo() > 0) {
+			this.imoNo = (int)msg5.getImo();
+		}
 		super.update(msg5);
 	}
 
