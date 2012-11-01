@@ -8,6 +8,8 @@ AisLib
 DaMSA AisLib is a Java library for handling AIS messages. This include
 
 * Reading from AIS sources e.g. serial connection, TCP connection or file
+* Handling of proprietary source tagging sentences
+* Message filtering like doublet filtering and down sampling
 * Decoding sentences and AIS messages
 * Encoding sentences and AIS messages
 * Sending AIS messages #6, #8, #12 and #14
