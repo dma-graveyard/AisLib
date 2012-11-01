@@ -39,7 +39,7 @@ public class SendTextTest {
 		sleep(2000);
 	}
 
-	@Test
+	//@Test
 	public void sendAddressedTextTest3() throws InterruptedException, SendException {
 		String hostPort = "aistrans1.fomfrv.dk:4001";
 		String message = "TEST FROM DAMSA1";
@@ -83,6 +83,11 @@ public class SendTextTest {
 		sleep(2000);
 
 
+	}
+	
+	@Test
+	public void emptyTest() {
+		
 	}
 
 	private void sendAddressedWithPrefix(String hostPort, int destination, String message, List<String> prefixSentences) throws InterruptedException,

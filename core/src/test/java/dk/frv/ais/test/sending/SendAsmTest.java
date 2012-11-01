@@ -12,8 +12,13 @@ import dk.frv.ais.reader.SendException;
 import dk.frv.ais.sentence.Abk;
 
 public class SendAsmTest {
-
+	
 	@Test
+	public void emptyTest() {
+		
+	}
+
+	//@Test
 	public void sendRouteSuggestionReply() throws InterruptedException, SendException {
 		String hostPort = "aistrans1.fomfrv.dk:4001";
 		// int destination = 219015063; // DAMSA1

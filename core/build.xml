@@ -25,8 +25,8 @@
 		<javadoc sourcepath="${src.main.java.dir}"
 	            destdir="${javadoc.dir}"
 				classpathref="compile.class.path">
-			<doctitle><![CDATA[<h1>DaMSA aislib</h1>]]></doctitle>
-			<bottom><![CDATA[<i>Copyright &copy; 2011 Danish Maritime Safety Administration</i>]]></bottom>
+			<doctitle><![CDATA[<h1>DMA AisLib</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &copy; 2011 Danish Maritime Authority</i>]]></bottom>
 		</javadoc>
 	</target>
 
@@ -60,9 +60,9 @@
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<section name="dk/frv/aisspy/">
-					<attribute name="Specification-Title" value="DaMSA aislib" />
+					<attribute name="Specification-Title" value="DaMSA AisLib" />
 					<attribute name="Specification-Version" value="${version}" />
-					<attribute name="Specification-Vendor" value="Danish Maritime Safety Administration" />
+					<attribute name="Specification-Vendor" value="Danish Maritime Authority" />
 					<attribute name="Package-Title" value="dk.frv.ais" />
 					<attribute name="Package-Version" value="${version}" />
 					<attribute name="Package-Vendor" value="dk.frv.aisspy" />

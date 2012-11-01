@@ -1,8 +1,8 @@
-2012-xx-xx Version 1.6
+2012-11-01 Version 1.6
   * Enhanced DMA proprietary tag for use in replay. Added support in AisFilter.
   * Added interface IGeneralPositionMessage to capture the commonalities
     between message 1,2,3 and 18
-  * New asynchronous message queue possibility for received AIS messages from 
+  * New asynchronous message queue possibility for receiving AIS messages from 
     readers.
 
 2012-07-17 Version 1.5
