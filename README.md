@@ -3,7 +3,7 @@ AisLib
 
 #### Java library for handling AIS messages ####
 
-### Introduction ###
+## Introduction ##
 
 DaMSA AisLib is a Java library for handling AIS messages. This include
 
@@ -25,7 +25,7 @@ The project is separated into three parts:
 * utils    - Various AIS utilities using AisLib
 
 
-### Building ###
+## Building ##
 
 To build you will need
 
@@ -50,7 +50,7 @@ To make Javadoc
 	ant javadoc
  
 
-### Utils ###
+## Utils ##
 
 The utilities source is located in utils/src
 
@@ -71,24 +71,24 @@ filter.sh or filter.bat on Linux and Windows respectively.
 	filter.bat -t localhost:4001 -d
   
 
-### Contributing ###
+## Contributing ##
 
 You're encouraged to contribute to AisLib. Fork the code from 
 [https://github.com/DaMSA/AisLib](https://github.com/DaMSA/AisLib) and submit pull requests.
 
-### Versioning/naming ###
+## Versioning/naming ##
 
 The version number/name is controlled in the core/build.xml file. Please use a 
 name relating to the branch name. New official versions will only be made from
 master branch. 
 
-### License ###
+## License ##
 
 This library is provided under the LGPL, version 3.
 
-### Examples ###
+## Examples ##
 
-#### Simple read and message handling ####
+### Simple read and message handling ###
 
 Reading from files or TCP connections is very simple with AisLib. In the example below messages
 are read from a file.
@@ -128,7 +128,7 @@ reader.setReconnectInterval(1000);
 A read timeout can be defined for the reader. If no data is received within this period
 the connection will be closed and a reconnect will be tried. 
 
-#### Working with messages ####
+### Working with messages ###
 
 To determine what messages are received the instanceof operator can be used. The example
 below shows how to test and cast, and take advantage of the object oriented design where 
@@ -160,7 +160,7 @@ public void receive(AisMessage aisMessage) {
 }
 ```
 
-#### Multiple sources ####
+### Multiple sources ###
 
 The example below shows how messages from multiple sources can be handled by a single
 handler.
@@ -186,7 +186,7 @@ reader3.registerHandler(handler);
 reader1.start(); reader2.start(); reader3.start();
 ```
 
-#### Round robin reading ####
+### Round robin reading ###
 
 The example below shows how to round robin between TCP hosts. If
 one goes down, the re-connect will be to the next on the list.
@@ -206,7 +206,7 @@ reader.start();
 reader.join();		
 ```
 
-#### Message filtering ####
+### Message filtering ###
 
 Filters are message handlers that can be put in between readers
 and handlers. In the example below two filters are used. A doublet
@@ -236,7 +236,7 @@ reader.registerHandler(doubletFilter);
 reader.start();
 ```
 
-#### Reading proprietary tags ####
+### Reading proprietary tags ###
 
 AisLib can handle some proprietary tags inserted before VDM sentences, but
 implementations of factories must be given. In the example below Gatehouse
@@ -258,7 +258,7 @@ reader.start();
 reader.join();
 ```
 
-#### Sending a message ####
+### Sending a message ###
 
 Example of sending an addressed text message in an ABM sentence. See test cases on how
 to send application specific message. See AisReader for different sending options. In the 
