@@ -93,7 +93,7 @@ This library is provided under the LGPL, version 3.
 Reading from files or TCP connections is very simple with AisLib. In the example below messages
 are read from a file.
 
-```
+```java
 AisReader reader = new AisStreamReader(new FileInputStream("sentences.txt"));
 reader.registerHandler(new IAisHandler() {			
 	@Override
@@ -107,7 +107,7 @@ reader.join();
 
 Reading using a TCP connection is just as easy
 
-```
+```java
 AisTcpReader reader = new AisTcpReader("localhost", 4001);
 reader.registerHandler(new IAisHandler() {			
 	@Override
@@ -121,7 +121,7 @@ reader.join();
 
 If the connection is broken the reader will try to reconnect after a certain amount of
 time that can be set with:
-```
+```java
 reader.setReconnectInterval(1000);
 ```
 
