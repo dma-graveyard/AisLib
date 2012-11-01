@@ -83,3 +83,46 @@ master branch.
 ### License ###
 
 This library is provided under the LGPL, version 3.
+
+### Examples ###
+
+#### Simplest examples ####
+
+Reading from files or TCP connections is very simple with AisLib. In the example below messages
+are read from a file.
+
+```
+AisReader reader = new AisStreamReader(new FileInputStream("sentences.txt"));
+reader.registerHandler(new IAisHandler() {			
+	@Override
+	public void receive(AisMessage aisMessage) {
+		System.out.println("message id: " + aisMessage.getMsgId());	
+	}
+});
+reader.start();
+reader.join();
+```
+
+Reading using a TCP connection is just as easy
+
+```
+AisTcpReader reader = new AisTcpReader("localhost", 4001);
+reader.registerHandler(new IAisHandler() {			
+	@Override
+	public void receive(AisMessage aisMessage) {
+		System.out.println("message id: " + aisMessage.getMsgId());		
+	}
+});
+reader.start();
+reader.join();
+```
+
+If the connection is broken the reader will try to reconnect after a certain amount of
+time that can be set with:
+```
+reader.setReconnectInterval(1000);
+```
+
+A read timeout can be defined for the reader. If no data is received within this period
+the connection will be closed and a reconnect will be tried. 
+
