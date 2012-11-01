@@ -88,7 +88,7 @@ This library is provided under the LGPL, version 3.
 
 ### Examples ###
 
-#### Simplest examples ####
+#### Simple read and message handling ####
 
 Reading from files or TCP connections is very simple with AisLib. In the example below messages
 are read from a file.
@@ -128,3 +128,52 @@ reader.setReconnectInterval(1000);
 A read timeout can be defined for the reader. If no data is received within this period
 the connection will be closed and a reconnect will be tried. 
 
+#### Determining message types ####
+
+To determine what messages are received the instanceof operator can be used. The example
+below shows how to test and cast, and take advantage of the object oriented design where 
+related messages shares parents.
+
+```java
+@Override
+public void receive(AisMessage aisMessage) {
+	// Handle AtoN message
+	if (aisMessage instanceof AisMessage21) {
+		AisMessage21 msg21 = (AisMessage21) aisMessage;
+		System.out.println("AtoN name: " + msg21.getName());
+	}
+	// Handle position messages 1,2 and 3 (class A) by using their shared parent
+	if (aisMessage instanceof AisPositionMessage) {					
+		AisPositionMessage posMessage = (AisPositionMessage)aisMessage;
+		System.out.println("speed over ground: " + posMessage.getSog());
+	}
+	// Handle position messages 1,2,3 and 18 (class A and B)  
+	if (aisMessage instanceof IGeneralPositionMessage) {
+		IGeneralPositionMessage posMessage = (IGeneralPositionMessage)aisMessage;
+		System.out.println("course over ground: " + posMessage.getCog());
+		
+	}
+	// Handle static reports for both class A and B vessels (msg 5 + 24)
+	if (aisMessage instanceof AisStaticCommon) {
+		AisStaticCommon staticMessage = (AisStaticCommon)aisMessage;
+		System.out.println("vessel name: " + staticMessage.getName());
+	}					
+}
+```
+
+#### Multiple sources ####
+
+The example below shows how messages from multiple sources can be handled by a single
+handler.
+
+```java
+```
+
+
+#### Round robin reading ####
+
+#### Message filtering ####
+
+#### Reading proprietary tags ####
+
+#### ####
