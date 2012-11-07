@@ -16,62 +16,21 @@
 package dk.frv.ais.message;
 
 /**
- * Interface to capture the communalities between message 1,2,3 and 18
+ * Interface for all messages carrying a the position of the 
+ * sending target.
  */
-public interface IGeneralPositionMessage extends IPositionMessage {
+public interface IPositionMessage {
 	
 	/**
-	 * Speed over ground
+	 * Get position
 	 * @return
 	 */
-	public int getSog();
+	public AisPosition getPos();
 	
 	/**
-	 * Course over ground
-	 */
-	public int getCog();
-	
-	/**
-	 * True heading
+	 * Position accuracy
 	 * @return
 	 */
-	public int getTrueHeading();
-	
-	/**
-	 * UTC sec
-	 * @return
-	 */
-	public int getUtcSec();
-	
-	/**
-	 * Determine if position is valid
-	 * @return
-	 */
-	public boolean isPositionValid();
-	
-	/**
-	 * Course over ground valid
-	 * @return
-	 */
-	public boolean isCogValid();
-	
-	/**
-	 * Speed over ground valid
-	 * @return
-	 */
-	public boolean isSogValid();
-	
-	/**
-	 * Heading valid 
-	 * @return
-	 */
-	public boolean isHeadingValid();
-	
-	/**
-	 * Get raim
-	 * @return
-	 */
-	public int getRaim();
-	
-	
+	public int getPosAcc();
+
 }
