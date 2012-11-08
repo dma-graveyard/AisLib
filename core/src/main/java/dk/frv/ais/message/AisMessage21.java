@@ -26,7 +26,7 @@ import dk.frv.ais.sentence.Vdm;
  * Aids-to-navigation report (AtoN) as defined by ITU-R M.1371-4
  * 
  */
-public class AisMessage21 extends AisMessage {
+public class AisMessage21 extends AisMessage implements IPositionMessage {
 
 	int atonType; // 5 bits : Type of AtoN
 	String name; // 120 bits : Name of AtoN in ASCII

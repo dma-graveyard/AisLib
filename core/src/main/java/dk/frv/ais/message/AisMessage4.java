@@ -30,7 +30,7 @@ import dk.frv.ais.sentence.Vdm;
  * Base station report as defined by ITU-R M.1371-4
  * 
  */
-public class AisMessage4 extends AisMessage {
+public class AisMessage4 extends AisMessage implements IPositionMessage {
 
 	private int utcYear; // 14 bits : UTC Year
 	private int utcMonth; // 4 bits : UTC Month
