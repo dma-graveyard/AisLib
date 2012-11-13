@@ -71,33 +71,47 @@ public abstract class AisTarget implements Serializable  {
 		if (sourceData == null) {
 			sourceData = new AisTargetSourceData();
 		}
+		
+		String sourceRegion = null;
+		String sourceType = "LIVE";
+		String sourceSystem = null;
+		MidCountry sourceCountry = null;
+		Long sourceBs = null;
+		
 		if (aisMessage.getTags() != null) {
 			for (IProprietaryTag tag : aisMessage.getTags()) {
 				if (tag instanceof DmaSourceTag) {
 					DmaSourceTag dmaSourceTag = (DmaSourceTag)tag;
-					sourceData.setSourceSystem(dmaSourceTag.getSourceName());
+					sourceSystem = dmaSourceTag.getSourceName();
 				} else if (tag instanceof GatehouseSourceTag) {
 					GatehouseSourceTag ghTag = (GatehouseSourceTag)tag;
-					String sourceRegion = ghTag.getRegion();
-					if (sourceRegion != null) {
-						if (sourceRegion.length() == 0) {
-							sourceRegion = null;
-						} else {
-							// TODO This mapping should come from a tag in the future
-							if (sourceRegion.equals("802") || sourceRegion.equals("804") || sourceRegion.equals("808")) {
-								sourceData.setSourceType("SAT");
-							}
-						}
+					sourceRegion = ghTag.getRegion();
+					sourceCountry = ghTag.getCountry();					
+					sourceBs = ghTag.getBaseMmsi();
+					if (ghTag.getTimestamp() != null) {
+						this.lastReport = ghTag.getTimestamp();
 					}
-					sourceData.setSourceRegion(sourceRegion);
-					sourceData.setSourceCountry(ghTag.getCountry());
-					if (ghTag.getBaseMmsi() != null) {
-						sourceData.setSourceBs(ghTag.getBaseMmsi());
-					}
-					sourceData.setLastReport(this.lastReport);
+				}
+			}
+		}		
+		
+		sourceData.setSourceSystem(sourceSystem);		
+		if (sourceRegion != null) {
+			if (sourceRegion.length() == 0) {
+				sourceRegion = null;
+			} else {
+				// TODO This mapping should come from a tag in the future
+				if (sourceRegion.equals("802") || sourceRegion.equals("804") || sourceRegion.equals("808")) {
+					sourceType = "SAT";
 				}
 			}
 		}
+		sourceData.setSourceRegion(sourceRegion);
+		sourceData.setSourceType(sourceType);
+		sourceData.setSourceBs(sourceBs);
+		sourceData.setSourceCountry(sourceCountry);
+		sourceData.setLastReport(this.lastReport);
+		
 		// Set country
 		country = MidCountry.getCountryForMmsi(aisMessage.getUserId());
 	}
