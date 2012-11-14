@@ -23,7 +23,7 @@ import dk.frv.ais.geo.GeoLocation;
 /**
  * Class to represent a point on a past track
  */
-public class PastTrackPoint implements Serializable {
+public class PastTrackPoint implements Serializable, Comparable<PastTrackPoint> {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -89,4 +89,27 @@ public class PastTrackPoint implements Serializable {
 	public void setTime(Date time) {
 		this.time = time;
 	}
+
+	@Override
+	public int compareTo(PastTrackPoint p2) {
+		if (this.time.getTime() < p2.time.getTime()) {
+			return -1;
+		} else if (this.time.getTime() > p2.time.getTime()) {
+			return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return "PastTrackPoint [time=" + time + ", lat=" + lat + ", lon=" + lon + ", cog=" + cog + ", sog=" + sog + "]";
+	}
+	
+	@Override
+	public int hashCode() {		
+		return (int)getTime().getTime();
+	}
+	
+	
+	
 }
