@@ -20,10 +20,10 @@ import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.message.IGeneralPositionMessage;
 
 /**
- * Abstract class for representing the common position of an 
+ * Class for representing the common position of an 
  * AIS class A and class B target
  */
-public abstract class AisVesselPosition extends AisReport {
+public class AisVesselPosition extends AisReport {
 	
 	private static final long serialVersionUID = 1L;
 	
