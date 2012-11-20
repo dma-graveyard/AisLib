@@ -26,6 +26,8 @@ import dk.frv.ais.message.AisMessage24;
 import dk.frv.ais.message.AisMessage4;
 import dk.frv.ais.message.AisMessage5;
 import dk.frv.ais.message.AisPositionMessage;
+import dk.frv.ais.message.AisStaticCommon;
+import dk.frv.ais.message.IGeneralPositionMessage;
 import dk.frv.ais.proprietary.DmaSourceTag;
 import dk.frv.ais.proprietary.GatehouseSourceTag;
 import dk.frv.ais.proprietary.IProprietaryTag;
@@ -176,6 +178,27 @@ public abstract class AisTarget implements Serializable  {
 			target = new AisAtonTarget();
 		}
 		return target;
+	}
+	
+	/**
+	 * Determine if message is a message from target containing data about the target
+	 * @param aisMessage
+	 * @return
+	 */
+	public static boolean isTargetDataMessage(AisMessage aisMessage) {
+		if (aisMessage instanceof IGeneralPositionMessage) {
+			return true;				
+		}
+		else if (aisMessage instanceof AisStaticCommon) {
+			return true;
+		}
+		else if (aisMessage instanceof AisMessage4) {
+			return true; 
+		}
+		else if (aisMessage instanceof AisMessage21) {
+			return true;
+		}
+		return false;
 	}
 	
 }
