@@ -16,23 +16,43 @@
 package dk.frv.ais.data;
 
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage21;
 
 /**
  * Class to represent AIS AtoN target
  */
 public class AisAtonTarget extends AisTarget {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// TODO
-	
+
 	public AisAtonTarget() {
-		
+
 	}
-	
+
 	@Override
-	public void update(AisMessage aisMessage) {		
+	public void update(AisMessage aisMessage) {
+		// Throw error if message is from other type of target
+		if (AisClassATarget.isClassAPosOrStatic(aisMessage) || AisClassBTarget.isClassBPosOrStatic(aisMessage)
+				|| AisBsTarget.isBsReport(aisMessage)) {
+			throw new IllegalArgumentException("Trying to update AtoN target with report of other target type");
+		}
+		// Ignore everything but BS reports
+		if (!isAtonReport(aisMessage)) {
+			return;
+		}
 		super.update(aisMessage);
+	}
+
+	/**
+	 * Determine if message is AtoN report
+	 * 
+	 * @param aisMessage
+	 * @return
+	 */
+	public static boolean isAtonReport(AisMessage aisMessage) {
+		return (aisMessage instanceof AisMessage21);
 	}
 
 }

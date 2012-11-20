@@ -16,23 +16,43 @@
 package dk.frv.ais.data;
 
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.message.AisMessage4;
 
 /**
  * Class to represent an AIS base station target
  */
 public class AisBsTarget extends AisTarget {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// TODO
-	
+
 	public AisBsTarget() {
-		
+
 	}
-	
+
 	@Override
-	public void update(AisMessage aisMessage) {		
+	public void update(AisMessage aisMessage) {
+		// Throw error if message is from other type of target
+		if (AisClassATarget.isClassAPosOrStatic(aisMessage) || AisClassBTarget.isClassBPosOrStatic(aisMessage)
+				|| AisAtonTarget.isAtonReport(aisMessage)) {
+			throw new IllegalArgumentException("Trying to update BS target with report of other target type");
+		}
+		// Ignore everything but BS reports
+		if (!isBsReport(aisMessage)) {
+			return;
+		}
 		super.update(aisMessage);
 	}
-	
+
+	/**
+	 * Determine if message is BS report
+	 * 
+	 * @param aisMessage
+	 * @return
+	 */
+	public static boolean isBsReport(AisMessage aisMessage) {
+		return (aisMessage instanceof AisMessage4);
+	}
+
 }
