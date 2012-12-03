@@ -1,3 +1,8 @@
+2012-12-03 Version 1.7
+  * Message filter based on source metadata
+  * Message filter based on simple circle geometry
+  * Enhancements to data classes
+  
 2012-11-01 Version 1.6
   * Enhanced DMA proprietary tag for use in replay. Added support in AisFilter.
   * Added interface IGeneralPositionMessage to capture the commonalities
